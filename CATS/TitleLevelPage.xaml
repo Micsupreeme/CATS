@@ -19,6 +19,7 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
+            
             <TextBlock x:Name="unitTitleTb" FontFamily="Arial" FontSize="14" Text="Unit Title:" Grid.Column="0" Grid.Row="0"/>
             <TextBox x:Name="unitTitleTxt" FontFamily="Arial" FontSize="14" Padding="2" SpellCheck.IsEnabled="True" VerticalAlignment="Center" Margin="0,0,0,30" Grid.Column="1" Grid.Row="0"/>
             <TextBlock x:Name="asmtTitleTb" FontFamily="Arial" FontSize="14" Text="Assessment Title:" Grid.Column="0" Grid.Row="1"/>

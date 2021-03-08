@@ -26,9 +26,8 @@ namespace CATS
 
         private void createBtn_Click(object sender, RoutedEventArgs e)
         {
-            PagedWindow pw = new PagedWindow();
-            pw.Visibility = Visibility.Visible;
-            this.Visibility = Visibility.Collapsed;
+            NewBriefDialog newbriefdialog = new NewBriefDialog();
+            newbriefdialog.Visibility = Visibility.Visible;
         }
 
         private void openBtn_Click(object sender, RoutedEventArgs e)
