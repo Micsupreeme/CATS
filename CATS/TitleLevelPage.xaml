@@ -1,0 +1,70 @@
+﻿<Page x:Class="CATS.TitleLevelPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CATS"
+      mc:Ignorable="d" 
+      d:DesignHeight="550" d:DesignWidth="800"
+      Background="#252525"
+      Foreground="#FFFFFF"
+      Title="TitleLevelPage">
+    <StackPanel Margin="30">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2.5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="unitTitleTb" FontFamily="Arial" FontSize="14" Text="Unit Title:" Grid.Column="0" Grid.Row="0"/>
+            <TextBox x:Name="unitTitleTxt" FontFamily="Arial" FontSize="14" Padding="2" SpellCheck.IsEnabled="True" VerticalAlignment="Center" Margin="0,0,0,30" Grid.Column="1" Grid.Row="0"/>
+            <TextBlock x:Name="asmtTitleTb" FontFamily="Arial" FontSize="14" Text="Assessment Title:" Grid.Column="0" Grid.Row="1"/>
+            <TextBox x:Name="asmtTitleTxt" FontFamily="Arial" FontSize="14" Padding="2" SpellCheck.IsEnabled="True" Grid.Column="1" Grid.Row="1"/>
+        </Grid>
+        <Separator Margin="0,30,0,30"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="0.8333*"/>
+                <ColumnDefinition Width="0.8333*"/>
+                <ColumnDefinition Width="0.8333*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="levelTb" FontFamily="Arial" FontSize="14" Text="Level:" Margin="0,0,15,0" Grid.Column="0" Grid.Row="0"/>
+            <ComboBox x:Name="levelCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="0" Margin="0,0,0,30" Grid.Column="1" Grid.Row="0">
+                <ComboBoxItem>4</ComboBoxItem>
+                <ComboBoxItem>5</ComboBoxItem>
+                <ComboBoxItem>6</ComboBoxItem>
+                <ComboBoxItem>7</ComboBoxItem>
+            </ComboBox>
+            <TextBlock x:Name="subResubTb" FontFamily="Arial" FontSize="14" Text="Submission/Resubmission:" Margin="0,0,15,0" Grid.Column="0" Grid.Row="1"/>
+            <ComboBox x:Name="subResubCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="0" Margin="0,0,0,30" Grid.Column="1" Grid.Row="1" SelectionChanged="subResubCmb_SelectionChanged">
+                <ComboBoxItem>Submission</ComboBoxItem>
+                <ComboBoxItem>Resubmission</ComboBoxItem>
+            </ComboBox>
+            <TextBlock x:Name="asmtNo1Tb" FontFamily="Arial" FontSize="14" Text="This is assessment number:" Margin="0,0,15,0" Grid.Column="0" Grid.Row="2"/>
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
+                <ComboBox x:Name="asmtNoXCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="0" Width="63">
+                    <ComboBoxItem>1</ComboBoxItem>
+                    <ComboBoxItem>2</ComboBoxItem>
+                    <ComboBoxItem>3</ComboBoxItem>
+                </ComboBox>
+                <TextBlock x:Name="asmtNo2Tb" FontFamily="Arial" FontSize="14" HorizontalAlignment="Center" Text="of" Margin="15,0,15,0"/>
+                <ComboBox x:Name="asmtNoYCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="1" Width="63">
+                    <ComboBoxItem>1</ComboBoxItem>
+                    <ComboBoxItem>2</ComboBoxItem>
+                    <ComboBoxItem>3</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+            
+        </Grid>
+    </StackPanel>
+</Page>
