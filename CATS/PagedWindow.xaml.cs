@@ -18,11 +18,16 @@ namespace CATS
     /// </summary>
     public partial class PagedWindow : Window
     {
+        BUAssessment currentBua;
+        string currentFilePath;
         int currentPageNumber = 0; //Page 0 is the first page
 
-        public PagedWindow()
+        public PagedWindow(BUAssessment bua, string buaFilePath)
         {
             InitializeComponent();
+            currentBua = bua;
+            currentFilePath = buaFilePath;
+            this.Title = currentFilePath + " - CATS";
             navigatePage(currentPageNumber); //Initialise the frame by setting it to show the first page
         }
 
@@ -35,19 +40,19 @@ namespace CATS
             switch (pageNumber)
             {
                 case 0:
-                    mainFrame.Content = new TitleLevelPage();
+                    mainFrame.Content = new TitleLevelPage(currentBua);
                     prevBtn.Visibility = Visibility.Hidden; //Cannot go back from the first page
                     nextBtn.Visibility = Visibility.Visible;
                     currentPageNumber = 0;
                     break;
                 case 1:
-                    mainFrame.Content = new WeightDatePage();
+                    mainFrame.Content = new WeightDatePage(currentBua);
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Visible;
                     currentPageNumber = 1;
                     break;
                 case 2:
-                    mainFrame.Content = new StaffSubPage();
+                    mainFrame.Content = new StaffSubPage(currentBua);
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Hidden; //Cannot go forward from the last page
                     currentPageNumber = 2;
@@ -60,11 +65,13 @@ namespace CATS
 
         private void prevBtn_Click(object sender, RoutedEventArgs e)
         {
+            currentBua.saveAsJson(currentFilePath);
             navigatePage(--currentPageNumber); //Go to the previous page
         }
 
         private void nextBtn_Click(object sender, RoutedEventArgs e)
         {
+            currentBua.saveAsJson(currentFilePath);
             navigatePage(++currentPageNumber); //Go to the next page
         }
     }

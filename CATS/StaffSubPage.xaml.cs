@@ -19,9 +19,12 @@ namespace CATS
     /// </summary>
     public partial class StaffSubPage : Page
     {
-        public StaffSubPage()
+        private BUAssessment currentBua;
+
+        public StaffSubPage(BUAssessment bua)
         {
             InitializeComponent();
+            currentBua = bua;
         }
     }
 }

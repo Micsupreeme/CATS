@@ -19,9 +19,12 @@ namespace CATS
     /// </summary>
     public partial class WeightDatePage : Page
     {
-        public WeightDatePage()
+        private BUAssessment currentBua;
+
+        public WeightDatePage(BUAssessment bua)
         {
             InitializeComponent();
+            currentBua = bua;
         }
     }
 }
