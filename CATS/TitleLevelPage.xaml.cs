@@ -95,13 +95,10 @@ namespace CATS
         /// </summary>
         private void unitTitleTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try
-            {
+            try {
                 //Keep this code absolutely minimal, as this event fires every time a character changes in the textbox
                 currentBua.unitTitle = unitTitleTxt.Text;
-            }
-            catch (NullReferenceException)
-            {
+            } catch (NullReferenceException) {
                 Console.Error.WriteLine("WARN: Event fired before object initialisation ");
             }
         }
@@ -111,13 +108,10 @@ namespace CATS
         /// </summary>
         private void asmtTitleTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try
-            {
+            try {
                 //Keep this code absolutely minimal, as this event fires every time a character changes in the textbox
                 currentBua.asmtTitle = asmtTitleTxt.Text;
-            }
-            catch (NullReferenceException)
-            {
+            } catch (NullReferenceException) {
                 Console.Error.WriteLine("WARN: Event fired before object initialisation");
             }
         }
@@ -127,10 +121,11 @@ namespace CATS
         /// </summary>
         private void levelCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
-            {
-                currentBua.level = Int32.Parse(levelCmb.SelectedValue.ToString());
-            } catch(NullReferenceException) {
+            try{
+                currentBua.level = int.Parse(levelCmb.SelectedValue.ToString());
+            } catch (FormatException) {
+                Console.Error.WriteLine("ERROR: Attempted to convert alphabet to int");
+            } catch (NullReferenceException) {
                 Console.Error.WriteLine("WARN: Event fired before object initialisation");
             }
         }
@@ -141,8 +136,7 @@ namespace CATS
         /// </summary>
         private void subResubCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
-            {
+            try {
                 if (subResubCmb.SelectedValue.Equals("Submission")) {
                     currentBua.isResub = false;
                     setSubState(false);
@@ -161,8 +155,10 @@ namespace CATS
         private void asmtNoXCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {           
             try {
-                currentBua.asmtNoX = Int32.Parse(asmtNoXCmb.SelectedValue.ToString());
-            } catch(NullReferenceException) {
+                currentBua.asmtNoX = int.Parse(asmtNoXCmb.SelectedValue.ToString());
+            } catch (FormatException) {
+                Console.Error.WriteLine("ERROR: Attempted to convert alphabet to int");
+            } catch (NullReferenceException) {
                 Console.Error.WriteLine("WARN: Event fired before object initialisation");
             }
         }
@@ -173,7 +169,9 @@ namespace CATS
         private void asmtNoYCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try {
-                currentBua.asmtNoY = Int32.Parse(asmtNoYCmb.SelectedValue.ToString());
+                currentBua.asmtNoY = int.Parse(asmtNoYCmb.SelectedValue.ToString());
+            } catch (FormatException) {
+                Console.Error.WriteLine("ERROR: Attempted to convert alphabet to int");
             } catch (NullReferenceException) {
                 Console.Error.WriteLine("WARN: Event fired before object initialisation");
             }

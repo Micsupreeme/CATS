@@ -27,6 +27,27 @@ namespace CATS
             this.isResub = false;
             this.asmtNoX = 1;
             this.asmtNoY = 2;
+
+            //WeightDatePage
+            this.isGroup = false;
+            this.weighting = 50;
+            this.creditValue = 20;
+            this.submissionDueDate = new DateTime(1999, 1, 19, 19, 19, 19); //Arbitrary initialisation date to ignore
+            this.impPath = String.Empty;
+        }
+
+        /// <summary>
+        /// Checks whether the submission due date is greater than the initialisation date (of 1999)
+        /// </summary>
+        /// <returns>True if the submission due date is greater, false otherwise</returns>
+        public bool hasValidSubmissionDueDate()
+        {
+            DateTime initialisationDate = new DateTime(1999, 1, 19, 19, 19, 19); //Arbitrary initialisation date to ignore
+            if (this.submissionDueDate > initialisationDate) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         /// <summary>
@@ -50,7 +71,7 @@ namespace CATS
 
                 JsonConvert.PopulateObject(json, this); //Set the values of this BUAssessment instance to match those loaded from the JSON file
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //File cannot be accessed (e.g. used by another process)
                 Console.WriteLine("ERROR: Unable to load " + filePath + " - used by another process?");
@@ -78,7 +99,7 @@ namespace CATS
                     ms.Close();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //File cannot be accessed (e.g. used by another process)
                 Console.WriteLine("ERROR: Unable to write to " + filePath + " - used by another process?");
@@ -96,5 +117,12 @@ namespace CATS
         public bool isResub { get; set; }
         public int asmtNoX { get; set; }
         public int asmtNoY { get; set; }
+
+        //WeightDatePage
+        public bool isGroup { get; set; }
+        public int weighting { get; set; }
+        public int creditValue { get; set; }
+        public DateTime submissionDueDate { get; set; }
+        public string impPath { get; set; }
     }
 }
