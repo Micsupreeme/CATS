@@ -91,7 +91,9 @@ namespace CATS
 
         private void selectImpFile()
         {
-            
+            //TODO: file selector + send file path to SelectSubmissionDueDateDialog
+            SelectSubmissionDueDateDialog selectsubmissionduedatedialog = new SelectSubmissionDueDateDialog(this, currentBua);
+            selectsubmissionduedatedialog.Visibility = Visibility.Visible;
         }
 
         private void changeSdd()
