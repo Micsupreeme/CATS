@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,9 @@ namespace CATS
     /// </summary>
     public partial class WeightDatePage : Page
     {
+        private const string IMP_FILE_FILTER =
+            "Comma Separated Values File (*.csv)|*.csv";
+
         private BUAssessment currentBua;
 
         public WeightDatePage(BUAssessment bua)
@@ -68,9 +72,12 @@ namespace CATS
                     break;
             }
 
-            updateSddValue(true);
-
-            //TODO: if(currentBua.hasValidSubmissionDueDate() && <no path to imp>) { show "manually set" warning }
+            impTxt.Text = currentBua.impPath;
+            if(currentBua.hasValidSubmissionDueDate() && currentBua.impPath.Length < 1) {
+                updateSddValue(false);
+            } else {
+                updateSddValue(true);
+            }           
         }
 
         /// <summary>
@@ -78,22 +85,39 @@ namespace CATS
         /// </summary>
         public void updateSddValue(bool isSetAutomatically)
         {
-            if(currentBua.hasValidSubmissionDueDate()) {
+            if(currentBua.hasValidSubmissionDueDate() && !isSetAutomatically) {
+                //Manual date
                 sddValTb.Text = currentBua.submissionDueDate.ToString("dd/MM/yyyy (h:mm tt)");
-            } else {
-                sddValTb.Text = "Not set";
-            }
-
-            if(!isSetAutomatically) {
+                currentBua.impPath = String.Empty;
+                impTxt.Text = currentBua.impPath;
                 sddWarnTb.Visibility = Visibility.Visible;
+            } else if(currentBua.hasValidSubmissionDueDate()) {
+                //Auto date
+                sddValTb.Text = currentBua.submissionDueDate.ToString("dd/MM/yyyy (h:mm tt)");
+                sddWarnTb.Visibility = Visibility.Hidden;
+            } else {
+                //No valid date
+                sddValTb.Text = "Not set";
+                sddWarnTb.Visibility = Visibility.Hidden;
             }
         }
 
         private void selectImpFile()
         {
-            //TODO: file selector + send file path to SelectSubmissionDueDateDialog
-            SelectSubmissionDueDateDialog selectsubmissionduedatedialog = new SelectSubmissionDueDateDialog(this, currentBua);
-            selectsubmissionduedatedialog.Visibility = Visibility.Visible;
+
+            OpenFileDialog ofd = new OpenFileDialog()
+            {
+                Filter = IMP_FILE_FILTER,
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            };
+            if (ofd.ShowDialog() == true)
+            {
+                currentBua.impPath = ofd.FileName;
+                impTxt.Text = currentBua.impPath;
+
+                SelectSubmissionDueDateDialog selectsubmissionduedatedialog = new SelectSubmissionDueDateDialog(this, currentBua);
+                selectsubmissionduedatedialog.Visibility = Visibility.Visible;
+            }
         }
 
         private void changeSdd()

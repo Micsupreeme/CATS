@@ -28,9 +28,14 @@ namespace CATS
         private const int IMP_RECORDS_LIMIT = 100; //Only show up to 100 records at a time
         private const int IMP_RECORD_ROW_HEIGHT = 35; //Components are 25px with 10px bottom padding = 35px
 
+        private const string IMP_RECORD_FONT_FAMILY = "Arial";
+        private const int IMP_RECORD_FONT_SIZE = 12;
+
+        private const string DEFAULT_TIME_SUFFIX = "12:30:00";
+
         WeightDatePage callingPage; //Storing this enables this window to call for the WeightDate page to update its sdd value according to the newly change bua object
         private BUAssessment currentBua;
-        CachedCsvReader csvReader;
+        private CachedCsvReader csvReader;
 
         public SelectSubmissionDueDateDialog(WeightDatePage caller, BUAssessment bua)
         {
@@ -43,9 +48,9 @@ namespace CATS
             {
                 string firstCharsOfUnitTitle = currentBua.unitTitle.Substring(0, 3);
                 unitTitleSearchTxt.Text = firstCharsOfUnitTitle;
-                createDynamicControls(getCsvDataArray("D:\\University\\Documents\\IMP.csv", firstCharsOfUnitTitle));
+                createDynamicControls(getCsvDataArray(currentBua.impPath, firstCharsOfUnitTitle));
             } else {
-                createDynamicControls(getCsvDataArray("D:\\University\\Documents\\IMP.csv", ""));
+                createDynamicControls(getCsvDataArray(currentBua.impPath, ""));
             }
         }
 
@@ -57,59 +62,153 @@ namespace CATS
 
                     //Ensure canvas is reset before drawing
                     csvDataCanvas.Children.Clear();
-                    csvDataCanvas.Height = 100;
+                    csvDataCanvas.Height = 25;
                     int canvastop = 0; //keeps track of where to draw the next row of csvData controls
                     string currentDueDate;
+                    if(csvData.Count == 100) {
+                        recordCountTb.Text = "Large dataset - displaying only the first 100 records";
+                    } else {
+                        recordCountTb.Text = "Displaying " + csvData.Count + " records";
+                    }                  
 
                     //Draw components
+                    //Headers
+                    var levelHeaderTb = new TextBlock();
+                    levelHeaderTb.FontFamily = new FontFamily(IMP_RECORD_FONT_FAMILY);
+                    levelHeaderTb.FontSize = IMP_RECORD_FONT_SIZE;
+                    levelHeaderTb.Text = "Level";
+                    levelHeaderTb.Height = 25;
+                    levelHeaderTb.Width = 100;
+                    levelHeaderTb.Padding = new Thickness(5, 5, 5, 5);
+                    levelHeaderTb.Background = new SolidColorBrush(Color.FromRgb(244, 244, 244));
+                    levelHeaderTb.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+                    csvDataCanvas.Children.Add(levelHeaderTb);
+                    Canvas.SetLeft(levelHeaderTb, 0);
+                    Canvas.SetTop(levelHeaderTb, canvastop);
+
+                    var semesterHeaderTb = new TextBlock();
+                    semesterHeaderTb.Text = "Semester";
+                    semesterHeaderTb.FontFamily = new FontFamily(IMP_RECORD_FONT_FAMILY);
+                    semesterHeaderTb.FontSize = IMP_RECORD_FONT_SIZE;
+                    semesterHeaderTb.Height = 25;
+                    semesterHeaderTb.Width = 120;
+                    semesterHeaderTb.Padding = new Thickness(5, 5, 5, 5);
+                    semesterHeaderTb.Background = new SolidColorBrush(Color.FromRgb(244, 244, 244));
+                    semesterHeaderTb.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+                    csvDataCanvas.Children.Add(semesterHeaderTb);
+                    Canvas.SetLeft(semesterHeaderTb, 50);
+                    Canvas.SetTop(semesterHeaderTb, canvastop);
+
+                    var unitTitleHeaderTb = new TextBlock();
+                    unitTitleHeaderTb.FontFamily = new FontFamily(IMP_RECORD_FONT_FAMILY);
+                    unitTitleHeaderTb.FontSize = IMP_RECORD_FONT_SIZE;
+                    unitTitleHeaderTb.Text = "Unit Title";
+                    unitTitleHeaderTb.Height = 25;
+                    unitTitleHeaderTb.Width = 300;
+                    unitTitleHeaderTb.Padding = new Thickness(7, 5, 5, 5);
+                    unitTitleHeaderTb.Background = new SolidColorBrush(Color.FromRgb(244, 244, 244));
+                    unitTitleHeaderTb.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+                    csvDataCanvas.Children.Add(unitTitleHeaderTb);
+                    Canvas.SetLeft(unitTitleHeaderTb, 120);
+                    Canvas.SetTop(unitTitleHeaderTb, canvastop);
+
+                    var submissionDateHeaderTb = new TextBlock();
+                    submissionDateHeaderTb.FontFamily = new FontFamily(IMP_RECORD_FONT_FAMILY);
+                    submissionDateHeaderTb.FontSize = IMP_RECORD_FONT_SIZE;
+                    submissionDateHeaderTb.Text = "Submission Date";
+                    submissionDateHeaderTb.Height = 25;
+                    submissionDateHeaderTb.Width = 190;
+                    submissionDateHeaderTb.Padding = new Thickness(5, 5, 5, 5);
+                    submissionDateHeaderTb.Background = new SolidColorBrush(Color.FromRgb(244, 244, 244));
+                    submissionDateHeaderTb.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+                    csvDataCanvas.Children.Add(submissionDateHeaderTb);
+                    Canvas.SetLeft(submissionDateHeaderTb, 420);
+                    Canvas.SetTop(submissionDateHeaderTb, canvastop);
+
+                    canvastop += IMP_RECORD_ROW_HEIGHT;
+
+                    //Records
                     for (int r = 0; r < csvData.Count; r++) {
                         csvDataCanvas.Height += IMP_RECORD_ROW_HEIGHT;
 
-                        var tb = new TextBlock();
-                        tb.Text = csvData[r][0];
-                        tb.Height = 25;
-                        tb.Width = 100;
-                        tb.Padding = new Thickness(0, 0, 0, 10);
-                        csvDataCanvas.Children.Add(tb);
-                        Canvas.SetLeft(tb, 0);
-                        Canvas.SetTop(tb, canvastop);
+                        var levelTb = new TextBlock();
+                        levelTb.FontFamily = new FontFamily(IMP_RECORD_FONT_FAMILY);
+                        levelTb.FontSize = IMP_RECORD_FONT_SIZE;
+                        levelTb.Text = csvData[r][0];
+                        levelTb.Height = 25;
+                        levelTb.Width = 100;
+                        levelTb.Padding = new Thickness(5, 5, 5, 5);
+                        csvDataCanvas.Children.Add(levelTb);
+                        Canvas.SetLeft(levelTb, 0);
+                        Canvas.SetTop(levelTb, canvastop);
 
-                        var tb2 = new TextBlock();
-                        tb2.Text = csvData[r][1];
-                        tb2.Height = 25;
-                        tb2.Width = 100;
-                        csvDataCanvas.Children.Add(tb2);
-                        Canvas.SetLeft(tb2, 50);
-                        Canvas.SetTop(tb2, canvastop);
+                        var semesterTb = new TextBlock();
+                        semesterTb.FontFamily = new FontFamily(IMP_RECORD_FONT_FAMILY);
+                        semesterTb.FontSize = IMP_RECORD_FONT_SIZE;
+                        semesterTb.Text = csvData[r][1];
+                        semesterTb.Height = 25;
+                        semesterTb.Width = 120;
+                        semesterTb.Padding = new Thickness(5, 5, 5, 5);
+                        csvDataCanvas.Children.Add(semesterTb);
+                        Canvas.SetLeft(semesterTb, 50);
+                        Canvas.SetTop(semesterTb, canvastop);
 
-                        var tb3 = new TextBlock();
-                        tb3.Text = csvData[r][2];
-                        tb3.Height = 25;
-                        tb3.Width = 100;
-                        csvDataCanvas.Children.Add(tb3);
-                        Canvas.SetLeft(tb3, 100);
-                        Canvas.SetTop(tb3, canvastop);
+                        var unitTitleTxt = new TextBox();
+                        unitTitleTxt.FontFamily = new FontFamily(IMP_RECORD_FONT_FAMILY);
+                        unitTitleTxt.FontSize = IMP_RECORD_FONT_SIZE;
+                        unitTitleTxt.Text = csvData[r][2];
+                        unitTitleTxt.Height = 25;
+                        unitTitleTxt.Width = 300;
+                        unitTitleTxt.Padding = new Thickness(5, 5, 5, 5);
+                        unitTitleTxt.IsReadOnly = true;
+                        unitTitleTxt.BorderThickness = new Thickness(0, 0, 0, 0);
+                        unitTitleTxt.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                        csvDataCanvas.Children.Add(unitTitleTxt);
+                        Canvas.SetLeft(unitTitleTxt, 120);
+                        Canvas.SetTop(unitTitleTxt, canvastop);
 
                         currentDueDate = csvData[r][3];
 
-                        var tb4 = new TextBlock();
-                        tb4.Text = currentDueDate;
-                        tb4.Height = 25;
-                        tb4.Width = 100;
-                        csvDataCanvas.Children.Add(tb4);
-                        Canvas.SetLeft(tb4, 250);
-                        Canvas.SetTop(tb4, canvastop);
+                        var submissionDateTb = new TextBlock();
+                        submissionDateTb.FontFamily = new FontFamily(IMP_RECORD_FONT_FAMILY);
+                        submissionDateTb.FontSize = IMP_RECORD_FONT_SIZE;
+                        submissionDateTb.Text = currentDueDate;
+                        submissionDateTb.Height = 25;
+                        submissionDateTb.Width = 120;
+                        submissionDateTb.Padding = new Thickness(5, 5, 5, 5);
+                        csvDataCanvas.Children.Add(submissionDateTb);
+                        Canvas.SetLeft(submissionDateTb, 420);
+                        Canvas.SetTop(submissionDateTb, canvastop);
 
-                        Button b1 = new Button();
-                        b1.Content = "Select";
-                        b1.Height = 25;
-                        b1.Width = 50;
-                        b1.Name = "coolbtn" + r + "4";
-                        b1.Tag = currentDueDate;
-                        b1.AddHandler(Button.ClickEvent, new RoutedEventHandler(b1_Click));
-                        csvDataCanvas.Children.Add(b1);
-                        Canvas.SetLeft(b1, 300);
-                        Canvas.SetTop(b1, canvastop);
+                        //Only show the "Select date" button if there is a date that can be selected
+                        if(currentDueDate.Length > 0)
+                        {
+                            Button selectSubmissionDateBtn = new Button();
+                            selectSubmissionDateBtn.FontFamily = new FontFamily(IMP_RECORD_FONT_FAMILY);
+                            selectSubmissionDateBtn.FontSize = IMP_RECORD_FONT_SIZE;
+                            selectSubmissionDateBtn.Content = "Select";
+                            selectSubmissionDateBtn.Height = 25;
+                            selectSubmissionDateBtn.Width = 70;
+                            selectSubmissionDateBtn.Name = "selectSubmissionDateBtn_" + r;
+                            selectSubmissionDateBtn.Tag = currentDueDate;
+                            selectSubmissionDateBtn.AddHandler(Button.ClickEvent, new RoutedEventHandler(selectSubmissionDateBtn_Click));
+                            csvDataCanvas.Children.Add(selectSubmissionDateBtn);
+                            Canvas.SetLeft(selectSubmissionDateBtn, 540);
+                            Canvas.SetTop(selectSubmissionDateBtn, canvastop);
+                        }
+
+                        //Subtly alternating row colours for visual clarity
+                        if(r % 2 == 0) {
+                            levelTb.Background = new SolidColorBrush(Color.FromRgb(55, 55, 55));
+                            semesterTb.Background = new SolidColorBrush(Color.FromRgb(55, 55, 55));
+                            unitTitleTxt.Background = new SolidColorBrush(Color.FromRgb(55, 55, 55));
+                            submissionDateTb.Background = new SolidColorBrush(Color.FromRgb(55, 55, 55));
+                        } else {
+                            levelTb.Background = new SolidColorBrush(Color.FromRgb(85, 85, 85));
+                            semesterTb.Background = new SolidColorBrush(Color.FromRgb(85, 85, 85));
+                            unitTitleTxt.Background = new SolidColorBrush(Color.FromRgb(85, 85, 85));
+                            submissionDateTb.Background = new SolidColorBrush(Color.FromRgb(85, 85, 85));
+                        }
 
                         canvastop += IMP_RECORD_ROW_HEIGHT;
                     }
@@ -121,15 +220,22 @@ namespace CATS
 
         private void unitTitleSearchBtn_Click(object sender, RoutedEventArgs e)
         {
-            createDynamicControls(getCsvDataArray("D:\\University\\Documents\\IMP.csv", unitTitleSearchTxt.Text));
+            createDynamicControls(getCsvDataArray(currentBua.impPath, unitTitleSearchTxt.Text));
         }
 
-        //TODO: send the tag value as the selected date
-        private void b1_Click(object sender, RoutedEventArgs e)
+        private void selectSubmissionDateBtn_Click(object sender, RoutedEventArgs e)
         {
-            Button sourcebtn = (Button)e.Source;
-            Console.WriteLine("test" + sourcebtn.Tag);
+            Button sourceBtn = (Button)e.Source;
+            currentBua.submissionDueDate = DateTime.Parse(sourceBtn.Tag.ToString() + " " + DEFAULT_TIME_SUFFIX);
+            callingPage.updateSddValue(true); //Indicate that this is a preset submission due date
+
+            this.Visibility = Visibility.Collapsed;
         }
+        private void cancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
+        }
+
 
         List<string[]> getCsvDataArray(string csvPath, string searchTerm)
         {
@@ -170,11 +276,17 @@ namespace CATS
                     }
                     return filteredRecords;
                 }
-            } catch(Exception)
-            {
+            } catch(IOException) {
                 //File cannot be accessed (e.g. used by another process)
                 Console.WriteLine("ERROR: Unable to write to " + csvPath + " - used by another process?");
-                MessageBox.Show("Unable to open " + csvPath + ". It might be locked by another process.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Unable to open " + csvPath + ". It might be locked by another process.", "Open Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Visibility = Visibility.Collapsed;
+                return null;
+            } catch(IndexOutOfRangeException) {
+                //Unrecognised CSV format (i.e, not a valid IMP)
+                Console.WriteLine("ERROR: " + csvPath + " is not a recognised standard BU IMP file");
+                MessageBox.Show("Unable to open " + csvPath + ". The file contains an unrecognised data format.", "Format Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Visibility = Visibility.Collapsed;
                 return null;
             }
         }

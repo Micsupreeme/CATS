@@ -35,7 +35,7 @@
             </StackPanel>
             <StackPanel>
                 <TextBlock x:Name="changeTimehhTb" FontFamily="Arial" FontSize="16" HorizontalAlignment="Center" Padding="8,0,8,0" Text="hh" Margin="40,0,0,5"/>
-                <TextBox x:Name="changeTimehhTxt" FontFamily="Arial" FontSize="16" HorizontalAlignment="Center" Margin="40,0,0,0" HorizontalContentAlignment="Center" Width="40" Padding="0,5,0,5" MaxLength="2" Text="12" IsReadOnly="false" Background="#F4F4F4" Foreground="#6D6D6D"/>
+                <TextBox x:Name="changeTimehhTxt" FontFamily="Arial" FontSize="16" HorizontalAlignment="Center" Margin="40,0,0,0" HorizontalContentAlignment="Center" Width="40" Padding="0,5,0,5" MaxLength="2" Text="12" IsReadOnly="true" Background="#F4F4F4" Foreground="#6D6D6D"/>
             </StackPanel>
             <StackPanel>
                 <TextBlock x:Name="changeDateTimehhDiv1Tb" FontFamily="Arial" FontSize="16" HorizontalAlignment="Center" Padding="3,0,3,0" Text=":" Margin="0,0,0,8"/>
@@ -43,11 +43,11 @@
             </StackPanel>
             <StackPanel>
                 <TextBlock x:Name="changeTimemmTb" FontFamily="Arial" FontSize="16" HorizontalAlignment="Center" Padding="8,0,8,0" Text="mm" Margin="0,0,0,5"/>
-                <TextBox x:Name="changeTimemmTxt" FontFamily="Arial" FontSize="16" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="40" Padding="0,5,0,5" MaxLength="2" Text="30" IsReadOnly="false" Background="#F4F4F4" Foreground="#6D6D6D"/>
+                <TextBox x:Name="changeTimemmTxt" FontFamily="Arial" FontSize="16" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Width="40" Padding="0,5,0,5" MaxLength="2" Text="30" IsReadOnly="true" Background="#F4F4F4" Foreground="#6D6D6D"/>
             </StackPanel>
             <StackPanel>
                 <TextBlock x:Name="changeTimeAMPMTb" FontFamily="Arial" FontSize="16" HorizontalAlignment="Center" Padding="8,0,8,0" Text="AM/PM" Margin="15,0,0,5"/>
-                <ComboBox x:Name="changeTimeAMPMCmb" SelectedValuePath="Content" FontFamily="Arial" FontSize="16" HorizontalAlignment="Center" Margin="15,0,0,0" Width="60" Padding="5,6,5,6" IsReadOnly="True" SelectedIndex="1" Background="#F4F4F4" Foreground="#6D6D6D" IsEnabled="True">
+                <ComboBox x:Name="changeTimeAMPMCmb" SelectedValuePath="Content" FontFamily="Arial" FontSize="16" HorizontalAlignment="Center" Margin="15,0,0,0" Width="60" Padding="5,6,5,6" IsReadOnly="True" SelectedIndex="1" Background="#F4F4F4" Foreground="#6D6D6D" IsEnabled="false">
                     <ComboBoxItem>AM</ComboBoxItem>
                     <ComboBoxItem>PM</ComboBoxItem>
                 </ComboBox>

@@ -25,6 +25,15 @@ namespace CATS
         {
             InitializeComponent();
             currentBua = bua;
+            populateFields();
+        }
+
+        /// <summary>
+        /// Upon page load, populate the fields with the values stored in the bua object
+        /// </summary>
+        private void populateFields()
+        {
+
         }
     }
 }
