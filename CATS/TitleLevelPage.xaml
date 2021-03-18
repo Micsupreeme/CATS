@@ -21,9 +21,9 @@
             </Grid.RowDefinitions>
             
             <TextBlock x:Name="unitTitleTb" FontFamily="Arial" FontSize="14" Text="Unit Title:" Grid.Column="0" Grid.Row="0"/>
-            <TextBox x:Name="unitTitleTxt" FontFamily="Arial" FontSize="14" Padding="2" SpellCheck.IsEnabled="True" VerticalAlignment="Center" Margin="0,0,0,30" Grid.Column="1" Grid.Row="0" TextChanged="unitTitleTxt_TextChanged"/>
+            <TextBox x:Name="unitTitleTxt" FontFamily="Arial" FontSize="14" Padding="3" SpellCheck.IsEnabled="True" VerticalAlignment="Center" Margin="0,0,0,30" Grid.Column="1" Grid.Row="0" TextChanged="unitTitleTxt_TextChanged"/>
             <TextBlock x:Name="asmtTitleTb" FontFamily="Arial" FontSize="14" Text="Assessment Title:" Grid.Column="0" Grid.Row="1"/>
-            <TextBox x:Name="asmtTitleTxt" FontFamily="Arial" FontSize="14" Padding="2" SpellCheck.IsEnabled="True" Grid.Column="1" Grid.Row="1" TextChanged="asmtTitleTxt_TextChanged"/>
+            <TextBox x:Name="asmtTitleTxt" FontFamily="Arial" FontSize="14" Padding="3" SpellCheck.IsEnabled="True" Grid.Column="1" Grid.Row="1" TextChanged="asmtTitleTxt_TextChanged"/>
         </Grid>
         <Separator Margin="0,30,0,30"/>
         <Grid>
@@ -40,26 +40,26 @@
             </Grid.RowDefinitions>
 
             <TextBlock x:Name="levelTb" FontFamily="Arial" FontSize="14" Text="Level:" Margin="0,0,15,0" Grid.Column="0" Grid.Row="0"/>
-            <ComboBox x:Name="levelCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="0" Margin="0,0,0,30" Grid.Column="1" Grid.Row="0" SelectionChanged="levelCmb_SelectionChanged">
+            <ComboBox x:Name="levelCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="0" Margin="0,0,0,30" Padding="5,7,5,7" Grid.Column="1" Grid.Row="0" SelectionChanged="levelCmb_SelectionChanged">
                 <ComboBoxItem>4</ComboBoxItem>
                 <ComboBoxItem>5</ComboBoxItem>
                 <ComboBoxItem>6</ComboBoxItem>
                 <ComboBoxItem>7</ComboBoxItem>
             </ComboBox>
-            <TextBlock x:Name="subResubTb" FontFamily="Arial" FontSize="14" Text="Submission/Resubmission:" Margin="0,0,15,0" Grid.Column="0" Grid.Row="1"/>
-            <ComboBox x:Name="subResubCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="0" Margin="0,0,0,30" Grid.Column="1" Grid.Row="1" SelectionChanged="subResubCmb_SelectionChanged">
+            <TextBlock x:Name="subResubTb" FontFamily="Arial" FontSize="14"  Text="Submission/Resubmission:" Margin="0,0,15,0" Grid.Column="0" Grid.Row="1"/>
+            <ComboBox x:Name="subResubCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="0" Margin="0,0,0,30" Padding="5,7,5,7" Grid.Column="1" Grid.Row="1" SelectionChanged="subResubCmb_SelectionChanged">
                 <ComboBoxItem>Submission</ComboBoxItem>
                 <ComboBoxItem>Resubmission</ComboBoxItem>
             </ComboBox>
             <TextBlock x:Name="asmtNo1Tb" FontFamily="Arial" FontSize="14" Text="This is assessment number:" Margin="0,0,15,0" Grid.Column="0" Grid.Row="2"/>
             <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
-                <ComboBox x:Name="asmtNoXCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="0" Width="63" SelectionChanged="asmtNoXCmb_SelectionChanged">
+                <ComboBox x:Name="asmtNoXCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="0" Width="63" Padding="5,7,5,7" SelectionChanged="asmtNoXCmb_SelectionChanged">
                     <ComboBoxItem>1</ComboBoxItem>
                     <ComboBoxItem>2</ComboBoxItem>
                     <ComboBoxItem>3</ComboBoxItem>
                 </ComboBox>
-                <TextBlock x:Name="asmtNo2Tb" FontFamily="Arial" FontSize="14" HorizontalAlignment="Center" Text="of" Margin="15,0,15,0"/>
-                <ComboBox x:Name="asmtNoYCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="1" Width="63" SelectionChanged="asmtNoYCmb_SelectionChanged">
+                <TextBlock x:Name="asmtNo2Tb" FontFamily="Arial" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Text="of" Margin="15,0,15,0"/>
+                <ComboBox x:Name="asmtNoYCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="1" Width="63" Padding="5,7,5,7" SelectionChanged="asmtNoYCmb_SelectionChanged">
                     <ComboBoxItem>1</ComboBoxItem>
                     <ComboBoxItem>2</ComboBoxItem>
                     <ComboBoxItem>3</ComboBoxItem>

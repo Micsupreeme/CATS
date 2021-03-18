@@ -34,6 +34,22 @@ namespace CATS
             this.creditValue = 20;
             this.submissionDueDate = new DateTime(1999, 1, 19, 19, 19, 19); //Arbitrary initialisation date to ignore
             this.impPath = String.Empty;
+
+            //StaffSubPage
+            this.unitLeader = String.Empty;
+            this.markersList = new List<string>();
+            this.qualityAssessorsList = new List<string>();
+            this.submissionMethod = String.Empty;
+            this.feedbackMethod = String.Empty;
+
+            //TextEditorPage (Reusable)
+            this.assessmentTaskHtml = String.Empty;
+            this.submissionFormatHtml = String.Empty;
+            this.markingCriteriaHtml = String.Empty;
+            this.questionsAboutBriefHtml = String.Empty;
+
+            //ILOsPage
+            this.ILOsList = new List<string>();
         }
 
         /// <summary>
@@ -124,5 +140,21 @@ namespace CATS
         public int creditValue { get; set; }
         public DateTime submissionDueDate { get; set; }
         public string impPath { get; set; }
+
+        //StaffSubPage
+        public string unitLeader { get; set; }
+        public List<string> markersList { get; set; }
+        public List<string> qualityAssessorsList { get; set; }
+        public string submissionMethod { get; set; }
+        public string feedbackMethod { get; set; }
+
+        //TextEditorPage (Reusable)
+        public string assessmentTaskHtml { get; set; }
+        public string submissionFormatHtml { get; set; }
+        public string markingCriteriaHtml { get; set; }
+        public string questionsAboutBriefHtml { get; set; }
+
+        //ILOsPage
+        public List<string> ILOsList { get; set; }
     }
 }

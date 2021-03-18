@@ -21,22 +21,25 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock x:Name="asmtTypeTb" FontFamily="Arial" FontSize="14" Text="Assignment type:" Margin="0,0,0,0" Grid.Column="0" Grid.Row="0"/>
-            <ComboBox x:Name="asmtTypeCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="0" Margin="0,0,0,30" Padding="5,7,5,7" Grid.Column="1" Grid.Row="0" SelectionChanged="asmtTypeCmb_SelectionChanged">
+            <TextBlock x:Name="asmtTypeTb" FontFamily="Arial" FontSize="14" VerticalAlignment="Center" Text="Assignment type:" Margin="0,0,0,0" Grid.Column="0" Grid.Row="0"/>
+            <ComboBox x:Name="asmtTypeCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="0" Padding="5,7,5,7" Grid.Column="1" Grid.Row="0" SelectionChanged="asmtTypeCmb_SelectionChanged">
                 <ComboBoxItem>Individual</ComboBoxItem>
                 <ComboBoxItem>Group</ComboBoxItem>
             </ComboBox>
-            <TextBlock x:Name="weightingTb" FontFamily="Arial" FontSize="14" Text="Weighting:" Margin="0,0,0,0" Grid.Column="0" Grid.Row="1"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Padding="0,5,0,5"/>
+            
+            <TextBlock x:Name="weightingTb" FontFamily="Arial" FontSize="14" VerticalAlignment="Center" Text="Weighting:" Margin="0,0,0,0" Grid.Column="0" Grid.Row="2"/>
 
-            <TextBlock x:Name="creditValueTb" FontFamily="Arial" FontSize="14" Text="Credit value:" Margin="15,0,0,0" Grid.Column="2" Grid.Row="1"/>
-            <ComboBox x:Name="creditValueCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" IsReadOnly="True" SelectedIndex="0" Padding="5,7,5,7" Grid.Column="3" Grid.Row="1" SelectionChanged="creditValueCmb_SelectionChanged">
+            <TextBlock x:Name="creditValueTb" FontFamily="Arial" FontSize="14" VerticalAlignment="Center" Text="Credit value:" Margin="15,0,0,0" Grid.Column="2" Grid.Row="2"/>
+            <ComboBox x:Name="creditValueCmb" FontFamily="Arial" FontSize="14" SelectedValuePath="Content" VerticalContentAlignment="Center" IsReadOnly="True" SelectedIndex="0" Padding="5,7,5,7" Grid.Column="3" Grid.Row="2" SelectionChanged="creditValueCmb_SelectionChanged">
                 <ComboBoxItem>20</ComboBoxItem>
                 <ComboBoxItem>40</ComboBoxItem>
                 <ComboBoxItem>60</ComboBoxItem>
             </ComboBox>
-            <Grid Grid.Column="1" Grid.Row="1">
+            <Grid Grid.Column="1" Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="1*"/>
@@ -45,7 +48,7 @@
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
-                <TextBox x:Name="weightingTxt" FontFamily="Arial" FontSize="14" HorizontalContentAlignment="Right" Padding="2" SpellCheck.IsEnabled="False" Grid.Column="0" Grid.Row="0" MaxLength="3" TextChanged="weightingTxt_TextChanged"/>
+                <TextBox x:Name="weightingTxt" FontFamily="Arial" FontSize="14" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="3" SpellCheck.IsEnabled="False" Grid.Column="0" Grid.Row="0" MaxLength="3" TextChanged="weightingTxt_TextChanged"/>
                 <TextBlock x:Name="weightingPercentTb" FontFamily="Arial" FontSize="14" Text="%" Margin="10,0,0,15" Grid.Column="1" Grid.Row="0"/>
             </Grid>
         </Grid>

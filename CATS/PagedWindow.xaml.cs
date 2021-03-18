@@ -44,18 +44,27 @@ namespace CATS
                     mainFrame.Content = new TitleLevelPage(currentBua);
                     prevBtn.Visibility = Visibility.Hidden; //Cannot go back from the first page
                     nextBtn.Visibility = Visibility.Visible;
+
+                    this.Width = 770;
+                    this.Height = 500;
                     currentPageNumber = 0;
                     break;
                 case 1:
                     mainFrame.Content = new WeightDatePage(currentBua);
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Visible;
+
+                    this.Width = 770;
+                    this.Height = 500;
                     currentPageNumber = 1;
                     break;
                 case 2:
                     mainFrame.Content = new StaffSubPage(currentBua);
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Hidden; //Cannot go forward from the last page
+
+                    this.Width = 770;
+                    this.Height = 575;
                     currentPageNumber = 2;
                     break;
                 default:
