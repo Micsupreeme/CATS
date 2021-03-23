@@ -61,11 +61,38 @@ namespace CATS
                 case 2:
                     mainFrame.Content = new StaffSubPage(currentBua);
                     prevBtn.Visibility = Visibility.Visible;
-                    nextBtn.Visibility = Visibility.Hidden; //Cannot go forward from the last page
+                    nextBtn.Visibility = Visibility.Visible;
 
                     this.Width = 770;
-                    this.Height = 575;
+                    this.Height = 500;
                     currentPageNumber = 2;
+                    break;
+                case 3:
+                    mainFrame.Content = new HtmlPage(this, currentBua, "Assessment Task");
+                    prevBtn.Visibility = Visibility.Visible;
+                    nextBtn.Visibility = Visibility.Visible;
+
+                    this.Width = 1150;
+                    this.Height = 580;
+                    currentPageNumber = 3;
+                    break;
+                case 4:
+                    mainFrame.Content = new HtmlPage(this, currentBua, "Submission Format");
+                    prevBtn.Visibility = Visibility.Visible;
+                    nextBtn.Visibility = Visibility.Visible;
+
+                    this.Width = 1150;
+                    this.Height = 580;
+                    currentPageNumber = 4;
+                    break;
+                case 5:
+                    mainFrame.Content = new HtmlPage(this, currentBua, "Marking Criteria");
+                    prevBtn.Visibility = Visibility.Visible;
+                    nextBtn.Visibility = Visibility.Hidden; //Cannot go forward from the last page
+
+                    this.Width = 1150;
+                    this.Height = 580;
+                    currentPageNumber = 5;
                     break;
                 default:
                     Console.Error.WriteLine("ERROR: Invalid page specified");

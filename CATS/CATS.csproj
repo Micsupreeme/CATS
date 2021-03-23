@@ -84,8 +84,14 @@
     <Compile Include="ChangeDateDialog.xaml.cs">
       <DependentUpon>ChangeDateDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HtmlPage.xaml.cs">
+      <DependentUpon>HtmlPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewBriefDialog.xaml.cs">
       <DependentUpon>NewBriefDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewTableDialog.xaml.cs">
+      <DependentUpon>NewTableDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="PagedWindow.xaml.cs">
       <DependentUpon>PagedWindow.xaml</DependentUpon>
@@ -106,6 +112,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="HtmlPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -119,6 +129,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NewBriefDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewTableDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -167,6 +181,17 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="MSHTML">
+      <Guid>{3050F1C5-98B5-11CF-BB82-00AA00BDCE0B}</Guid>
+      <VersionMajor>4</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

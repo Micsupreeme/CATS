@@ -14,31 +14,23 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="2.5*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock x:Name="unitLeaderTb" FontFamily="Arial" FontSize="14" Text="Unit Leader:" Grid.Column="0" Grid.Row="0"/>
-            <TextBox x:Name="unitLeaderTxt" FontFamily="Arial" FontSize="14" Padding="3" SpellCheck.IsEnabled="True" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0"/>
-        </Grid>
-        <Separator Margin="0,30,0,30"/>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="2.5*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock x:Name="markersTb" FontFamily="Arial" FontSize="14" Text="Marker(s):" Grid.Column="0" Grid.Row="0" Margin="0,0,15,15"/>
-            <TextBox x:Name="markersTxt" FontFamily="Arial" FontSize="14" Height="120" Padding="3" SpellCheck.IsEnabled="True" VerticalAlignment="Center" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" AcceptsTab="True" Grid.Column="0" Grid.Row="1" Margin="0,0,15,0"/>
-            <TextBlock x:Name="qasTb" FontFamily="Arial" FontSize="14" Text="Quality Assessors(s):" Grid.Column="1" Grid.Row="0" Margin="15,0,0,15"/>
-            <TextBox x:Name="qasTxt" FontFamily="Arial" FontSize="14" Height="120" Padding="3" SpellCheck.IsEnabled="True" VerticalAlignment="Center" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" AcceptsTab="True" Grid.Column="1" Grid.Row="1" Margin="15,0,0,0"/>
+            <StackPanel Grid.Column="0" Grid.Row="0">
+                <TextBlock x:Name="unitLeaderTb" FontFamily="Arial" FontSize="14" Text="Unit Leader:" Margin="0,0,15,15"/>
+                <TextBox x:Name="unitLeaderTxt" FontFamily="Arial" FontSize="14" Padding="3" SpellCheck.IsEnabled="True" VerticalAlignment="Center" Margin="0,0,15,30" TextChanged="unitLeaderTxt_TextChanged"/>
+                <TextBlock x:Name="qualityAssessorTb" FontFamily="Arial" FontSize="14" Text="Quality Assessor:" Margin="0,0,15,15"/>
+                <TextBox x:Name="qualityAssessorTxt" FontFamily="Arial" FontSize="14" Padding="3" SpellCheck.IsEnabled="True" VerticalAlignment="Center" Margin="0,0,15,0" TextChanged="qualityAssessorTxt_TextChanged"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Grid.Row="0">
+                <TextBlock x:Name="markersTb" FontFamily="Arial" FontSize="14" Text="Marker(s):" Margin="15,0,0,15"/>
+                <TextBox x:Name="markersTxt" FontFamily="Arial" FontSize="14" Padding="3" Height="140" SpellCheck.IsEnabled="True" VerticalAlignment="Center" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" AcceptsTab="True" Margin="15,0,0,0" TextChanged="markersTxt_TextChanged" MaxLines="10"/>
+                <TextBlock x:Name="namesSeparationTb" FontFamily="Arial" FontSize="14" Text="One Marker per Line"  Margin="15,15,0,0" TextAlignment="Center"/>
+            </StackPanel>
         </Grid>
         <Separator Margin="0,30,0,30"/>
         <Grid>
@@ -53,7 +45,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock x:Name="subLocationTb" FontFamily="Arial" FontSize="14" VerticalAlignment="Center" Text="Submission location:" Grid.Column="0" Grid.Row="0"/>
-            <ComboBox x:Name="subLocationCmb" FontFamily="Arial" FontSize="14" IsReadOnly="True" SelectedValuePath="Content" SelectedIndex="0" Padding="5,7,5,7" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0">
+            <ComboBox x:Name="subLocationCmb" FontFamily="Arial" FontSize="14" IsReadOnly="True" SelectedValuePath="Content" SelectedIndex="0" Padding="5,7,5,7" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" SelectionChanged="subLocationCmb_SelectionChanged">
                 <ComboBoxItem>Turnitin</ComboBoxItem>
                 <ComboBoxItem>Turnitin (and large file submission)</ComboBoxItem>
                 <ComboBoxItem>Test (in class)</ComboBoxItem>
@@ -74,7 +66,7 @@
             </ComboBox>
             <TextBlock x:Name="fedMethodTb" FontFamily="Arial" FontSize="14" VerticalAlignment="Center" Text="Feedback method:" Grid.Column="0" Grid.Row="2"/>
             <TextBlock Grid.Column="0" Grid.Row="1" Padding="0,5,0,5"/>
-            <ComboBox x:Name="fedMethodCmb" FontFamily="Arial" FontSize="14" IsReadOnly="True" SelectedValuePath="Content" SelectedIndex="0" Padding="5,7,5,7" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2">
+            <ComboBox x:Name="fedMethodCmb" FontFamily="Arial" FontSize="14" IsReadOnly="True" SelectedValuePath="Content" SelectedIndex="0" Padding="5,7,5,7" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" SelectionChanged="fedMethodCmb_SelectionChanged">
                 <ComboBoxItem>Turnitin</ComboBoxItem>
                 <ComboBoxItem>Brightspace</ComboBoxItem>
                 <ComboBoxItem>Hard copy</ComboBoxItem>

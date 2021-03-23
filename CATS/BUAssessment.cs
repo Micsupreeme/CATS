@@ -37,10 +37,10 @@ namespace CATS
 
             //StaffSubPage
             this.unitLeader = String.Empty;
+            this.qualityAssessor = String.Empty;
             this.markersList = new List<string>();
-            this.qualityAssessorsList = new List<string>();
-            this.submissionMethod = String.Empty;
-            this.feedbackMethod = String.Empty;
+            this.submissionLocation = "Turnitin";
+            this.feedbackMethod = "Turnitin";
 
             //TextEditorPage (Reusable)
             this.assessmentTaskHtml = String.Empty;
@@ -123,6 +123,66 @@ namespace CATS
             }
         }
 
+        //TODO: expand on these export-related methods and replace image sources with Base64 data URIs so that the final HTML (and PDF) is essentially packaged WITH its included images
+        private string getBase64ImageString(string fullImagePath)
+        {
+            byte[] imageBytes = File.ReadAllBytes(fullImagePath);
+            return Convert.ToBase64String(imageBytes);
+        }
+        private void exportToHtml()
+        {
+            string EXPORT_HEAD_BLOCK =
+               "<html lang = \"en\">< head ><title>" + this.asmtTitle + "</title>";
+             string EXPORT_STYLE_BLOCK =
+            "<style type=\"text/css\">" +
+                "h1 {font-size: 12pt;}" +
+                "h1, h2 {font-weight: bold;}" +
+                "ol, ul {margin-top: 3px; margin-bottom: 3px;}" +
+                "td, th {padding: 2px; border: 1px solid black;}" +
+                "table {width: 95%; border-collapse: collapse;}" +
+                "img {page-break-inside: avoid;}" +
+                "img, table {margin-left: auto; margin-right: auto;}" +
+                "@page {margin: 2.54cm;}" + //Only affects default Web Browser print methods - SelectPDF HTML-to-PDF has its own settings to specify margins
+                "* {font-family: Arial; font-size: 10pt;}" +
+            "</style>";
+            string EXPORT_DETAILS_BLOCK =
+                "</head><body><section id=\"content\">" +
+                "<p style=\"font-family: Arial; font-size: 7pt; text-align: right;\"> June 2019 v1 </p>" +
+                "<h1 style=\"font-family: Arial; font-size: 12pt; font-weight:bold; background-color: #E5E5E5; text-align: center; padding-top: 5px; padding-bottom: 10px; margin: 0px; line-height: 1.5;\">Faculty of Science and Technology - Department of Computing and Informatics</h1>" +
+                "<table style=\"table-layout: fixed; width: 95%; border-collapse: collapse; margin-left: auto; margin-right: auto;  box-shadow: 20px 0px #E5E5E5, -21px 0px #E5E5E5; background-color: #E5E5E5;\">" +         
+                "<tbody>" +
+                "<tr style=\"padding:5px;\">" +
+                "<th colspan=\"5\" style=\"padding-left: 0px; border: 1px solid black; font-weight: bold; padding-right: 5px;\">Unit Title: " + this.unitTitle + "</th>" +
+                "</tr>" +
+                "<tr>" +
+                "<th colspan=\"5\" style=\"text-align:left; border: 1px solid black; font-weight: bold; padding-left: 5px; padding-right: 5px;\">Assessment Title: " + this.asmtTitle +
+                "</th></tr>" +
+                "<tr>" +
+                "<td colspan=\"2\" style=\"border: 1px solid black; padding-left: 5px; padding-right: 5px;\"><b>Unit Level: </b>" + this.level + "</td>" +
+                "<td colspan=\"3\" style=\"border: 1px solid black; padding-left: 5px; padding-right: 5px;\"><b>Assessment Number:</b>&nbsp;&nbsp;&nbsp;&nbsp;" + this.asmtNoX + "&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;&nbsp;&nbsp;&nbsp;" + this.asmtNoY + "</td>" +
+                "</tr>" +
+                "<tr><td colspan=\"2\"><b>Credit Value of Unit: </b>" + this.creditValue + "</td>" +
+                "<td colspan=\"3\"><b>Date Issued: </b>" + this.createdDate.ToShortDateString() + "</td>" +
+                "</tr></tbody>" +
+                "<tbody><tr>" +
+                "<td colspan=\"2\" style=\"border: 1px solid black; padding-left: 5px; padding-right: 5px; word-wrap: break-word;\"><b>Marker(s): </b>" + this.markersList[0] + "</td>" + //TODO include all markers
+                "<td colspan=\"3\" style=\"border: 1px solid black; padding-left: 5px; padding-right: 5px; word-wrap: break-word;\"><b>Submission Due Date: </b>" + this.submissionDueDate.ToShortDateString() + "<b>Time: </b>" + this.submissionDueDate.ToShortTimeString() + "</td>" +
+                "</tr>" +
+                "<tr>" +
+                "<td colspan=\"2\" style=\"border: 1px solid black; padding-left: 5px; padding-right: 5px; word-wrap: break-word;\"><b>Quality Assessor: </b>" + this.qualityAssessor + "</td>" +
+                "<td colspan=\"3\" style=\"border: 1px solid black; padding-left: 5px; padding-right: 5px; word-wrap: break-word;\"><b>Submission Location: </b>" + this.submissionLocation + "</td>" +
+                "</tr>" +
+                "<tr>" +
+                "<td colspan=\"2\" style=\"border-left: 0px solid black; border-bottom: 0px solid black; border-top: 1px solid black; border-right: 1px solid black; padding-left: 5px; padding-right: 5px;\">&nbsp</td>" +
+                "<td colspan=\"3\" style=\"border: 1px solid black; padding-left: 5px; padding-right: 5px; word-wrap: break-word;\"><b>Feedback Method: </b>" + this.feedbackMethod + "</td>" +
+                "</tr>" +
+                "<tr>" +
+                "<td colspan=\"5\" style=\"border: 0px solid black; line-height: 0.3; padding-left: 5px; padding-right: 5px;\">&nbsp</td>" +
+                "</tr>" +
+                "</tbody></table>" +
+                "<h1 style=\"font-family: Arial; font-size: 10pt; font-weight:bold; background-color: #E5E5E5; text-align: center; padding-top: 5px; padding-bottom: 10px; margin: 0px; line-height: 1.5;\">This is an individual assignment " + !this.isGroup + " which carries " + this.weighting + "% of the final unit mark</h1>"; //TODO: format string properly     
+        }
+
         public DateTime createdDate { get; set; }
         public float templateVer { get; set; }
 
@@ -143,9 +203,9 @@ namespace CATS
 
         //StaffSubPage
         public string unitLeader { get; set; }
+        public string qualityAssessor { get; set; }
         public List<string> markersList { get; set; }
-        public List<string> qualityAssessorsList { get; set; }
-        public string submissionMethod { get; set; }
+        public string submissionLocation { get; set; }
         public string feedbackMethod { get; set; }
 
         //TextEditorPage (Reusable)

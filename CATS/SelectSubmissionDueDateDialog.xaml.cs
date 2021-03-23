@@ -231,11 +231,11 @@ namespace CATS
 
             this.Visibility = Visibility.Collapsed;
         }
+
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Visibility = Visibility.Collapsed;
         }
-
 
         List<string[]> getCsvDataArray(string csvPath, string searchTerm)
         {
