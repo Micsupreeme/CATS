@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.11.32.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.32\lib\Net40\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="LumenWorks.Framework.IO, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5ad3ea2f85776344, processorArchitecture=MSIL">
       <HintPath>..\packages\LumenWorksCsvReader.4.0.0\lib\net35\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
@@ -54,14 +57,17 @@
     <Reference Include="MigraDoc.RtfRendering, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp-MigraDoc.1.50.5147\lib\net20\MigraDoc.RtfRendering.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp-MigraDoc.1.50.5147\lib\net20\PdfSharp.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp.Charting, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp-MigraDoc.1.50.5147\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
+    <Reference Include="Select.HtmlToPdf, Version=20.2.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
+      <HintPath>..\packages\Select.HtmlToPdf.20.2.0\lib\net40\Select.HtmlToPdf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

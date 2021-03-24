@@ -30,7 +30,7 @@ namespace CATS
                 "ol, ul {margin-top: 3px; margin-bottom: 3px;}" +
                 "td, th {padding: 2px; border: 1px solid black;}" +
                 "table {width: 95%; border-collapse: collapse;}" +
-                "img, table {margin-left: auto; margin-right: auto;}" +
+                "img, table {display: block; margin-left: auto; margin-right: auto;}" +
                 "@page {margin: 2.54cm;}" +
                 "* {font-family: Arial; font-size: 10pt;}" +
             "</style>";
@@ -102,6 +102,12 @@ namespace CATS
         private void toggleUnderlineBtn_Click(object sender, RoutedEventArgs e)
         {
             htmlTxt.SelectedText = "<u>" + htmlTxt.SelectedText + "</u>";
+        }
+
+        private void insertHyperlinkBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //htmlTxt.SelectedText = "<a href=\"www.example.com\">" + htmlTxt.SelectedText + "</a>";
+            currentBua.convertHtmlToPdf(currentBua.getHtmlDocument());
         }
 
         private void toggleBulletListBtn_Click(object sender, RoutedEventArgs e)
@@ -197,7 +203,7 @@ namespace CATS
         /// <summary>
         /// Uses an OpenFileDialog to enable the user to select an image, then inserts the selected image into the HTML editor
         /// </summary>
-        private void insertHtmlImage()
+        private void insertHtmlImage(string imageCaption = "Figure 1: A thing of much thing-ness!")
         {
             string IMG_FILE_FILTER =
             "Image Files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg";
@@ -209,7 +215,12 @@ namespace CATS
             };
             if (ofd.ShowDialog() == true)
             {
-                htmlTxt.SelectedText += "<img src=\"" + ofd.FileName + "\" style=\"width: auto; height: 300px;\"/>";
+                if(imageCaption.Length > 0)
+                {
+                    htmlTxt.SelectedText += "<img src=\"" + ofd.FileName + "\" style=\"width: auto; height: 300px;\"/>" + Environment.NewLine + "<i class=\"caption\">" + imageCaption + "</i>";
+                } else {
+                    htmlTxt.SelectedText += "<img src=\"" + ofd.FileName + "\" style=\"width: auto; height: 300px;\"/>";
+                }
             }
         }
 

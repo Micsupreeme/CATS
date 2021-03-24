@@ -43,6 +43,7 @@
                         <Button x:Name="toggleUnderlineBtn" FontFamily="Arial" FontSize="14" Content="U" Width="20" Padding="3,5,3,5" Click="toggleUnderlineBtn_Click"/>
                         <Button x:Name="toggleBulletListBtn" FontFamily="Arial" FontSize="13" Content="Bullet List" Padding="3,5,3,5" Click="toggleBulletListBtn_Click"/>
                         <Button x:Name="toggleOrderedListBtn" FontFamily="Arial" FontSize="13" Content="Ordered List" Padding="3,5,3,5" Click="toggleOrderedListBtn_Click"/>
+                        <Button x:Name="insertHyperlinkBtn" FontFamily="Arial" FontSize="13" Content="Insert Link" Padding="3,5,3,5" Click="insertHyperlinkBtn_Click"/>
                         <Button x:Name="insertImageBtn" FontFamily="Arial" FontSize="13" Content="Insert Image" Padding="3,5,3,5" Click="insertImageBtn_Click"/>
                         <Button x:Name="insertTableBtn" FontFamily="Arial" FontSize="13" Content="Insert Table" Padding="3,5,3,5" Click="insertTableBtn_Click"/>
                     </StackPanel>
