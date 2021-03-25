@@ -38,25 +38,67 @@
                 </Grid.RowDefinitions>
                 <DockPanel Grid.Column="0" Grid.Row="0" LastChildFill="True">
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                        <Button x:Name="toggleBoldBtn" FontFamily="Arial" FontSize="14" Content="B" FontWeight="Bold" Width="20" Padding="3,5,3,5" Click="toggleBoldBtn_Click"/>
-                        <Button x:Name="toggleItalicBtn" FontFamily="Arial" FontSize="14" Content="i" FontStyle="Italic" Width="20" Padding="3,5,3,5" Click="toggleItalicBtn_Click"/>
-                        <Button x:Name="toggleUnderlineBtn" FontFamily="Arial" FontSize="14" Content="U" Width="20" Padding="3,5,3,5" Click="toggleUnderlineBtn_Click"/>
-                        <Button x:Name="toggleBulletListBtn" FontFamily="Arial" FontSize="13" Content="Bullet List" Padding="3,5,3,5" Click="toggleBulletListBtn_Click"/>
-                        <Button x:Name="toggleOrderedListBtn" FontFamily="Arial" FontSize="13" Content="Ordered List" Padding="3,5,3,5" Click="toggleOrderedListBtn_Click"/>
-                        <Button x:Name="insertHyperlinkBtn" FontFamily="Arial" FontSize="13" Content="Insert Link" Padding="3,5,3,5" Click="insertHyperlinkBtn_Click"/>
-                        <Button x:Name="insertImageBtn" FontFamily="Arial" FontSize="13" Content="Insert Image" Padding="3,5,3,5" Click="insertImageBtn_Click"/>
-                        <Button x:Name="insertTableBtn" FontFamily="Arial" FontSize="13" Content="Insert Table" Padding="3,5,3,5" Click="insertTableBtn_Click"/>
+                        <Button x:Name="toggleBoldBtn" Padding="3,5,3,5" Click="toggleBoldBtn_Click" ToolTip="Toggle bold">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/img/icons/outline_format_bold_black_18dp.png" Height="20"  VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="toggleItalicBtn" Padding="3,5,3,5" Click="toggleItalicBtn_Click" ToolTip="Toggle italic">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/img/icons/outline_format_italic_black_18dp.png" Height="20"  VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="toggleUnderlineBtn" Padding="3,5,3,5" Click="toggleUnderlineBtn_Click" ToolTip="Toggle underline">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/img/icons/outline_format_underlined_black_18dp.png" Height="20"  VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="toggleBulletListBtn" Padding="3,5,3,5" Click="toggleBulletListBtn_Click" ToolTip="Toggle bullet list">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/img/icons/outline_format_list_bulleted_black_18dp.png" Height="20"  VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="toggleOrderedListBtn" Padding="3,5,3,5" Click="toggleOrderedListBtn_Click" ToolTip="Toggle numbered list">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/img/icons/outline_format_list_numbered_black_18dp.png" Height="20"  VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="insertHyperlinkBtn" Padding="3,3,3,3" Click="insertHyperlinkBtn_Click" ToolTip="Insert link">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/img/icons/outline_insert_link_black_18dp.png" Height="20"  VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="insertImageBtn" Padding="3,5,3,5" Click="insertImageBtn_Click" ToolTip="Insert image">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Image" FontFamily="Arial" FontSize="13" VerticalAlignment="Center" Margin="2,0,4,0"/>
+                                <Image Source="pack://application:,,,/img/icons/outline_insert_photo_black_18dp.png" Height="20"  VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="insertTableBtn" Padding="3,5,3,5" Click="insertTableBtn_Click" ToolTip="Insert table">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Table" FontFamily="Arial" FontSize="13" VerticalAlignment="Center" Margin="2,0,4,0"/>
+                                <Image Source="pack://application:,,,/img/icons/outline_table_chart_black_18dp.png" Height="20"  VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Image x:Name="zoomOutImg" Source="pack://application:,,,/img/icons/outline_zoom_out_white_18dp.png" Height="19"  VerticalAlignment="Center" Margin="4,0,2,0" MouseUp="zoomOutImg_MouseUp" ToolTip="Zoom out"/>
+                        <Slider x:Name="zoomSlide" VerticalAlignment="Center" TickPlacement="BottomRight" TickFrequency="5" Minimum="2" Maximum="52" Value="12" Width="100" ValueChanged="zoomSlide_ValueChanged" ToolTip="Zoom in or out"/>
+                        <Image x:Name="zoomInImg" Source="pack://application:,,,/img/icons/outline_zoom_in_white_18dp.png" Height="24"  VerticalAlignment="Center" Margin="2,0,4,0" MouseUp="zoomInImg_MouseUp" ToolTip="Zoom in"/>
                     </StackPanel>
                     <TextBox x:Name="htmlTxt" FontFamily="Arial" FontSize="12" AcceptsReturn="True" AcceptsTab="True" TextWrapping="WrapWithOverflow" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Column="0" Grid.Row="0" TextChanged="htmlTxt_TextChanged" Padding="5"/>
                 </DockPanel>
                 <GridSplitter Grid.Column="1" Grid.Row="0" Width="6" HorizontalAlignment="Stretch" />
                 <DockPanel Grid.Column="2" Grid.Row="0" LastChildFill="True">
                     <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" DockPanel.Dock="Top" Margin="0,1,0,0">
-                        <Button x:Name="webRefreshBtn" FontFamily="Arial" FontSize="13" Content="Refresh" Padding="3,5,3,5" Click="webRefreshBtn_Click"/>
-                        <ToggleButton x:Name="autoRefreshTog" FontFamily="Arial" FontSize="13" Content="Auto Refresh" Padding="3,5,3,5" IsChecked="True"/>
-                        <ToggleButton x:Name="autoScrollTog" FontFamily="Arial" FontSize="13" Content="Auto Scroll To Bottom" Padding="3,5,3,5" IsChecked="True"/>
+                        <Button x:Name="webRefreshBtn" Padding="3,5,3,5" Click="webRefreshBtn_Click" ToolTip="Refresh the preview">
+                            <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight">
+                                <TextBlock Text="Refresh" FontFamily="Arial" FontSize="13" VerticalAlignment="Center" Margin="2,0,4,0"/>
+                                <Image Source="pack://application:,,,/img/icons/outline_refresh_black_18dp.png" Height="20"  VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <ToggleButton x:Name="autoRefreshTog" FontFamily="Arial" FontSize="13" Content="Auto Refresh" Padding="5" IsChecked="True" ToolTip="Toggle on/off automatic refresh when changes are made"/>
+                        <ToggleButton x:Name="autoScrollTog" FontFamily="Arial" FontSize="13" Content="Auto Scroll To Bottom" Padding="5" IsChecked="True" ToolTip="Toggle on/off automatic scrolling down when preview refreshes"/>
                     </StackPanel>
-                    <WebBrowser x:Name="htmlWb" LoadCompleted="htmlWb_LoadCompleted"/>
+                    <WebBrowser x:Name="htmlWb" LoadCompleted="htmlWb_LoadCompleted" Navigating="htmlWb_Navigating"/>
                 </DockPanel>
             </Grid>
         </DockPanel>

@@ -11,7 +11,7 @@
         Foreground="#FFFFFF"
         Title="Select Submission Due Date - CATS" Height="400" Width="705" MinHeight="250" MinWidth="705" MaxWidth="705">
     <DockPanel LastChildFill="True">
-        <Grid DockPanel.Dock="Top" Margin="20">
+        <Grid DockPanel.Dock="Top" Margin="20,20,20,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.75*"/>
                 <ColumnDefinition Width="2.5*"/>
@@ -20,12 +20,21 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
             <TextBlock x:Name="unitTitleSearchTb" FontFamily="Arial" FontSize="14" Text="Search by Unit Title: " Grid.Column="0" Grid.Row="0"/>
             <TextBox x:Name="unitTitleSearchTxt" FontFamily="Arial" FontSize="14" Grid.Column="1" Grid.Row="0" CharacterCasing="Upper" Padding="2" Margin="0,0,0,10"/>
             <Button x:Name="unitTitleSearchBtn" FontFamily="Arial" FontSize="14" Content="Search" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Click="unitTitleSearchBtn_Click" IsDefault="True"/>
-            <CheckBox x:Name="submissionDateChe" FontFamily="Arial" FontSize="14" IsChecked="True" Content="Has Submission Date" Grid.Column="0" Grid.Row="1" Foreground="#FFFFFF"/>
+            <CheckBox x:Name="submissionDateChe" FontFamily="Arial" FontSize="14" IsChecked="True" Content="Has Submission Date" Grid.Column="0" Grid.Row="1" Foreground="#FFFFFF" Checked="submissionDateChe_CheckChanged" Unchecked="submissionDateChe_CheckChanged"/>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Margin="0,20,0,0">
+                <TextBlock x:Name="levelHeadingTb" Height="25" Width="50" Padding="5" FontFamily="Arial" FontSize="12" Text="Level" Background="#F4F4F4" Foreground="#000000"/>
+                <TextBlock x:Name="semesterHeadingTb" Height="25" Width="75" Padding="5" FontFamily="Arial" FontSize="12" Text="Semester" Background="#F4F4F4" Foreground="#000000"/>
+                <TextBlock x:Name="unitTitleHeadingTb" Height="25" Width="295" Padding="5" FontFamily="Arial" FontSize="12" Text="Unit Title" Background="#F4F4F4" Foreground="#000000"/>
+                <TextBlock x:Name="submissionDateHeadingTb" Height="25" Width="190" Padding="5" FontFamily="Arial" FontSize="12" Text="Submission Date" Background="#F4F4F4" Foreground="#000000"/>
+            </StackPanel>
+
         </Grid>
         <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>

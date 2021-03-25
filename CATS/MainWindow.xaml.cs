@@ -26,6 +26,10 @@ namespace CATS
             "BU Assessments (*.bua)|*.bua|" + 
             "All Files (*.*)|*.*";
 
+        private const string DEFAULT_DRAG_AND_DROP_STRING = "...or drag your .bua file here";
+        private const string MULTIPLE_DRAG_AND_DROP_STRING = "Cannot open multiple files at once!";
+        private const string NONBUA_DRAG_AND_DROP_STRING = "Can only open \".bua\" files!";
+
         public MainWindow()
         {           
             InitializeComponent();
@@ -38,7 +42,7 @@ namespace CATS
 
         private void openBtn_Click(object sender, RoutedEventArgs e)
         {
-            openExistingBrief();
+            browseExistingBrief();
         }
 
         /// <summary>
@@ -53,7 +57,7 @@ namespace CATS
         /// <summary>
         /// Brings up an openfiledialog for directly selecting an existing file to edit
         /// </summary>
-        private void openExistingBrief()
+        private void browseExistingBrief()
         {
             OpenFileDialog ofd = new OpenFileDialog()
             {
@@ -62,12 +66,35 @@ namespace CATS
             };
             if (ofd.ShowDialog() == true)
             {
-                BUAssessment openedBua = new BUAssessment();
-                openedBua.loadFromJson(ofd.FileName);
+                openExistingBrief(ofd.FileName);
+            }
+        }
 
-                PagedWindow pw = new PagedWindow(openedBua, ofd.FileName);
-                pw.Visibility = Visibility.Visible;
-                this.Visibility = Visibility.Collapsed;
+        /// <summary>
+        /// Opens the specified .bua file for viewing/editing
+        /// </summary>
+        /// <param name="buaFilePath">The full filepath to the .bua file to open for viewing/editing</param>
+        private void openExistingBrief(string buaFilePath)
+        {
+            BUAssessment openedBua = new BUAssessment();
+            openedBua.loadFromJson(buaFilePath);
+
+            PagedWindow pw = new PagedWindow(openedBua, buaFilePath);
+            pw.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// Determines whether or not a specified filepath ends with a ".bua" extension
+        /// </summary>
+        /// <param name="buaFilePath">The full filepath to the file to check its extension</param>
+        /// <returns>True if the extension is ".bua", false otherwise</returns>
+        private bool hasBuaExtension(string filePath)
+        {
+            if (filePath.Substring(filePath.Length - 4).Equals(".bua")) {
+                return true;
+            } else {
+                return false;
             }
         }
 
@@ -83,6 +110,48 @@ namespace CATS
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + DEFAULT_SAVE_FOLDER);
             }
             return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + DEFAULT_SAVE_FOLDER;
+        }
+
+        private void openDragAndDrop_DragEnter(object sender, DragEventArgs e)
+        {
+            openDragAndDropTb.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+            openDragAndDropTb.Text = DEFAULT_DRAG_AND_DROP_STRING;
+            openDragAndDropRect.Opacity = 1;
+            openDragAndDropTb.Opacity = 1;
+        }
+
+        private void openDragAndDrop_DragLeave(object sender, DragEventArgs e)
+        {
+            if(openDragAndDropTb.Text.Equals(DEFAULT_DRAG_AND_DROP_STRING)) {       //Error text is not dimmed, unlike the default text
+                openDragAndDropRect.Opacity = 0.5;
+                openDragAndDropTb.Opacity = 0.5;
+            }
+        }
+
+        private void openDragAndDrop_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) {                      //If the item is a file (or multiple files)...
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                if(files.Length == 1) {                                             //If there is only 1 file... 
+                    if(hasBuaExtension(files[0])) {                                 //If it's a ".bua" file...
+                        openExistingBrief(files[0]);
+                    } else {
+                        Console.WriteLine("WARN: attempted to drop a non-bua file");
+                        openDragAndDropTb.Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                        openDragAndDropTb.Text = NONBUA_DRAG_AND_DROP_STRING;
+                    }                  
+                } else {
+                    Console.WriteLine("WARN: attempted to drop multiple files");
+                    openDragAndDropTb.Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                    openDragAndDropTb.Text = MULTIPLE_DRAG_AND_DROP_STRING;
+                }
+            }
+
+            if (openDragAndDropTb.Text.Equals(DEFAULT_DRAG_AND_DROP_STRING)) {      //Error text is not dimmed, unlike the default text
+                openDragAndDropRect.Opacity = 0.5;
+                openDragAndDropTb.Opacity = 0.5;
+            }
         }
     }
 }

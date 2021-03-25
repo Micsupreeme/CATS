@@ -15,6 +15,22 @@
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>D:\Development\Visual Studio 2019\Publishes\</PublishUrl>
+    <Install>false</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>false</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.1</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>false</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,6 +50,18 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>B53D8E473015FF4FCE01751397862787CAC3033A</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>CATS_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack, Version=1.11.32.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
@@ -96,6 +124,12 @@
     <Compile Include="NewBriefDialog.xaml.cs">
       <DependentUpon>NewBriefDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NewImageDialog.xaml.cs">
+      <DependentUpon>NewImageDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewLinkDialog.xaml.cs">
+      <DependentUpon>NewLinkDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewTableDialog.xaml.cs">
       <DependentUpon>NewTableDialog.xaml</DependentUpon>
     </Compile>
@@ -135,6 +169,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NewBriefDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewImageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewLinkDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -182,6 +224,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="CATS_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -198,6 +241,105 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\icons\outline_account_circle_black_18dp.png" />
+    <Resource Include="img\icons\outline_add_black_18dp.png" />
+    <Resource Include="img\icons\outline_all_inclusive_black_18dp.png" />
+    <Resource Include="img\icons\outline_apps_black_18dp.png" />
+    <Resource Include="img\icons\outline_arrow_downward_black_18dp.png" />
+    <Resource Include="img\icons\outline_arrow_upward_black_18dp.png" />
+    <Resource Include="img\icons\outline_bug_report_black_18dp.png" />
+    <Resource Include="img\icons\outline_build_black_18dp.png" />
+    <Resource Include="img\icons\outline_color_lens_black_18dp.png" />
+    <Resource Include="img\icons\outline_content_copy_black_18dp.png" />
+    <Resource Include="img\icons\outline_content_cut_black_18dp.png" />
+    <Resource Include="img\icons\outline_content_paste_black_18dp.png" />
+    <Resource Include="img\icons\outline_create_black_18dp.png" />
+    <Resource Include="img\icons\outline_description_black_18dp.png" />
+    <Resource Include="img\icons\outline_done_outline_black_18dp.png" />
+    <Resource Include="img\icons\outline_enhanced_encryption_black_18dp.png" />
+    <Resource Include="img\icons\outline_exit_to_app_black_18dp.png" />
+    <Resource Include="img\icons\outline_face_black_18dp.png" />
+    <Resource Include="img\icons\outline_file_new_black_18dp.png" />
+    <Resource Include="img\icons\outline_find_in_page_black_18dp.png" />
+    <Resource Include="img\icons\outline_find_replace_black_18dp.png" />
+    <Resource Include="img\icons\outline_fingerprint_black_18dp.png" />
+    <Resource Include="img\icons\outline_folder_open_black_18dp.png" />
+    <Resource Include="img\icons\outline_folder_timeline_black_18dp.png" />
+    <Resource Include="img\icons\outline_fullscreen_black_18dp.png" />
+    <Resource Include="img\icons\outline_fullscreen_exit_black_18dp.png" />
+    <Resource Include="img\icons\outline_help_outline_black_18dp.png" />
+    <Resource Include="img\icons\outline_history_black_18dp.png" />
+    <Resource Include="img\icons\outline_home_black_18dp.png" />
+    <Resource Include="img\icons\outline_info_black_18dp.png" />
+    <Resource Include="img\icons\outline_invert_colors_black_18dp.png" />
+    <Resource Include="img\icons\outline_language_black_18dp.png" />
+    <Resource Include="img\icons\outline_lock_black_18dp.png" />
+    <Resource Include="img\icons\outline_lock_open_black_18dp.png" />
+    <Resource Include="img\icons\outline_mail_black_18dp.png" />
+    <Resource Include="img\icons\outline_new_releases_black_18dp.png" />
+    <Resource Include="img\icons\outline_note_add_black_18dp.png" />
+    <Resource Include="img\icons\outline_no_encryption_black_18dp.png" />
+    <Resource Include="img\icons\outline_opacity_black_18dp.png" />
+    <Resource Include="img\icons\outline_pending_black_18dp.png" />
+    <Resource Include="img\icons\outline_person_outline_black_18dp.png" />
+    <Resource Include="img\icons\outline_power_settings_new_black_18dp.png" />
+    <Resource Include="img\icons\outline_print_black_18dp.png" />
+    <Resource Include="img\icons\outline_redo_black_18dp.png" />
+    <Resource Include="img\icons\outline_save_as_black_18dp.png" />
+    <Resource Include="img\icons\outline_save_black_18dp.png" />
+    <Resource Include="img\icons\outline_search_black_18dp.png" />
+    <Resource Include="img\icons\outline_select_all_black_18dp.png" />
+    <Resource Include="img\icons\outline_settings_black_18dp.png" />
+    <Resource Include="img\icons\outline_spellcheck_black_18dp.png" />
+    <Resource Include="img\icons\outline_text_format_black_18dp.png" />
+    <Resource Include="img\icons\outline_timeline_black_18dp.png" />
+    <Resource Include="img\icons\outline_undo_black_18dp.png" />
+    <Resource Include="img\icons\outline_upgrade_black_18dp.png" />
+    <Resource Include="img\icons\outline_wallpaper_black_18dp.png" />
+    <Resource Include="img\icons\outline_zoom_in_black_18dp.png" />
+    <Resource Include="img\icons\outline_zoom_out_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\icons\outline_insert_link_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\icons\outline_insert_photo_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\icons\outline_format_list_numbered_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\icons\outline_format_list_bulleted_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\icons\outline_table_chart_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\icons\outline_format_underlined_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\icons\outline_format_italic_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\icons\outline_format_bold_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\icons\outline_refresh_black_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\icons\outline_zoom_out_white_18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\icons\outline_zoom_in_white_18dp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -185,8 +185,7 @@ namespace CATS
                 "ol, ul {margin-top: 3px; margin-bottom: 3px;}" +
                 "td, th {padding: 2px; border: 1px solid black;}" +
                 "table {width: 95%; border-collapse: collapse;}" +
-                "img {page-break-inside: avoid;}" +
-                "img, table {display: block; margin-left: auto; margin-right: auto;}" +
+                "img, table {page-break-inside: avoid; display: block; margin-left: auto; margin-right: auto;}" +
                 ".caption {text-align: center; display: block; margin-left: auto; margin-right: auto;}" +
                 "@page {margin: 2.54cm;}" + //Only affects default Web Browser print methods - SelectPDF HTML-to-PDF has its own settings to specify margins
                 "* {font-family: Arial; font-size: 10pt;}" +

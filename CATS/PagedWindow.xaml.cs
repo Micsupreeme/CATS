@@ -19,8 +19,8 @@ namespace CATS
     /// </summary>
     public partial class PagedWindow : Window
     {
+        public string currentFilePath;
         BUAssessment currentBua;
-        string currentFilePath;
         int currentPageNumber = 0; //Page 0 is the first page
 
         public PagedWindow(BUAssessment bua, string buaFilePath)
@@ -47,6 +47,7 @@ namespace CATS
 
                     this.Width = 770;
                     this.Height = 500;
+                    this.WindowState = WindowState.Normal;
                     currentPageNumber = 0;
                     break;
                 case 1:
@@ -56,6 +57,7 @@ namespace CATS
 
                     this.Width = 770;
                     this.Height = 500;
+                    this.WindowState = WindowState.Normal;
                     currentPageNumber = 1;
                     break;
                 case 2:
@@ -65,6 +67,7 @@ namespace CATS
 
                     this.Width = 770;
                     this.Height = 500;
+                    this.WindowState = WindowState.Normal;
                     currentPageNumber = 2;
                     break;
                 case 3:
@@ -72,8 +75,9 @@ namespace CATS
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Visible;
 
-                    this.Width = 1150;
-                    this.Height = 580;
+                    this.Width = 1250;
+                    this.Height = 700;
+                    this.WindowState = WindowState.Maximized;
                     currentPageNumber = 3;
                     break;
                 case 4:
@@ -81,8 +85,9 @@ namespace CATS
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Visible;
 
-                    this.Width = 1150;
-                    this.Height = 580;
+                    this.Width = 1250;
+                    this.Height = 700;
+                    this.WindowState = WindowState.Maximized;
                     currentPageNumber = 4;
                     break;
                 case 5:
@@ -90,8 +95,9 @@ namespace CATS
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Hidden; //Cannot go forward from the last page
 
-                    this.Width = 1150;
-                    this.Height = 580;
+                    this.Width = 1250;
+                    this.Height = 700;
+                    this.WindowState = WindowState.Maximized;
                     currentPageNumber = 5;
                     break;
                 default:

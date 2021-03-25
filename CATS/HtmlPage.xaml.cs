@@ -24,13 +24,16 @@ namespace CATS
     {
         private const int WEBBROWSER_MAX_SCROLL = 10000000;
         private const string HTML_STYLE_BLOCK_PREPEND = 
+            //For some reason, the WPF WebBrowser control does not recognise the block-margin-auto image-centering CSS rule,
+            //so the CSS for the preview is slightly inferior - using fixed side margins of 25% which provide a similar look
             "<style type=\"text/css\">" +
                 "h1 {font-size: 12pt;}" +
                 "h1, h2 {font-weight: bold;}" +
                 "ol, ul {margin-top: 3px; margin-bottom: 3px;}" +
                 "td, th {padding: 2px; border: 1px solid black;}" +
-                "table {width: 95%; border-collapse: collapse;}" +
-                "img, table {display: block; margin-left: auto; margin-right: auto;}" +
+                ".caption {margin-left: 25%; margin-right: 25%; line-height: 25px;}" +
+                "img {margin-left: 25%; margin-right: 25%;}" +
+                "table {width: 70%; border-collapse: collapse; display: block; margin-left: 15%; margin-right: 15%;}" +
                 "@page {margin: 2.54cm;}" +
                 "* {font-family: Arial; font-size: 10pt;}" +
             "</style>";
@@ -106,8 +109,8 @@ namespace CATS
 
         private void insertHyperlinkBtn_Click(object sender, RoutedEventArgs e)
         {
-            //htmlTxt.SelectedText = "<a href=\"www.example.com\">" + htmlTxt.SelectedText + "</a>";
-            currentBua.convertHtmlToPdf(currentBua.getHtmlDocument());
+            NewLinkDialog newlinkdialog = new NewLinkDialog(this, htmlTxt.SelectedText);
+            newlinkdialog.Visibility = Visibility.Visible;
         }
 
         private void toggleBulletListBtn_Click(object sender, RoutedEventArgs e)
@@ -122,13 +125,33 @@ namespace CATS
 
         private void insertImageBtn_Click(object sender, RoutedEventArgs e)
         {
-            insertHtmlImage();
+            NewImageDialog newimagedialog = new NewImageDialog(this);
+            newimagedialog.Visibility = Visibility.Visible;
         }
 
         private void insertTableBtn_Click(object sender, RoutedEventArgs e)
         {
             NewTableDialog newtabledialog = new NewTableDialog(this);
             newtabledialog.Visibility = Visibility.Visible;
+        }
+
+        private void zoomSlide_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            try {
+                htmlTxt.FontSize = zoomSlide.Value;
+            } catch (NullReferenceException) {
+                Console.Error.WriteLine("WARN: Event fired before object initialisation ");
+            }
+        }
+
+        private void zoomOutImg_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            zoomSlide.Value -= 2;
+        }
+
+        private void zoomInImg_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            zoomSlide.Value += 2;
         }
 
         private void webRefreshBtn_Click(object sender, RoutedEventArgs e)
@@ -164,6 +187,7 @@ namespace CATS
                     Console.Error.WriteLine("ERROR: Invalid HTML editing area specified");
                     break;
             }
+            currentBua.saveAsJson(callingWindow.currentFilePath);
         }
 
         /// <summary>
@@ -201,26 +225,33 @@ namespace CATS
         }
 
         /// <summary>
-        /// Uses an OpenFileDialog to enable the user to select an image, then inserts the selected image into the HTML editor
+        /// Adds a specified link and display text to the HTML editor
+        /// NOTE: this method is public because it's executed by NewLinkDialog, which provides the facility to specify the link address and optional display text
         /// </summary>
-        private void insertHtmlImage(string imageCaption = "Figure 1: A thing of much thing-ness!")
+        /// <param name="linkUrl">The URL of the link to be inserted</param>
+        /// <param name="linkText">The optional display text (reader-friendly text) for the link to be inserted</param>
+        public void insertHtmlLinkWithDisplayTxt(string linkUrl, string linkText)
         {
-            string IMG_FILE_FILTER =
-            "Image Files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg";
+            
+            if(linkText.Length > 0) {
+                htmlTxt.SelectedText = "<a href=\"" + linkUrl + "\">" + linkText + "</a>";
+            } else {
+                htmlTxt.SelectedText = "<a href=\"" + linkUrl + "\">" + linkUrl + "</a>";
+            }
+        }
 
-            OpenFileDialog ofd = new OpenFileDialog()
-            {
-                Filter = IMG_FILE_FILTER,
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)
-            };
-            if (ofd.ShowDialog() == true)
-            {
-                if(imageCaption.Length > 0)
-                {
-                    htmlTxt.SelectedText += "<img src=\"" + ofd.FileName + "\" style=\"width: auto; height: 300px;\"/>" + Environment.NewLine + "<i class=\"caption\">" + imageCaption + "</i>";
-                } else {
-                    htmlTxt.SelectedText += "<img src=\"" + ofd.FileName + "\" style=\"width: auto; height: 300px;\"/>";
-                }
+        /// <summary>
+        /// Adds a specified (i.e., browsed for) image to the HTML editor with a specified caption
+        /// NOTE: this method is public because it's executed by NewImageDialog, which provides the facility to specify the image and optional caption
+        /// </summary>
+        /// <param name="imageFullFilePath">The full file path of the image to be inserted</param>
+        /// <param name="imageCaption">The optional caption text that can accompany the image</param>
+        public void insertHtmlImageWithCaption(string imageFullFilePath, string imageCaption)
+        {
+            if(imageCaption.Length > 0) {
+                htmlTxt.SelectedText += "<img src=\"" + imageFullFilePath + "\" style=\"width: auto; height: 300px;\"/>" + Environment.NewLine + "<i class=\"caption\">" + imageCaption + "</i>";
+            } else {
+                htmlTxt.SelectedText += "<img src=\"" + imageFullFilePath + "\" style=\"width: auto; height: 300px;\"/>";
             }
         }
 
@@ -295,6 +326,18 @@ namespace CATS
                 if (htmlDoc != null) {
                     htmlDoc.parentWindow.scroll(0, WEBBROWSER_MAX_SCROLL);
                 }
+            }
+        }
+
+        private void htmlWb_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            try {
+                //Prevent external sources from loading in the preview browser
+                if (htmlWb.Source.ToString().Length > 0) {
+                    e.Cancel = true;
+                }
+            } catch (NullReferenceException) {
+                Console.Error.WriteLine("WARN: Event fired before object initialisation ");
             }
         }
     }

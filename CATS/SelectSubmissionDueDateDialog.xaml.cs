@@ -46,7 +46,7 @@ namespace CATS
             //If a unit title has been set, use that in the initial search, otherwise accept any unit title ("")
             if(currentBua.unitTitle.Length > 3)
             {
-                string firstCharsOfUnitTitle = currentBua.unitTitle.Substring(0, 3);
+                string firstCharsOfUnitTitle = currentBua.unitTitle.Substring(0, 3).ToUpper();
                 unitTitleSearchTxt.Text = firstCharsOfUnitTitle;
                 createDynamicControls(getCsvDataArray(currentBua.impPath, firstCharsOfUnitTitle));
             } else {
@@ -57,77 +57,21 @@ namespace CATS
         void createDynamicControls(List<string[]> csvData)
         {
             try {
+                //Ensure canvas is reset before drawing
+                csvDataCanvas.Children.Clear();
+                csvDataCanvas.Height = 25;
+                int canvastop = 0; //keeps track of where to draw the next row of csvData controls ()
+                string currentDueDate;
+
                 //Check to see if there is data to draw
                 if (csvData.Count > 0) {
-
-                    //Ensure canvas is reset before drawing
-                    csvDataCanvas.Children.Clear();
-                    csvDataCanvas.Height = 25;
-                    int canvastop = 0; //keeps track of where to draw the next row of csvData controls
-                    string currentDueDate;
                     if(csvData.Count == 100) {
                         recordCountTb.Text = "Large dataset - displaying only the first 100 records";
                     } else {
                         recordCountTb.Text = "Displaying " + csvData.Count + " records";
                     }                  
 
-                    //Draw components
-                    //Headers
-                    var levelHeaderTb = new TextBlock();
-                    levelHeaderTb.FontFamily = new FontFamily(IMP_RECORD_FONT_FAMILY);
-                    levelHeaderTb.FontSize = IMP_RECORD_FONT_SIZE;
-                    levelHeaderTb.Text = "Level";
-                    levelHeaderTb.Height = 25;
-                    levelHeaderTb.Width = 100;
-                    levelHeaderTb.Padding = new Thickness(5, 5, 5, 5);
-                    levelHeaderTb.Background = new SolidColorBrush(Color.FromRgb(244, 244, 244));
-                    levelHeaderTb.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-                    csvDataCanvas.Children.Add(levelHeaderTb);
-                    Canvas.SetLeft(levelHeaderTb, 0);
-                    Canvas.SetTop(levelHeaderTb, canvastop);
-
-                    var semesterHeaderTb = new TextBlock();
-                    semesterHeaderTb.Text = "Semester";
-                    semesterHeaderTb.FontFamily = new FontFamily(IMP_RECORD_FONT_FAMILY);
-                    semesterHeaderTb.FontSize = IMP_RECORD_FONT_SIZE;
-                    semesterHeaderTb.Height = 25;
-                    semesterHeaderTb.Width = 120;
-                    semesterHeaderTb.Padding = new Thickness(5, 5, 5, 5);
-                    semesterHeaderTb.Background = new SolidColorBrush(Color.FromRgb(244, 244, 244));
-                    semesterHeaderTb.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-                    csvDataCanvas.Children.Add(semesterHeaderTb);
-                    Canvas.SetLeft(semesterHeaderTb, 50);
-                    Canvas.SetTop(semesterHeaderTb, canvastop);
-
-                    var unitTitleHeaderTb = new TextBlock();
-                    unitTitleHeaderTb.FontFamily = new FontFamily(IMP_RECORD_FONT_FAMILY);
-                    unitTitleHeaderTb.FontSize = IMP_RECORD_FONT_SIZE;
-                    unitTitleHeaderTb.Text = "Unit Title";
-                    unitTitleHeaderTb.Height = 25;
-                    unitTitleHeaderTb.Width = 300;
-                    unitTitleHeaderTb.Padding = new Thickness(7, 5, 5, 5);
-                    unitTitleHeaderTb.Background = new SolidColorBrush(Color.FromRgb(244, 244, 244));
-                    unitTitleHeaderTb.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-                    csvDataCanvas.Children.Add(unitTitleHeaderTb);
-                    Canvas.SetLeft(unitTitleHeaderTb, 120);
-                    Canvas.SetTop(unitTitleHeaderTb, canvastop);
-
-                    var submissionDateHeaderTb = new TextBlock();
-                    submissionDateHeaderTb.FontFamily = new FontFamily(IMP_RECORD_FONT_FAMILY);
-                    submissionDateHeaderTb.FontSize = IMP_RECORD_FONT_SIZE;
-                    submissionDateHeaderTb.Text = "Submission Date";
-                    submissionDateHeaderTb.Height = 25;
-                    submissionDateHeaderTb.Width = 190;
-                    submissionDateHeaderTb.Padding = new Thickness(5, 5, 5, 5);
-                    submissionDateHeaderTb.Background = new SolidColorBrush(Color.FromRgb(244, 244, 244));
-                    submissionDateHeaderTb.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-                    csvDataCanvas.Children.Add(submissionDateHeaderTb);
-                    Canvas.SetLeft(submissionDateHeaderTb, 420);
-                    Canvas.SetTop(submissionDateHeaderTb, canvastop);
-
-                    canvastop += IMP_RECORD_ROW_HEIGHT;
-
-                    //Records
+                    //Draw records
                     for (int r = 0; r < csvData.Count; r++) {
                         csvDataCanvas.Height += IMP_RECORD_ROW_HEIGHT;
 
@@ -212,6 +156,8 @@ namespace CATS
 
                         canvastop += IMP_RECORD_ROW_HEIGHT;
                     }
+                } else {
+                    recordCountTb.Text = "Search returned no records";
                 }
             } catch(NullReferenceException) {
                 Console.Error.WriteLine("ERROR: Recieved no data to draw");
@@ -221,6 +167,15 @@ namespace CATS
         private void unitTitleSearchBtn_Click(object sender, RoutedEventArgs e)
         {
             createDynamicControls(getCsvDataArray(currentBua.impPath, unitTitleSearchTxt.Text));
+        }
+
+        private void submissionDateChe_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            try {
+                createDynamicControls(getCsvDataArray(currentBua.impPath, unitTitleSearchTxt.Text));
+            } catch (NullReferenceException) {
+                Console.Error.WriteLine("WARN: Event fired before object initialisation ");
+            }
         }
 
         private void selectSubmissionDateBtn_Click(object sender, RoutedEventArgs e)

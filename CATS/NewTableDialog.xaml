@@ -11,7 +11,7 @@
         Foreground="#FFFFFF"
         Title="Insert Table - CATS" Height="360" Width="280" MinHeight="360" MinWidth="280" MaxHeight="360" MaxWidth="280">
     <DockPanel Margin="20" LastChildFill="True">
-        <TextBlock x:Name="tableSizeTb" FontFamily="Arial" FontSize="14" VerticalAlignment="Center" Text="Insert Table" Margin="0,0,0,20" DockPanel.Dock="Top"/>
+        <TextBlock x:Name="tableSizeTb" FontFamily="Arial" FontSize="14" VerticalAlignment="Center" Text="Insert Table:" Margin="0,0,0,20" DockPanel.Dock="Top"/>
         <StackPanel DockPanel.Dock="Bottom">
             <CheckBox x:Name="headerCellsChe" FontFamily="Arial" FontSize="14" Foreground="#FFFFFF" Content="First Row Header Cells" HorizontalAlignment="Right" IsChecked="True" Padding="2" Margin="0,20,0,0"/>
             <Button x:Name="cancelBtn" FontFamily="Arial" FontSize="14" Content="Cancel" Grid.Column="1" Grid.Row="0" Padding="27,3,27,3" Margin="0,15,0,0" HorizontalAlignment="Right" Click="cancelBtn_Click" IsCancel="True"/>
