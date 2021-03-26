@@ -341,5 +341,8 @@
   <ItemGroup>
     <Resource Include="img\icons\outline_zoom_in_white_18dp.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\icons\baseline_close_black_18dp.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,16 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Diagnostics;
 
 namespace CATS
 {
@@ -19,23 +8,27 @@ namespace CATS
     /// </summary>
     public partial class PagedWindow : Window
     {
+        private bool isElevated;
         public string currentFilePath;
         BUAssessment currentBua;
+        MainWindow callingWindow;
         int currentPageNumber = 0; //Page 0 is the first page
 
-        public PagedWindow(BUAssessment bua, string buaFilePath)
+        public PagedWindow(MainWindow caller, BUAssessment bua, string buaFilePath, bool elevated)
         {
             InitializeComponent();
+            callingWindow = caller;
             currentBua = bua;
             currentFilePath = buaFilePath;
+            isElevated = elevated;
             this.Title = currentFilePath + " - CATS";
             navigatePage(currentPageNumber); //Initialise the frame by setting it to show the first page
         }
 
-        /*
-         * Navigates to the specified page index
-         * and adjusts the UI to match the specified page
-         */
+        /// <summary>
+        /// Navigates to the specified page index and adjusts the UI to match the specified page
+        /// </summary>
+        /// <param name="pageNumber">The page number to navigate to</param>
         private void navigatePage(int pageNumber)
         {
             switch (pageNumber)
@@ -106,16 +99,56 @@ namespace CATS
             }
         }
 
+        #region Event handlers
+        /// <summary>
+        /// When the "previous" button is clicked
+        /// Navigates to the previous page
+        /// </summary>
         private void prevBtn_Click(object sender, RoutedEventArgs e)
         {
             currentBua.saveAsJson(currentFilePath);
-            navigatePage(--currentPageNumber); //Go to the previous page
+            navigatePage(--currentPageNumber);
         }
 
+        /// <summary>
+        /// When the "next" button is clicked
+        /// Navigates to the next page
+        /// </summary>
         private void nextBtn_Click(object sender, RoutedEventArgs e)
         {
             currentBua.saveAsJson(currentFilePath);
             navigatePage(++currentPageNumber); //Go to the next page
         }
+
+        /// <summary>
+        /// When the File > Save button is clicked
+        /// Saves changes
+        /// </summary>
+        private void FileSaveMi_Click(object sender, RoutedEventArgs e)
+        {
+            currentBua.saveAsJson(currentFilePath);
+        }
+
+        /// <summary>
+        /// When the File > Close button is clicked
+        /// Saves changes, then closes this window and returns to MainWindow
+        /// </summary>
+        private void FileCloseMi_Click(object sender, RoutedEventArgs e)
+        {
+            currentBua.saveAsJson(currentFilePath);
+            callingWindow.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// When the File > Exit button is clicked
+        /// Saves changes, then exits the application
+        /// </summary>
+        private void FileExitMi_Click(object sender, RoutedEventArgs e)
+        {
+            currentBua.saveAsJson(currentFilePath);
+            Application.Current.Shutdown();
+        }
+        #endregion
     }
 }

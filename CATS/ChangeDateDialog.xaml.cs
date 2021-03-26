@@ -29,16 +29,6 @@ namespace CATS
             populateFields();
         }
 
-        private void okBtn_Click(object sender, RoutedEventArgs e)
-        {
-            applyDate();
-        }
-
-        private void cancelBtn_Click(object sender, RoutedEventArgs e)
-        {
-            this.Visibility = Visibility.Collapsed;
-        }
-
         /// <summary>
         /// Upon window load, populate the fields with the values stored in the bua object
         /// </summary>
@@ -68,7 +58,9 @@ namespace CATS
             }
         }
 
-        //Update the recieved bua object's submission due date to match the current state of the date/time fields
+        /// <summary>
+        /// Updates the recieved bua object's submission due date to match the current state of the date/time fields
+        /// </summary>
         private void applyDate()
         {
             try {
@@ -96,5 +88,23 @@ namespace CATS
                 Console.Error.WriteLine("ERROR: Attempted to convert alphabet to int");
             }         
         }
+
+        #region Event handlers
+        /// <summary>
+        /// When the OK button is clicked
+        /// </summary>
+        private void okBtn_Click(object sender, RoutedEventArgs e)
+        {
+            applyDate();
+        }
+
+        /// <summary>
+        /// When the Cancel button is clicked
+        /// </summary>
+        private void cancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
+        }
+        #endregion
     }
 }

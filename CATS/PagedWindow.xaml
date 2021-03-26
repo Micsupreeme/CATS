@@ -17,32 +17,25 @@
                 </ItemsPanelTemplate>
             </Menu.ItemsPanel>
             <MenuItem Name="FileMi" Header="_File">
-                <MenuItem Name="FileNewMi" Padding="0,2,0,0" Margin="0,0,0,0">
-                    <MenuItem.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <AccessText VerticalAlignment="Center" Margin="5,0,0,0">_New...</AccessText>
-                            <AccessText VerticalAlignment="Center" Margin="15,0,0,0">_Ctrl+N</AccessText>
-                        </StackPanel>
-                    </MenuItem.Header>
-                    <!-- <MenuItem.Icon>
-                         <Image Source="pack://application:,,,/img/icons/outline_file_new_black_18dp.png"/>
-                    </MenuItem.Icon> -->
+                <MenuItem Name="FileSaveMi" Header="_Save" Click="FileSaveMi_Click">
+                    <MenuItem.Icon>
+                        <Image Source="pack://application:,,,/img/icons/outline_save_black_18dp.png"/>
+                    </MenuItem.Icon>
                 </MenuItem>
-            </MenuItem>
-            <MenuItem Name="ExportMi" Header="_Export">
+                <MenuItem Name="FileCloseMi" Header="_Save and Close" Click="FileCloseMi_Click">
+                    <MenuItem.Icon>
+                        <Image Source="pack://application:,,,/img/icons/baseline_close_black_18dp.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Name="FileExitMi" Header="Save and Exit" Click="FileExitMi_Click">
+                    <MenuItem.Icon>
+                        <Image Source="pack://application:,,,/img/icons/outline_power_settings_new_black_18dp.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Name="OptionsMi" Header="_Options" HorizontalAlignment="Right" FlowDirection="LeftToRight">
-                <MenuItem Name="OptionsAboutMi" Padding="0,2,0,0" Margin="0,0,0,0">
-                    <MenuItem.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <AccessText VerticalAlignment="Center" Margin="5,0,0,0">_About...</AccessText>
-                            <AccessText VerticalAlignment="Center" Margin="15,0,0,0">_Ctrl+F1</AccessText>
-                        </StackPanel>
-                    </MenuItem.Header>
-                    <!-- <MenuItem.Icon>
-                         <Image Source="pack://application:,,,/img/icons/outline_file_new_black_18dp.png"/>
-                    </MenuItem.Icon> -->
-                </MenuItem>
+                <MenuItem Name="OptionsAboutMi" Header="_About..."/>
             </MenuItem>
         </Menu>
         <Grid DockPanel.Dock="Bottom" Margin="10">

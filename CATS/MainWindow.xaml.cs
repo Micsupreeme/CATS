@@ -35,16 +35,6 @@ namespace CATS
             InitializeComponent();
         }
 
-        private void createBtn_Click(object sender, RoutedEventArgs e)
-        {
-            createNewBrief();
-        }
-
-        private void openBtn_Click(object sender, RoutedEventArgs e)
-        {
-            browseExistingBrief();
-        }
-
         /// <summary>
         /// Brings up the new brief dialog for selecting a new filepath
         /// </summary>
@@ -79,7 +69,7 @@ namespace CATS
             BUAssessment openedBua = new BUAssessment();
             openedBua.loadFromJson(buaFilePath);
 
-            PagedWindow pw = new PagedWindow(openedBua, buaFilePath);
+            PagedWindow pw = new PagedWindow(this, openedBua, buaFilePath, false);
             pw.Visibility = Visibility.Visible;
             this.Visibility = Visibility.Collapsed;
         }
@@ -112,6 +102,10 @@ namespace CATS
             return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + DEFAULT_SAVE_FOLDER;
         }
 
+        #region Drag-and-Drop event handlers
+        /// <summary>
+        /// When the mouse enters the control while dragging an item
+        /// </summary>
         private void openDragAndDrop_DragEnter(object sender, DragEventArgs e)
         {
             openDragAndDropTb.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
@@ -120,6 +114,9 @@ namespace CATS
             openDragAndDropTb.Opacity = 1;
         }
 
+        /// <summary>
+        /// When the mouse leaves the control while dragging an item
+        /// </summary>
         private void openDragAndDrop_DragLeave(object sender, DragEventArgs e)
         {
             if(openDragAndDropTb.Text.Equals(DEFAULT_DRAG_AND_DROP_STRING)) {       //Error text is not dimmed, unlike the default text
@@ -128,6 +125,9 @@ namespace CATS
             }
         }
 
+        /// <summary>
+        /// When a dragged item is dropped into the control
+        /// </summary>
         private void openDragAndDrop_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) {                      //If the item is a file (or multiple files)...
@@ -153,5 +153,48 @@ namespace CATS
                 openDragAndDropTb.Opacity = 0.5;
             }
         }
+        #endregion
+
+        #region Event handlers
+        /// <summary>
+        /// When the main create button is clicked
+        /// </summary>
+        private void createBtn_Click(object sender, RoutedEventArgs e)
+        {
+            createNewBrief();
+        }
+
+        /// <summary>
+        /// When the File > New button is clicked
+        /// </summary>
+        private void FileNewMi_Click(object sender, RoutedEventArgs e)
+        {
+            createNewBrief();
+        }
+
+        /// <summary>
+        /// When the main open button is clicked
+        /// </summary>
+        private void openBtn_Click(object sender, RoutedEventArgs e)
+        {
+            browseExistingBrief();
+        }
+
+        /// <summary>
+        /// When the File > Open button is clicked
+        /// </summary>
+        private void FileOpenMi_Click(object sender, RoutedEventArgs e)
+        {
+            browseExistingBrief();
+        }
+
+        /// <summary>
+        /// When the File > Exit button is clicked
+        /// </summary>
+        private void FileExitMi_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+        #endregion
     }
 }

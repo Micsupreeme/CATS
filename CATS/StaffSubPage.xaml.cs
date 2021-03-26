@@ -130,6 +130,10 @@ namespace CATS
             }
         }
 
+        #region Event handlers
+        /// <summary>
+        /// When the contents of the unit leader textbox change
+        /// </summary>
         private void unitLeaderTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
             try {
@@ -141,7 +145,7 @@ namespace CATS
         }
 
         /// <summary>
-        /// NOTE: This method fires as soon as the page loads and even while the markers field is being initially populated
+        /// When the contents of the markers textbox changes
         /// </summary>
         private void markersTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -155,6 +159,9 @@ namespace CATS
             }
         }
 
+        /// <summary>
+        /// When the contents of the quality assessor textbox change
+        /// </summary>
         private void qualityAssessorTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
             try {
@@ -165,6 +172,9 @@ namespace CATS
             }
         }
 
+        /// <summary>
+        /// When the dropdownitem for the submission location field changes
+        /// </summary>
         private void subLocationCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try {
@@ -174,6 +184,9 @@ namespace CATS
             }
         }
 
+        /// <summary>
+        /// When the dropdownitem for the feedback method field changes
+        /// </summary>
         private void fedMethodCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try {
@@ -182,5 +195,6 @@ namespace CATS
                 Console.Error.WriteLine("WARN: Event fired before object initialisation");
             }
         }
+        #endregion
     }
 }

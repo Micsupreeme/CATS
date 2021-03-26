@@ -90,8 +90,10 @@ namespace CATS
             }
         }
 
+        #region Event handlers
         /// <summary>
-        /// On text changed, update the bua object to match the unit title textbox content
+        /// Update the bua object to match the unit title textbox content
+        /// When the contents of the unit leader textbox changes
         /// </summary>
         private void unitTitleTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -104,7 +106,8 @@ namespace CATS
         }
 
         /// <summary>
-        /// On text changed, update the bua object to match the assessment title textbox content
+        /// Update the bua object to match the assessment title textbox content
+        /// When the contents of the assessment title textbox changes
         /// </summary>
         private void asmtTitleTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -117,7 +120,8 @@ namespace CATS
         }
 
         /// <summary>
-        /// On selection changed, update the bua object to match the level combobox content
+        /// Update the bua object to match the level combobox content
+        /// When the dropdownitem for the level field changes
         /// </summary>
         private void levelCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -131,8 +135,9 @@ namespace CATS
         }
 
         /// <summary>
-        /// On selection changed, update the bua object to match the level combobox content
+        /// Update the bua object to match the level combobox content
         /// and enable/disable the assessment number fields depending on the selected item
+        /// When the dropdownitem for the submission/resubmission field changes
         /// </summary>
         private void subResubCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -150,7 +155,8 @@ namespace CATS
         }
 
         /// <summary>
-        /// On selection changed, update the bua object to match the assessment number x combobox content
+        /// Update the bua object to match the assessment number x combobox content
+        /// When the dropdownitem for the "assessment number X of Y" (where this is X) field changes
         /// </summary>
         private void asmtNoXCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {           
@@ -164,7 +170,8 @@ namespace CATS
         }
 
         /// <summary>
-        /// On selection changed, update the bua object to match the assessment number y combobox content
+        /// Update the bua object to match the assessment number y combobox content
+        /// When the dropdownitem for the "assessment number X of Y" (where this is Y) field changes
         /// </summary>
         private void asmtNoYCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -176,5 +183,6 @@ namespace CATS
                 Console.Error.WriteLine("WARN: Event fired before object initialisation");
             }
         }
+        #endregion
     }
 }

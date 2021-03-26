@@ -33,21 +33,6 @@ namespace CATS
             saveFolderTxt.Text = selectedSaveFolder;
         }
 
-        private void saveFolderBtn_Click(object sender, RoutedEventArgs e)
-        {
-            selectSaveFolder();
-        }
-
-        private void createBtn_Click(object sender, RoutedEventArgs e)
-        {
-            selectSaveFile();
-        }
-
-        private void cancelBtn_Click(object sender, RoutedEventArgs e)
-        {
-            this.Visibility = Visibility.Collapsed;
-        }
-
         /// <summary>
         /// Displays a select-folder dialog and sets the save folder textbox to the selected folder
         /// </summary>
@@ -93,7 +78,7 @@ namespace CATS
             BUAssessment newBua = new BUAssessment();
             newBua.saveAsJson(fullPath);
 
-            PagedWindow pw = new PagedWindow(newBua, fullPath);
+            PagedWindow pw = new PagedWindow(callingWindow, newBua, fullPath, false);
             pw.Visibility = Visibility.Visible;
             this.Visibility = Visibility.Collapsed;
             callingWindow.Visibility = Visibility.Collapsed;
@@ -111,5 +96,31 @@ namespace CATS
             }
             return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + DEFAULT_SAVE_FOLDER;
         }
+
+        #region Event handlers
+        /// <summary>
+        /// When the Browse button is clicked
+        /// </summary>
+        private void saveFolderBtn_Click(object sender, RoutedEventArgs e)
+        {
+            selectSaveFolder();
+        }
+
+        /// <summary>
+        /// When the Create button is clicked
+        /// </summary>
+        private void createBtn_Click(object sender, RoutedEventArgs e)
+        {
+            selectSaveFile();
+        }
+
+        /// <summary>
+        /// When the Cancel button is clicked
+        /// </summary>
+        private void cancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
+        }
+        #endregion
     }
 }

@@ -18,11 +18,13 @@ namespace CATS
     /// </summary>
     public partial class NewTableDialog : Window
     {
-        HtmlPage callingPage;
-        int[] selectedCell = new int[2]{0, 0};
+        private const int COLUMNS_LIMIT = 9;
+        private const int ROWS_LIMIT = 7;
 
-        Rectangle highlightXRect;
-        Rectangle highlightYRect;
+        HtmlPage callingPage;
+        int[] selectedCell = new int[2]{0, 0}; //The clicked cell determines the size of the grid (e.g., click [3, 3] for a 3x3 grid)
+
+        Rectangle highlightXRect, highlightYRect; //Temporary rectangles that appear/disappear and point to the cursor to help visualise grid size
 
         SolidColorBrush cellUnselectedBrush = new SolidColorBrush(Color.FromRgb(255, 255, 255));
         SolidColorBrush cellSelectedBrush = new SolidColorBrush(Color.FromRgb(255, 255, 0));
@@ -32,12 +34,14 @@ namespace CATS
             InitializeComponent();
             callingPage = caller;
 
+            //Reset everything; ensure the canvas is empty
             int leftOffset = 0;
             int topOffset = 0;
             tableSizeCanvas.Children.Clear();
-            for (int columns = 0; columns < 9; columns++)
+
+            for (int columns = 0; columns < COLUMNS_LIMIT; columns++)
             {
-                for (int rows = 0; rows < 7; rows++)
+                for (int rows = 0; rows < ROWS_LIMIT; rows++)
                 { 
                     Rectangle rect = new Rectangle();
                     rect.Fill = cellUnselectedBrush;
@@ -58,6 +62,10 @@ namespace CATS
             }
         }
 
+        #region Event handlers
+        /// <summary>
+        /// When the mouse enters a grid rectangle
+        /// </summary>
         private void rect_MouseEnter(object sender, RoutedEventArgs e)
         {
             //Select fill colour
@@ -92,6 +100,9 @@ namespace CATS
             Canvas.SetZIndex(highlightYRect, 1);
         }
 
+        /// <summary>
+        /// When the mouse leaves a grid rectangle
+        /// </summary>
         private void rect_MouseLeave(object sender, RoutedEventArgs e)
         {
             //Unselect fill colour
@@ -99,15 +110,22 @@ namespace CATS
             sourceRect.Fill = cellUnselectedBrush;
         }
 
+        /// <summary>
+        /// When a grid rectangle is clicked
+        /// </summary>
         private void rect_MouseUp(object sender, RoutedEventArgs e)
         {
             callingPage.insertHtmlTableWithSize(selectedCell[0], selectedCell[1], (bool)headerCellsChe.IsChecked);
             this.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// When the Cancel button is clicked
+        /// </summary>
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Visibility = Visibility.Collapsed;
         }
+        #endregion
     }
 }

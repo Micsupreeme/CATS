@@ -32,6 +32,10 @@ namespace CATS
             }
         }
 
+        #region Event handlers
+        /// <summary>
+        /// When the OK button is clicked
+        /// </summary>
         private void okBtn_Click(object sender, RoutedEventArgs e)
         {
             linkUrl = linkUrlTxt.Text;
@@ -44,9 +48,13 @@ namespace CATS
             this.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// When the Cancel button is clicked
+        /// </summary>
         private void cancelBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Visibility = Visibility.Collapsed;
         }
+        #endregion
     }
 }

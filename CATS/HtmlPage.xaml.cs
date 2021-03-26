@@ -38,6 +38,16 @@ namespace CATS
                 "* {font-family: Arial; font-size: 10pt;}" +
             "</style>";
 
+        private const string ASSESSMENT_TASK_PROMPT = 
+            "";
+        private const string SUBMISSION_FORMAT_PROMPT =
+            "Requirements for the format of what is to be submitted, including word count or its equivalence, " +
+            "details of electronic copies/hard copies, where/how to submit...";
+        private const string MARKING_CRITERIA_PROMPT =
+            "Ensure these map to ILOs. The following criteria will be used to assess the assignment...";
+        private const string QUESTIONS_ABOUT_BRIEF_PROMPT =
+            "Describe how questions about the brief will be handled (e.g., tutorials/seminar/forum)...";
+
         private PagedWindow callingWindow; //HTML page needs to identify its calling window so it can enable/disable navigational controls based on whether or not there are unsaved changed
         private BUAssessment currentBua;
         private string areaBeingEdited;
@@ -50,7 +60,7 @@ namespace CATS
             callingWindow = caller;
             currentBua = bua;
             areaBeingEdited = area;
-            editAreaTb.Text = areaBeingEdited + ":";
+            editAreaTb.Text = areaBeingEdited + " editor:";
             populateFields();
         }
 
@@ -62,12 +72,15 @@ namespace CATS
             switch (areaBeingEdited)
             {
                 case "Assessment Task":
+                    editSideTb.Text = ASSESSMENT_TASK_PROMPT;
                     htmlTxt.Text = prepareHtml(currentBua.assessmentTaskHtml, false);
                     break;
                 case "Submission Format":
+                    editSideTb.Text = SUBMISSION_FORMAT_PROMPT;
                     htmlTxt.Text = prepareHtml(currentBua.submissionFormatHtml, false);
                     break;
                 case "Marking Criteria":
+                    editSideTb.Text = MARKING_CRITERIA_PROMPT;
                     htmlTxt.Text = prepareHtml(currentBua.markingCriteriaHtml, false);
                     break;
                 default:
@@ -77,93 +90,9 @@ namespace CATS
             isPopulated = true;
         }
 
-        //HTML Markup editor controls
-        private void htmlTxt_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if(!hasUnsavedChanges && isPopulated) { 
-                //There were not previously any unsaved changes, and the HTML textbox has already been prepopulated, so this is a real unsaved change
-                hasUnsavedChanges = true;
-                saveBtn.Visibility = Visibility.Visible;
-                callingWindow.prevBtn.Visibility = Visibility.Hidden;
-                callingWindow.nextBtn.Visibility = Visibility.Hidden;
-            }
-            if (autoRefreshTog.IsChecked == true) {
-                refreshPreview();
-            }
-        }
-
-        private void toggleBoldBtn_Click(object sender, RoutedEventArgs e)
-        {
-            htmlTxt.SelectedText = "<b>" + htmlTxt.SelectedText + "</b>";
-        }
-
-        private void toggleItalicBtn_Click(object sender, RoutedEventArgs e)
-        {
-            htmlTxt.SelectedText = "<i>" + htmlTxt.SelectedText + "</i>";
-        }
-
-        private void toggleUnderlineBtn_Click(object sender, RoutedEventArgs e)
-        {
-            htmlTxt.SelectedText = "<u>" + htmlTxt.SelectedText + "</u>";
-        }
-
-        private void insertHyperlinkBtn_Click(object sender, RoutedEventArgs e)
-        {
-            NewLinkDialog newlinkdialog = new NewLinkDialog(this, htmlTxt.SelectedText);
-            newlinkdialog.Visibility = Visibility.Visible;
-        }
-
-        private void toggleBulletListBtn_Click(object sender, RoutedEventArgs e)
-        {
-            toggleHtmlBullets(false);
-        }
-
-        private void toggleOrderedListBtn_Click(object sender, RoutedEventArgs e)
-        {
-            toggleHtmlBullets(true);
-        }
-
-        private void insertImageBtn_Click(object sender, RoutedEventArgs e)
-        {
-            NewImageDialog newimagedialog = new NewImageDialog(this);
-            newimagedialog.Visibility = Visibility.Visible;
-        }
-
-        private void insertTableBtn_Click(object sender, RoutedEventArgs e)
-        {
-            NewTableDialog newtabledialog = new NewTableDialog(this);
-            newtabledialog.Visibility = Visibility.Visible;
-        }
-
-        private void zoomSlide_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            try {
-                htmlTxt.FontSize = zoomSlide.Value;
-            } catch (NullReferenceException) {
-                Console.Error.WriteLine("WARN: Event fired before object initialisation ");
-            }
-        }
-
-        private void zoomOutImg_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            zoomSlide.Value -= 2;
-        }
-
-        private void zoomInImg_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            zoomSlide.Value += 2;
-        }
-
-        private void webRefreshBtn_Click(object sender, RoutedEventArgs e)
-        {
-            refreshPreview();
-        }
-
-        private void saveBtn_Click(object sender, RoutedEventArgs e)
-        {
-            saveChanges();           
-        }
-
+        /// <summary>
+        /// Saves changes made in the editor to the BUAssessment object and its save file
+        /// </summary>
         private void saveChanges()
         {
             Console.WriteLine("save");
@@ -215,6 +144,9 @@ namespace CATS
             }
         }
 
+        /// <summary>
+        /// Updates the web preview according to the contents of the editor
+        /// </summary>
         private void refreshPreview()
         {
             try {
@@ -314,9 +246,144 @@ namespace CATS
             htmlTxt.SelectedText = listBody;
         }
 
+        #region Event handlers
+        /// <summary>
+        /// When the contents of the editor change
+        /// </summary>
+        private void htmlTxt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!hasUnsavedChanges && isPopulated)
+            {
+                //There were not previously any unsaved changes, and the HTML textbox has already been prepopulated, so this is a real unsaved change
+                hasUnsavedChanges = true;
+                saveBtn.Visibility = Visibility.Visible;
+                callingWindow.prevBtn.Visibility = Visibility.Hidden;
+                callingWindow.nextBtn.Visibility = Visibility.Hidden;
+            }
+            if (autoRefreshTog.IsChecked == true)
+            {
+                refreshPreview();
+            }
+        }
+
+        /// <summary>
+        /// When the editor bold button is clicked
+        /// </summary>
+        private void toggleBoldBtn_Click(object sender, RoutedEventArgs e)
+        {
+            htmlTxt.SelectedText = "<b>" + htmlTxt.SelectedText + "</b>";
+        }
+
+        /// <summary>
+        /// When the editor italic button is clicked
+        /// </summary>
+        private void toggleItalicBtn_Click(object sender, RoutedEventArgs e)
+        {
+            htmlTxt.SelectedText = "<i>" + htmlTxt.SelectedText + "</i>";
+        }
+
+        /// <summary>
+        /// When the editor underline button is clicked
+        /// </summary>
+        private void toggleUnderlineBtn_Click(object sender, RoutedEventArgs e)
+        {
+            htmlTxt.SelectedText = "<u>" + htmlTxt.SelectedText + "</u>";
+        }
+
+        /// <summary>
+        /// When the editor bullet list button is clicked
+        /// </summary>
+        private void toggleBulletListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            toggleHtmlBullets(false);
+        }
+
+        /// <summary>
+        /// When the editor numbered list button is clicked
+        /// </summary>
+        private void toggleOrderedListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            toggleHtmlBullets(true);
+        }
+
+        /// <summary>
+        /// When the editor insert link button is clicked
+        /// </summary>
+        private void insertHyperlinkBtn_Click(object sender, RoutedEventArgs e)
+        {
+            NewLinkDialog newlinkdialog = new NewLinkDialog(this, htmlTxt.SelectedText);
+            newlinkdialog.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// When the editor insert image button is clicked
+        /// </summary>
+        private void insertImageBtn_Click(object sender, RoutedEventArgs e)
+        {
+            NewImageDialog newimagedialog = new NewImageDialog(this);
+            newimagedialog.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// When the editor insert table button is clicked
+        /// </summary>
+        private void insertTableBtn_Click(object sender, RoutedEventArgs e)
+        {
+            NewTableDialog newtabledialog = new NewTableDialog(this);
+            newtabledialog.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// When the value of the zoom slider changes
+        /// </summary>
+        private void zoomSlide_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            try
+            {
+                htmlTxt.FontSize = zoomSlide.Value;
+            }
+            catch (NullReferenceException)
+            {
+                Console.Error.WriteLine("WARN: Event fired before object initialisation ");
+            }
+        }
+
+        /// <summary>
+        /// When the zoom out icon is clicked
+        /// </summary>
+        private void zoomOutImg_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            zoomSlide.Value -= 2;
+        }
+
+        /// <summary>
+        /// When the zoom in icon is clicked
+        /// </summary>
+        private void zoomInImg_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            zoomSlide.Value += 2;
+        }
+
+        /// <summary>
+        /// When the refresh button is clicked
+        /// </summary>
+        private void webRefreshBtn_Click(object sender, RoutedEventArgs e)
+        {
+            refreshPreview();
+        }
+
+        /// <summary>
+        /// When the save changes button is clicked
+        /// </summary>
+        private void saveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            saveChanges();
+        }
+
         /// <summary>
         /// Every time the web browser refreshes, if the auto-scroll toggle button is checked,
         /// ensure it scrolls to the bottom of the content (so that the user doesn't have to keep scrolling back down)
+        /// When the web preview finishes loading the html string
         /// </summary>
         private void htmlWb_LoadCompleted(object sender, NavigationEventArgs e)
         {
@@ -329,6 +396,9 @@ namespace CATS
             }
         }
 
+        /// <summary>
+        /// When the web preview attempts to navigate to a new page
+        /// </summary>
         private void htmlWb_Navigating(object sender, NavigatingCancelEventArgs e)
         {
             try {
@@ -340,5 +410,6 @@ namespace CATS
                 Console.Error.WriteLine("WARN: Event fired before object initialisation ");
             }
         }
+        #endregion
     }
 }

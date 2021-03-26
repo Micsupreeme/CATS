@@ -32,16 +32,6 @@ namespace CATS
             populateFields();
         }
 
-        private void impBtn_Click(object sender, RoutedEventArgs e)
-        {
-            selectImpFile();
-        }
-
-        private void sddBtn_Click(object sender, RoutedEventArgs e)
-        {
-            changeSdd();
-        }
-
         /// <summary>
         /// Upon page load, populate the fields with the values stored in the bua object
         /// </summary>
@@ -102,16 +92,17 @@ namespace CATS
             }
         }
 
+        /// <summary>
+        /// Use an open file dialog to select an IMP csv file,
+        /// then display the select submission due date dialog, which provides the facilities to select a pre-approved submission due date
+        /// </summary>
         private void selectImpFile()
         {
-
-            OpenFileDialog ofd = new OpenFileDialog()
-            {
+            OpenFileDialog ofd = new OpenFileDialog() {
                 Filter = IMP_FILE_FILTER,
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
             };
-            if (ofd.ShowDialog() == true)
-            {
+            if (ofd.ShowDialog() == true) {
                 currentBua.impPath = ofd.FileName;
                 impTxt.Text = currentBua.impPath;
 
@@ -120,10 +111,30 @@ namespace CATS
             }
         }
 
+        /// <summary>
+        /// Display the change date dialog, which provides the facilities to overwrite the submission due date
+        /// </summary>
         private void changeSdd()
         {
             ChangeDateDialog changedatedialog = new ChangeDateDialog(this, currentBua);
             changedatedialog.Visibility = Visibility.Visible;
+        }
+
+        #region Event handlers
+        /// <summary>
+        /// When the Browse button is clicked
+        /// </summary>
+        private void impBtn_Click(object sender, RoutedEventArgs e)
+        {
+            selectImpFile();
+        }
+
+        /// <summary>
+        /// When the Change Date button is clicked
+        /// </summary>
+        private void sddBtn_Click(object sender, RoutedEventArgs e)
+        {
+            changeSdd();
         }
 
         /// <summary>
@@ -143,7 +154,8 @@ namespace CATS
         }
 
         /// <summary>
-        /// On text changed, update the bua object to match the weighting textbox content
+        /// Update the bua object to match the weighting textbox content
+        /// When the contents of the weighting textbox changes
         /// </summary>
         private void weightingTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -158,7 +170,8 @@ namespace CATS
         }
 
         /// <summary>
-        /// On selection changed, update the bua object to match the credit value combobox content
+        /// Update the bua object to match the credit value combobox content
+        /// When the dropdownitem for the credit value field changes
         /// </summary>
         private void creditValueCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -170,5 +183,6 @@ namespace CATS
                 Console.Error.WriteLine("WARN: Event fired before object initialisation");
             }
         }
+#endregion
     }
 }

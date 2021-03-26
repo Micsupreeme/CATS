@@ -17,6 +17,9 @@ namespace CATS
             setDefaultValues();
         }
 
+        /// <summary>
+        /// Set all fields of this instance to the default values
+        /// </summary>
         private void setDefaultValues()
         {
             this.createdDate = DateTime.Now;
@@ -125,7 +128,11 @@ namespace CATS
             }
         }
 
-        //TODO: expand on these export-related methods and replace image sources with Base64 data URIs so that the final HTML (and PDF) is essentially packaged WITH its included images
+        /// <summary>
+        /// Gets the Base64 data string for the specified image
+        /// </summary>
+        /// <param name="fullImagePath">The full image path of the file to get the Base64 data string for</param>
+        /// <returns>The Base64 data string for the specified image</returns>
         private string getBase64ImageString(string fullImagePath)
         {
             byte[] imageBytes = File.ReadAllBytes(fullImagePath);
@@ -174,6 +181,10 @@ namespace CATS
             return htmlDoc.DocumentNode.OuterHtml;
         }
 
+        /// <summary>
+        /// Stitches together a HTML document for this assessment brief instance by combining template HTML code with variables
+        /// </summary>
+        /// <returns>The HTML document string for this instance</returns>
         public string getHtmlDocument()
         {
             string EXPORT_HEAD_BLOCK =
@@ -262,6 +273,10 @@ namespace CATS
                 EXPORT_END_BLOCK;
         }
 
+        /// <summary>
+        /// Converts the specified HTML document string to an assessment brief PDF
+        /// </summary>
+        /// <param name="htmlDocument">The HTML document string to convert to PDF</param>
         public void convertHtmlToPdf(string htmlDocument)
         {
             SelectPdf.PdfHtmlSection headerHtml = new SelectPdf.PdfHtmlSection("<p style=\"font-family: Arial; font-size: 7pt; text-align: right;\">June 2019 v1</p>", "");
@@ -284,6 +299,7 @@ namespace CATS
             doc.Close();
         }
 
+        //Metadata
         public DateTime createdDate { get; set; }
         public float templateVer { get; set; }
 
