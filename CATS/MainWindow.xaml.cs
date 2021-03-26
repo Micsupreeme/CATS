@@ -195,6 +195,15 @@ namespace CATS
         {
             Application.Current.Shutdown();
         }
+        
+        /// <summary>
+        /// When the Options > About button is clicked
+        /// </summary>
+        private void OptionsAboutMi_Click(object sender, RoutedEventArgs e)
+        {
+            About about = new About();
+            about.Visibility = Visibility.Visible;
+        }
         #endregion
     }
 }

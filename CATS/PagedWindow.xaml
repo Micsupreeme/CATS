@@ -35,7 +35,7 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Name="OptionsMi" Header="_Options" HorizontalAlignment="Right" FlowDirection="LeftToRight">
-                <MenuItem Name="OptionsAboutMi" Header="_About..."/>
+                <MenuItem Name="OptionsAboutMi" Header="_About..." Click="OptionsAboutMi_Click"/>
             </MenuItem>
         </Menu>
         <Grid DockPanel.Dock="Bottom" Margin="10">

@@ -114,6 +114,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BUAssessment.cs" />
     <Compile Include="ChangeDateDialog.xaml.cs">
       <DependentUpon>ChangeDateDialog.xaml</DependentUpon>
@@ -148,6 +151,10 @@
     <Compile Include="WeightDatePage.xaml.cs">
       <DependentUpon>WeightDatePage.xaml</DependentUpon>
     </Compile>
+    <Page Include="About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ChangeDateDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

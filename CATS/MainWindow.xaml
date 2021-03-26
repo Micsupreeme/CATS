@@ -41,7 +41,7 @@
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Name="OptionsAboutMi" Header="_About..."/>
+                <MenuItem Name="OptionsAboutMi" Header="_About..." Click="OptionsAboutMi_Click"/>
             </MenuItem>
         </Menu>
         <StackPanel Margin="50" VerticalAlignment="Center">

@@ -59,7 +59,7 @@ namespace CATS
                     nextBtn.Visibility = Visibility.Visible;
 
                     this.Width = 770;
-                    this.Height = 500;
+                    this.Height = 550;
                     this.WindowState = WindowState.Normal;
                     currentPageNumber = 2;
                     break;
@@ -137,7 +137,7 @@ namespace CATS
         {
             currentBua.saveAsJson(currentFilePath);
             callingWindow.Visibility = Visibility.Visible;
-            this.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -148,6 +148,15 @@ namespace CATS
         {
             currentBua.saveAsJson(currentFilePath);
             Application.Current.Shutdown();
+        }
+
+        /// <summary>
+        /// When the Options > About button is clicked
+        /// </summary>
+        private void OptionsAboutMi_Click(object sender, RoutedEventArgs e)
+        {
+            About about = new About();
+            about.Visibility = Visibility.Visible;
         }
         #endregion
     }
