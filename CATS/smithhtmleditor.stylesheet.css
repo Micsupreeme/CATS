@@ -1,0 +1,19 @@
+﻿body {
+    font-family: Arial;
+    font-size: 10pt;
+    line-height: 10pt;
+}
+
+p {
+    line-height: 10pt;
+    padding: 3pt;
+    margin: 0;
+}
+
+ul li {
+    line-height: 16px;
+}
+
+ol li {
+    line-height: 16px;
+}

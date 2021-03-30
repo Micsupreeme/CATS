@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
-
+using System.Web;
+using Nancy.Helpers;
 
 namespace CATS
 {
@@ -135,7 +137,12 @@ namespace CATS
         /// <returns>The Base64 data string for the specified image</returns>
         private string getBase64ImageString(string fullImagePath)
         {
-            byte[] imageBytes = File.ReadAllBytes(fullImagePath);
+            //The Smith editor inserts images with data URI sources - convert them to straight-up filepaths
+            string decodedImagePath = fullImagePath.Substring(8); //ignore the "file///" URI prefix
+            decodedImagePath = HttpUtility.UrlDecode(decodedImagePath);
+
+            //Now that we have the filepaths, we can Base 64 encode them to bytes
+            byte[] imageBytes = File.ReadAllBytes(decodedImagePath);
             return Convert.ToBase64String(imageBytes);
         }
 
@@ -195,9 +202,8 @@ namespace CATS
                 "h1, h2 {font-weight: bold;}" +
                 "ol, ul {margin-top: 3px; margin-bottom: 3px;}" +
                 "td, th {padding: 2px; border: 1px solid black;}" +
-                "table {width: 95%; border-collapse: collapse;}" +
-                "img, table {page-break-inside: avoid; display: block; margin-left: auto; margin-right: auto;}" +
-                ".caption {text-align: center; display: block; margin-left: auto; margin-right: auto;}" +
+                "img {page-break-inside: avoid;}" +
+                "table {width: 95%; border-collapse: collapse; page-break-inside: avoid; display: block; margin-left: auto; margin-right: auto;}" +
                 "@page {margin: 2.54cm;}" + //Only affects default Web Browser print methods - SelectPDF HTML-to-PDF has its own settings to specify margins
                 "* {font-family: Arial; font-size: 10pt;}" +
             "</style>";

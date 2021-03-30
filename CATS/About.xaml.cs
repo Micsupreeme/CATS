@@ -19,7 +19,7 @@ namespace CATS
 
             //Write application details to UI
             appNameTb.Text = "Coursework Assessment Transmogrification System (" + APPLICATION_NAME + ")";
-            appVersionTb.Text = "Version " + APPLICATION_VERSION;
+            appVersionTb.Text = "Version 0.8.3 (ALPHA)";
             appCopyrightTb.Text = "Copyright \u00A9 Michael Whatley 2021";
             appPublisherTb.Text = "Micsupreeme";
             appDescriptionTxt.Text = "Pending\nDescription\nNot\nImplemented\nAt\nPresent";

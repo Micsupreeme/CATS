@@ -64,7 +64,7 @@ namespace CATS
                     currentPageNumber = 2;
                     break;
                 case 3:
-                    mainFrame.Content = new HtmlPage(this, currentBua, "Assessment Task");
+                    mainFrame.Content = new WYSIWYGPage(this, currentBua, "Assessment Task");
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Visible;
 
@@ -74,7 +74,7 @@ namespace CATS
                     currentPageNumber = 3;
                     break;
                 case 4:
-                    mainFrame.Content = new HtmlPage(this, currentBua, "Submission Format");
+                    mainFrame.Content = new WYSIWYGPage(this, currentBua, "Submission Format");
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Visible;
 
@@ -84,14 +84,24 @@ namespace CATS
                     currentPageNumber = 4;
                     break;
                 case 5:
-                    mainFrame.Content = new HtmlPage(this, currentBua, "Marking Criteria");
+                    mainFrame.Content = new WYSIWYGPage(this, currentBua, "Marking Criteria");
                     prevBtn.Visibility = Visibility.Visible;
-                    nextBtn.Visibility = Visibility.Hidden; //Cannot go forward from the last page
+                    nextBtn.Visibility = Visibility.Visible;
 
                     this.Width = 1250;
                     this.Height = 700;
                     this.WindowState = WindowState.Maximized;
                     currentPageNumber = 5;
+                    break;
+                case 6:
+                    mainFrame.Content = new ILOsPage(currentBua);
+                    prevBtn.Visibility = Visibility.Visible;
+                    nextBtn.Visibility = Visibility.Hidden; //Cannot go forward from the last page
+
+                    this.Width = 770;
+                    this.Height = 500;
+                    this.WindowState = WindowState.Normal;
+                    currentPageNumber = 6;
                     break;
                 default:
                     Console.Error.WriteLine("ERROR: Invalid page specified");
@@ -157,6 +167,16 @@ namespace CATS
         {
             About about = new About();
             about.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// When the window is closed (e.g., "X" button)
+        /// Do a save and complete shutdown (prevents processes from remaining open when they should have stopped)
+        /// </summary>
+        private void PagedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            currentBua.saveAsJson(currentFilePath);
+            Application.Current.Shutdown();
         }
         #endregion
     }

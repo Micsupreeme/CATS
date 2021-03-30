@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<smithhtmleditor>
+  <visualmode>
+    <fontfamilies>
+      <add value="Arial" />
+    </fontfamilies>
+  </visualmode>
+  <sourcemode>
+    <fontfamily value="Consolas" />
+    <fontsize value="12" />
+  </sourcemode>
+</smithhtmleditor>

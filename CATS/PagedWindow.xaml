@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen"
         Background="#252525"
         Foreground="#FFFFFF"
-        Title="Filename.bua - CATS" Height="500" Width="770">
+        Title="Filename.bua - CATS" Height="500" Width="770" Closing="PagedWindow_Closing">
     <DockPanel LastChildFill="True">
         <Menu Name="MainMenu" DockPanel.Dock="Top" FontFamily="Arial" FontSize="12" Padding="2" Background="White">
             <Menu.ItemsPanel>
