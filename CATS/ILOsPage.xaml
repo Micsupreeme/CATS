@@ -11,6 +11,7 @@
       Title="ILOsPage">
     <DockPanel Margin="30" LastChildFill="True">
         <TextBlock x:Name="ilosTb" FontFamily="Arial" FontSize="14" VerticalAlignment="Center" Text="Intended Learning Outcomes (ILOs):" DockPanel.Dock="Top" MouseUp="ilosTb_MouseUp"/>
+        <Button x:Name="iloAddBtn" FontFamily="Arial" FontSize="14" Content="Add another ILO" Padding="27,3,27,3" HorizontalAlignment="Right" Click="iloAddBtn_Click" DockPanel.Dock="Bottom"/>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0,15,0,0">
             <Canvas x:Name="ilosCanvas" Height="0">
 

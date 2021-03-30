@@ -20,11 +20,20 @@ namespace CATS
     public partial class ILOsPage : Page
     {
         private BUAssessment currentBua;
+        StackPanel iloFullStack;
+        List<StackPanel> iloRowStacks;
+
+        int numberOfILOs; //get count of list items from bua object
 
         public ILOsPage(BUAssessment bua)
         {
+            //TODO: if currently no ILOs, start with 4
+            //TODO: don't allow more than 10 ILOs
+            
             InitializeComponent();
             currentBua = bua;
+
+            numberOfILOs = currentBua.ILOsList.Count; //the number of ILO controls to draw initially is determined by the current number of ILOs being stored
             createDynamicControls();
         }
 
@@ -35,30 +44,27 @@ namespace CATS
             ilosCanvas.Height = 10;
             int canvastop = 0; //keeps track of where to draw the next row of csvData controls ()
 
-            List<StackPanel> iloRowStacks = new List<StackPanel>();
+            iloRowStacks = new List<StackPanel>();
 
-            StackPanel iloFullStack;
             //Draw records
-            for (int ilo = 0; ilo < 4; ilo++)
+            for (int ilo = 0; ilo < numberOfILOs; ilo++)
             {
-                ilosCanvas.Height += 400;
+                ilosCanvas.Height += 70;
 
-                var numberTb = new TextBlock();
-                numberTb.Name = "nTb_" + ilo;
-                numberTb.FontFamily = new FontFamily("Arial");
-                numberTb.FontSize = 14;
-                numberTb.Text = "0.";
-                numberTb.Height = 35;
-                numberTb.Width = 25;
-                numberTb.Padding = new Thickness(5, 5, 5, 5);
-                //ilosCanvas.Children.Add(numberTb);
-                //Canvas.SetLeft(numberTb, 0);
-                //Canvas.SetTop(numberTb, canvastop + 17.5);
+                var iloNumberTb = new TextBlock();
+                //iloNumberTb.Name = "nTb_" + ilo;
+                iloNumberTb.FontFamily = new FontFamily("Arial");
+                iloNumberTb.FontSize = 14;
+                iloNumberTb.Text = (ilo + 1) + "."; //human numbering starts at 1 (i.e., 1-10 ILOs - not 0-9)
+                iloNumberTb.Height = 35;
+                iloNumberTb.Width = 50;
+                iloNumberTb.Padding = new Thickness(5, 5, 5, 5);
 
                 var iloContentTxt = new TextBox();
-                iloContentTxt.Name = "icTxt_" + ilo;
+                //iloContentTxt.Name = "icTxt_" + ilo;
                 iloContentTxt.FontFamily = new FontFamily("Arial");
                 iloContentTxt.FontSize = 14;
+                iloContentTxt.Text = currentBua.ILOsList[ilo];
                 iloContentTxt.Height = 70;
                 iloContentTxt.Width = 400;
                 iloContentTxt.Padding = new Thickness(5, 5, 5, 5);
@@ -66,15 +72,12 @@ namespace CATS
                 iloContentTxt.TextWrapping = TextWrapping.Wrap;
                 iloContentTxt.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
                 iloContentTxt.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
-                //ilosCanvas.Children.Add(iloContentTxt);
-                //Canvas.SetLeft(iloContentTxt, 25);
-                //Canvas.SetTop(iloContentTxt, canvastop);
+                iloContentTxt.AddHandler(TextBox.TextChangedEvent, new RoutedEventHandler(iloContentTxt_TextChanged));
 
                 //Only show the "delete" button if it's not the first ILO - there must always be one
-                if (ilo > 0)
-                {
+                if (ilo > 0) {
                     var iloDeleteBtn = new Button();
-                    iloDeleteBtn.Name = "idBtn_" + ilo;
+                    //iloDeleteBtn.Name = "idBtn_" + ilo;
                     iloDeleteBtn.FontFamily = new FontFamily("Arial");
                     iloDeleteBtn.FontSize = 14;
                     iloDeleteBtn.Height = 70;
@@ -82,23 +85,21 @@ namespace CATS
                     iloDeleteBtn.Padding = new Thickness(5, 5, 5, 5);
                     iloDeleteBtn.Tag = ilo;
                     iloDeleteBtn.AddHandler(Button.ClickEvent, new RoutedEventHandler(iloDeleteBtn_Click));
-                    //ilosCanvas.Children.Add(iloDeleteBtn);
-                    //Canvas.SetLeft(iloDeleteBtn, 425);
-                    //Canvas.SetTop(iloDeleteBtn, canvastop);
 
                     StackPanel singlestack = new StackPanel();
                     singlestack.Orientation = Orientation.Horizontal;
-                    singlestack.Children.Add(numberTb);
+                    singlestack.Children.Add(iloNumberTb);
                     singlestack.Children.Add(iloContentTxt);
                     singlestack.Children.Add(iloDeleteBtn);
                     iloRowStacks.Add(singlestack);
-                } else
-                {
+                    iloRowStacks[ilo].Name = "rowStk_" + ilo;
+                } else {
                     StackPanel singlestack = new StackPanel();
                     singlestack.Orientation = Orientation.Horizontal;
-                    singlestack.Children.Add(numberTb);
+                    singlestack.Children.Add(iloNumberTb);
                     singlestack.Children.Add(iloContentTxt);
                     iloRowStacks.Add(singlestack);
+                    iloRowStacks[ilo].Name = "rowStk_" + ilo;
                 }
 
                 canvastop += 80;
@@ -109,9 +110,31 @@ namespace CATS
             {
                 iloFullStack.Children.Add(row);
             }
+
             ilosCanvas.Children.Add(iloFullStack);
             Canvas.SetLeft(iloFullStack, 0);
             Canvas.SetTop(iloFullStack, 0);
+        }
+
+        /// <summary>
+        /// When the content of a dynamic ILO textbox is changed
+        /// </summary>
+        private void iloContentTxt_TextChanged(object sender, RoutedEventArgs e)
+        {
+            try {
+                List<string> tempILOsList = new List<string>();
+
+                //Keep this code absolutely minimal, as this event fires every time a character changes in one of the dynamic ILO content boxes
+                for (int row = 0; row < iloFullStack.Children.Count; row++) {
+                    StackPanel rowStack = (StackPanel)iloFullStack.Children[row];
+                    TextBox contentTxt = (TextBox)rowStack.Children[1]; //the second ("1") child of a single stack is always the content textbox
+                    tempILOsList.Add(contentTxt.Text);
+                }
+
+                currentBua.ILOsList = tempILOsList;
+            } catch (NullReferenceException) {
+                Console.Error.WriteLine("WARN: Event fired before object initialisation ");
+            }
         }
 
         /// <summary>
@@ -119,45 +142,82 @@ namespace CATS
         /// </summary>
         private void iloDeleteBtn_Click(object sender, RoutedEventArgs e)
         {
-            Button eventBtn = (Button)e.Source;
-            int eventTag = (int)eventBtn.Tag; //the tag that indicates the row for all the controls to be deleted - it's appended onto their names
-            List<int> childrenIndexesToRemove = new List<int>();
-            int indexToRemoveFrom = -1;
+            ilosCanvas.Height -= 70;
 
-            for(int controlCount = 0; controlCount < ilosCanvas.Children.Count; controlCount++)
-            {
-                if (ilosCanvas.Children[controlCount].GetType().Name.Equals("TextBlock")) {
-                    TextBlock sourceTb = (TextBlock)ilosCanvas.Children[controlCount];
-                    if (sourceTb.Name.Equals("nTb_" + eventTag)) {
-                        childrenIndexesToRemove.Add(controlCount);
-                        indexToRemoveFrom = controlCount;
-                    }
-                } else if(ilosCanvas.Children[controlCount].GetType().Name.Equals("TextBox")) {
-                    TextBox sourceTxt = (TextBox)ilosCanvas.Children[controlCount];
-                    if (sourceTxt.Name.Equals("icTxt_" + eventTag)) {
-                        childrenIndexesToRemove.Add(controlCount);
-                    }
-                } else { //if it's not a textblock or textbox, it must be a button
-                    //Button sourceBtn = (Button)ilosCanvas.Children[controlCount];
-                    //if (sourceBtn.Name.Equals("idBtn_" + eventTag)) {
-                        //childrenIndexesToRemove.Add(controlCount);
-                    //}
+            Button eventBtn = (Button)e.Source;
+            int eventTag = (int)eventBtn.Tag; //the tag that indicates the row (containing all the controls to be deleted)
+       
+            for (int row = 0; row < iloFullStack.Children.Count; row++) {
+                StackPanel rowStack = (StackPanel)iloFullStack.Children[row];
+                if (rowStack.Name.Equals("rowStk_" + eventTag)) {
+                    iloFullStack.Children.RemoveAt(row);
                 }
             }
+            updateILONumbering();
+        }
 
-            if(indexToRemoveFrom > 0) //it has a meaningful value, not -1
-            {
-                //If the index is 2 - to delete the ILO row we remove canvas children 2, 3 and 4
-                //(i.e., always the range between the index, and the index + 2)
-                ilosCanvas.Children.RemoveRange(indexToRemoveFrom, 3);
+        /// <summary>
+        /// When the "Add another ILO" button is clicked
+        /// </summary>
+        private void iloAddBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ilosCanvas.Height += 70;
+            
+            var iloNewNumberTb = new TextBlock();
+            //iloNewNumberTb.Name = "nTb_" + ilo;
+            iloNewNumberTb.FontFamily = new FontFamily("Arial");
+            iloNewNumberTb.FontSize = 14;
+            iloNewNumberTb.Text = iloFullStack.Children.Count + 1 + ".";
+            iloNewNumberTb.Height = 35;
+            iloNewNumberTb.Width = 50;
+            iloNewNumberTb.Padding = new Thickness(5, 5, 15, 5);
+
+            var iloNewContentTxt = new TextBox();
+            //iloNewContentTxt.Name = "icTxt_" + ilo;
+            iloNewContentTxt.FontFamily = new FontFamily("Arial");
+            iloNewContentTxt.FontSize = 14;
+            iloNewContentTxt.Height = 70;
+            iloNewContentTxt.Width = 400;
+            iloNewContentTxt.Padding = new Thickness(5, 5, 5, 5);
+            iloNewContentTxt.AcceptsReturn = true; //multiline textbox
+            iloNewContentTxt.TextWrapping = TextWrapping.Wrap;
+            iloNewContentTxt.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            iloNewContentTxt.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
+            iloNewContentTxt.AddHandler(TextBox.TextChangedEvent, new RoutedEventHandler(iloContentTxt_TextChanged));
+
+            var iloNewDeleteBtn = new Button();
+            //iloNewDeleteBtn.Name = "idBtn_" + ilo;
+            iloNewDeleteBtn.FontFamily = new FontFamily("Arial");
+            iloNewDeleteBtn.FontSize = 14;
+            iloNewDeleteBtn.Height = 70;
+            iloNewDeleteBtn.Width = 50;
+            iloNewDeleteBtn.Padding = new Thickness(5, 5, 5, 5);
+            iloNewDeleteBtn.Tag = iloFullStack.Children.Count;
+            iloNewDeleteBtn.AddHandler(Button.ClickEvent, new RoutedEventHandler(iloDeleteBtn_Click));
+
+            StackPanel wrapstack = new StackPanel();
+            wrapstack.Name = "rowStk_" + iloFullStack.Children.Count;
+            wrapstack.Orientation = Orientation.Horizontal;
+            wrapstack.Children.Add(iloNewNumberTb);
+            wrapstack.Children.Add(iloNewContentTxt);
+            wrapstack.Children.Add(iloNewDeleteBtn);
+
+            iloFullStack.Children.Add(wrapstack);
+        }
+
+        private void updateILONumbering()
+        {
+            for (int row = 0; row < iloFullStack.Children.Count; row++) {
+                StackPanel rowStack = (StackPanel)iloFullStack.Children[row];
+                TextBlock numberTb = (TextBlock)rowStack.Children[0]; //the first child of a single stack is always the number text block
+                numberTb.Text = (row + 1) + ".";
             }
         }
 
+        //TEMPORARY EXPORT TEST - REMOVE THIS
         private void ilosTb_MouseUp(object sender, MouseButtonEventArgs e)
         {
             currentBua.convertHtmlToPdf(currentBua.getHtmlDocument());
         }
-
-        //to get accurate number of ILOs after random additions/deletions: (children + 1) / 3
     }
 }

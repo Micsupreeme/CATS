@@ -17,6 +17,9 @@ using Smith.WPF.HtmlEditor;
 
 namespace CATS
 {
+    //POSSIBLE BUG: Smith WPF editor image resize arrows sometimes don't work properly
+    //(even if you drag outwards, the image just gets smaller in blocky increments) - used source mode afterwards, caused COM exception?
+
     /// <summary>
     /// Interaction logic for WYSIWYGPage.xaml
     /// </summary>
