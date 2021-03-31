@@ -378,6 +378,7 @@
     <Resource Include="img\icons\baseline_close_black_18dp.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="img\icons\baseline_delete_black_18dp.png" />
     <Content Include="smithhtmleditor.config.xml" />
     <Content Include="smithhtmleditor.stylesheet.css" />
   </ItemGroup>

@@ -99,7 +99,7 @@ namespace CATS
                     nextBtn.Visibility = Visibility.Hidden; //Cannot go forward from the last page
 
                     this.Width = 770;
-                    this.Height = 500;
+                    this.Height = 550;
                     this.WindowState = WindowState.Normal;
                     currentPageNumber = 6;
                     break;

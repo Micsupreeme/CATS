@@ -19,6 +19,9 @@ namespace CATS
     /// </summary>
     public partial class ILOsPage : Page
     {
+        private const int MIN_NUMBER_ILOS = 4;
+        private const int MAX_NUMBER_ILOS = 10;
+        
         private BUAssessment currentBua;
         StackPanel iloFullStack;
         List<StackPanel> iloRowStacks;
@@ -27,13 +30,16 @@ namespace CATS
 
         public ILOsPage(BUAssessment bua)
         {
-            //TODO: if currently no ILOs, start with 4
             //TODO: don't allow more than 10 ILOs
             
             InitializeComponent();
             currentBua = bua;
 
-            numberOfILOs = currentBua.ILOsList.Count; //the number of ILO controls to draw initially is determined by the current number of ILOs being stored
+            if(currentBua.ILOsList.Count <= MIN_NUMBER_ILOS) {
+                numberOfILOs = MIN_NUMBER_ILOS;                 //always show at least 4 ILO controls
+            } else {
+                numberOfILOs = currentBua.ILOsList.Count;       //If there are more than 4 ILOs, display that number of ILO controls
+            }
             createDynamicControls();
         }
 
@@ -41,7 +47,7 @@ namespace CATS
         {
             //Ensure canvas is reset before drawing
             ilosCanvas.Children.Clear();
-            ilosCanvas.Height = 10;
+            ilosCanvas.Height = 0;
             int canvastop = 0; //keeps track of where to draw the next row of csvData controls ()
 
             iloRowStacks = new List<StackPanel>();
@@ -64,9 +70,15 @@ namespace CATS
                 //iloContentTxt.Name = "icTxt_" + ilo;
                 iloContentTxt.FontFamily = new FontFamily("Arial");
                 iloContentTxt.FontSize = 14;
-                iloContentTxt.Text = currentBua.ILOsList[ilo];
+
+                try {
+                    iloContentTxt.Text = currentBua.ILOsList[ilo];
+                } catch(ArgumentOutOfRangeException) {
+                    Console.WriteLine("WARN: Drawing more ILO controls than there are ILOs");
+                }
+
                 iloContentTxt.Height = 70;
-                iloContentTxt.Width = 400;
+                iloContentTxt.Width = 540;
                 iloContentTxt.Padding = new Thickness(5, 5, 5, 5);
                 iloContentTxt.AcceptsReturn = true; //multiline textbox
                 iloContentTxt.TextWrapping = TextWrapping.Wrap;
@@ -85,6 +97,12 @@ namespace CATS
                     iloDeleteBtn.Padding = new Thickness(5, 5, 5, 5);
                     iloDeleteBtn.Tag = ilo;
                     iloDeleteBtn.AddHandler(Button.ClickEvent, new RoutedEventHandler(iloDeleteBtn_Click));
+                    iloDeleteBtn.Content = new Image
+                    {
+                        Source = new BitmapImage(new Uri("pack://application:,,,/img/icons/baseline_delete_black_18dp.png")),
+                        Height = 30,
+                        Width = 30,
+                    };
 
                     StackPanel singlestack = new StackPanel();
                     singlestack.Orientation = Orientation.Horizontal;
@@ -121,20 +139,7 @@ namespace CATS
         /// </summary>
         private void iloContentTxt_TextChanged(object sender, RoutedEventArgs e)
         {
-            try {
-                List<string> tempILOsList = new List<string>();
-
-                //Keep this code absolutely minimal, as this event fires every time a character changes in one of the dynamic ILO content boxes
-                for (int row = 0; row < iloFullStack.Children.Count; row++) {
-                    StackPanel rowStack = (StackPanel)iloFullStack.Children[row];
-                    TextBox contentTxt = (TextBox)rowStack.Children[1]; //the second ("1") child of a single stack is always the content textbox
-                    tempILOsList.Add(contentTxt.Text);
-                }
-
-                currentBua.ILOsList = tempILOsList;
-            } catch (NullReferenceException) {
-                Console.Error.WriteLine("WARN: Event fired before object initialisation ");
-            }
+            saveILOChanges();
         }
 
         /// <summary>
@@ -153,7 +158,10 @@ namespace CATS
                     iloFullStack.Children.RemoveAt(row);
                 }
             }
+
             updateILONumbering();
+            saveILOChanges();
+            updateAddButtonState();
         }
 
         /// <summary>
@@ -177,7 +185,7 @@ namespace CATS
             iloNewContentTxt.FontFamily = new FontFamily("Arial");
             iloNewContentTxt.FontSize = 14;
             iloNewContentTxt.Height = 70;
-            iloNewContentTxt.Width = 400;
+            iloNewContentTxt.Width = 540;
             iloNewContentTxt.Padding = new Thickness(5, 5, 5, 5);
             iloNewContentTxt.AcceptsReturn = true; //multiline textbox
             iloNewContentTxt.TextWrapping = TextWrapping.Wrap;
@@ -194,6 +202,12 @@ namespace CATS
             iloNewDeleteBtn.Padding = new Thickness(5, 5, 5, 5);
             iloNewDeleteBtn.Tag = iloFullStack.Children.Count;
             iloNewDeleteBtn.AddHandler(Button.ClickEvent, new RoutedEventHandler(iloDeleteBtn_Click));
+            iloNewDeleteBtn.Content = new Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/img/icons/baseline_delete_black_18dp.png")),
+                Height = 30,
+                Width = 30,
+            };
 
             StackPanel wrapstack = new StackPanel();
             wrapstack.Name = "rowStk_" + iloFullStack.Children.Count;
@@ -203,6 +217,36 @@ namespace CATS
             wrapstack.Children.Add(iloNewDeleteBtn);
 
             iloFullStack.Children.Add(wrapstack);
+            updateAddButtonState();
+        }
+
+        private void saveILOChanges()
+        {
+            try {
+                List<string> tempILOsList = new List<string>();
+
+                //Keep this code absolutely minimal, as this event fires every time a character changes in one of the dynamic ILO content boxes
+                for (int row = 0; row < iloFullStack.Children.Count; row++) {
+                    StackPanel rowStack = (StackPanel)iloFullStack.Children[row];
+                    TextBox contentTxt = (TextBox)rowStack.Children[1]; //the second ("1") child of a single stack is always the content textbox
+                    if(contentTxt.Text.Length > 0) {
+                        tempILOsList.Add(contentTxt.Text); //only save ILOs that aren't string empty
+                    }
+                }
+
+                currentBua.ILOsList = tempILOsList;
+            } catch (NullReferenceException) {
+                Console.Error.WriteLine("WARN: Event fired before object initialisation ");
+            }
+        }
+
+        private void updateAddButtonState()
+        {
+            if(iloFullStack.Children.Count == MAX_NUMBER_ILOS) {
+                iloAddBtn.IsEnabled = false; //if max number of ILOs reached, disable add button
+            } else {
+                iloAddBtn.IsEnabled = true;
+            }
         }
 
         private void updateILONumbering()

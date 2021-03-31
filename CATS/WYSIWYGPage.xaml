@@ -23,7 +23,6 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock x:Name="editSideTb" FontFamily="Arial" FontSize="13" VerticalAlignment="Center" Text="Prompt" Margin="0,0,0,15" Grid.Column="0" Grid.Row="0"/>
-                <TextBlock x:Name="previewSideTb" FontFamily="Arial" FontSize="13" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Preview" Margin="0,0,0,15" Grid.Column="1" Grid.Row="0"/>
             </Grid>
         </StackPanel>
         <Button x:Name="saveBtn" FontFamily="Arial" FontSize="14" Content="Save Changes" Padding="27,3,27,3" Margin="0,15,0,0" DockPanel.Dock="Bottom" Click="saveBtn_Click"/>

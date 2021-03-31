@@ -5,14 +5,14 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CATS"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="500" d:DesignWidth="800"
       Background="#252525"
       Foreground="#FFFFFF"
       Title="ILOsPage">
     <DockPanel Margin="30" LastChildFill="True">
         <TextBlock x:Name="ilosTb" FontFamily="Arial" FontSize="14" VerticalAlignment="Center" Text="Intended Learning Outcomes (ILOs):" DockPanel.Dock="Top" MouseUp="ilosTb_MouseUp"/>
         <Button x:Name="iloAddBtn" FontFamily="Arial" FontSize="14" Content="Add another ILO" Padding="27,3,27,3" HorizontalAlignment="Right" Click="iloAddBtn_Click" DockPanel.Dock="Bottom"/>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0,15,0,0">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0,15,0,15">
             <Canvas x:Name="ilosCanvas" Height="0">
 
             </Canvas>

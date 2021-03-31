@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Smith.WPF.HtmlEditor;
 
 namespace CATS
@@ -25,6 +26,7 @@ namespace CATS
     /// </summary>
     public partial class WYSIWYGPage : Page
     {
+        private const int AUTOSAVE_TIMER_INTERVAL_SECS = 22;
         private const string ASSESSMENT_TASK_PROMPT =
             "";
         private const string SUBMISSION_FORMAT_PROMPT =
@@ -50,6 +52,19 @@ namespace CATS
             areaBeingEdited = area;
             editAreaTb.Text = areaBeingEdited + " editor:";
             populateFields();
+        }
+
+        private void startSaveCooldown()
+        {
+            DispatcherTimer saveCooldownTimer = new DispatcherTimer();
+            saveCooldownTimer.Tick += saveCooldownTimer_Tick;
+            saveCooldownTimer.Interval = new TimeSpan(0, 0, 3);
+            saveCooldownTimer.Start();
+        }
+
+        private void saveCooldownTimer_Tick(object sender, EventArgs e)
+        {
+            saveBtn.Content = "Save Changes";
         }
 
         /// <summary>
@@ -95,6 +110,7 @@ namespace CATS
                     break;
             }
             currentBua.saveAsJson(callingWindow.currentFilePath);
+            startSaveCooldown();
         }
 
         /// <summary>
@@ -131,6 +147,7 @@ namespace CATS
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
             saveChanges();
+            saveBtn.Content = "Saved";
         }
     }
 }
