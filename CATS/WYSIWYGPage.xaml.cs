@@ -1,21 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using HtmlAgilityPack;
-using Smith.WPF.HtmlEditor;
 
 namespace CATS
 {
@@ -36,8 +25,6 @@ namespace CATS
             "details of electronic copies/hard copies, where/how to submit...";
         private const string MARKING_CRITERIA_PROMPT =
             "Ensure these map to ILOs. The following criteria will be used to assess the assignment...";
-        private const string QUESTIONS_ABOUT_BRIEF_PROMPT =
-            "Describe how questions about the brief will be handled (e.g., tutorials/seminar/forum)...";
 
         private PagedWindow callingWindow;
         private BUAssessment currentBua;

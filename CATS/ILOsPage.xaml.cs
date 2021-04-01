@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CATS
 {
@@ -43,6 +36,9 @@ namespace CATS
             createDynamicControls();
         }
 
+        /// <summary>
+        /// Create initial ILO controls to represent the current number of ILOs in the BUA object
+        /// </summary>
         private void createDynamicControls()
         {
             //Ensure canvas is reset before drawing
@@ -135,6 +131,64 @@ namespace CATS
         }
 
         /// <summary>
+        /// Update the BUA object ILO list with the contents of the dynamic ILO textboxes
+        /// </summary>
+        private void saveILOChanges()
+        {
+            try
+            {
+                List<string> tempILOsList = new List<string>();
+
+                //Keep this code absolutely minimal, as this event fires every time a character changes in one of the dynamic ILO content boxes
+                for (int row = 0; row < iloFullStack.Children.Count; row++)
+                {
+                    StackPanel rowStack = (StackPanel)iloFullStack.Children[row];
+                    TextBox contentTxt = (TextBox)rowStack.Children[1]; //the second ("1") child of a single stack is always the content textbox
+                    if (contentTxt.Text.Length > 0)
+                    {
+                        tempILOsList.Add(contentTxt.Text); //only save ILOs that aren't string empty
+                    }
+                }
+
+                currentBua.ILOsList = tempILOsList;
+            }
+            catch (NullReferenceException)
+            {
+                Console.Error.WriteLine("WARN: Event fired before object initialisation ");
+            }
+        }
+
+        /// <summary>
+        /// Enable/disable the "add ILO" button depending on the current number of ILOs compared to the maximum
+        /// </summary>
+        private void updateAddButtonState()
+        {
+            if (iloFullStack.Children.Count == MAX_NUMBER_ILOS)
+            {
+                iloAddBtn.IsEnabled = false; //if max number of ILOs reached, disable add button
+            }
+            else
+            {
+                iloAddBtn.IsEnabled = true;
+            }
+        }
+
+        /// <summary>
+        /// Update the index numbers for the rows of ILO controls.
+        /// (e.g., if you have "1, 2, 3" and you delete "2", you end up with "1, 2" instead of "1, 3" (missing number))
+        /// </summary>
+        private void updateILONumbering()
+        {
+            for (int row = 0; row < iloFullStack.Children.Count; row++)
+            {
+                StackPanel rowStack = (StackPanel)iloFullStack.Children[row];
+                TextBlock numberTb = (TextBlock)rowStack.Children[0]; //the first child of a single stack is always the number text block
+                numberTb.Text = (row + 1) + ".";
+            }
+        }
+
+        #region Event handlers
+        /// <summary>
         /// When the content of a dynamic ILO textbox is changed
         /// </summary>
         private void iloContentTxt_TextChanged(object sender, RoutedEventArgs e)
@@ -219,43 +273,6 @@ namespace CATS
             iloFullStack.Children.Add(wrapstack);
             updateAddButtonState();
         }
-
-        private void saveILOChanges()
-        {
-            try {
-                List<string> tempILOsList = new List<string>();
-
-                //Keep this code absolutely minimal, as this event fires every time a character changes in one of the dynamic ILO content boxes
-                for (int row = 0; row < iloFullStack.Children.Count; row++) {
-                    StackPanel rowStack = (StackPanel)iloFullStack.Children[row];
-                    TextBox contentTxt = (TextBox)rowStack.Children[1]; //the second ("1") child of a single stack is always the content textbox
-                    if(contentTxt.Text.Length > 0) {
-                        tempILOsList.Add(contentTxt.Text); //only save ILOs that aren't string empty
-                    }
-                }
-
-                currentBua.ILOsList = tempILOsList;
-            } catch (NullReferenceException) {
-                Console.Error.WriteLine("WARN: Event fired before object initialisation ");
-            }
-        }
-
-        private void updateAddButtonState()
-        {
-            if(iloFullStack.Children.Count == MAX_NUMBER_ILOS) {
-                iloAddBtn.IsEnabled = false; //if max number of ILOs reached, disable add button
-            } else {
-                iloAddBtn.IsEnabled = true;
-            }
-        }
-
-        private void updateILONumbering()
-        {
-            for (int row = 0; row < iloFullStack.Children.Count; row++) {
-                StackPanel rowStack = (StackPanel)iloFullStack.Children[row];
-                TextBlock numberTb = (TextBlock)rowStack.Children[0]; //the first child of a single stack is always the number text block
-                numberTb.Text = (row + 1) + ".";
-            }
-        }
+        #endregion
     }
 }

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
-using System.Web;
 using Nancy.Helpers;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -146,47 +143,64 @@ namespace CATS
             string decodedImagePath = fullImagePath.Substring(8); //ignore the "file///" URI prefix
             decodedImagePath = HttpUtility.UrlDecode(decodedImagePath);
 
-            //Compress images - don't create a Base 64 data URI for a raw 4MB (or so) photograph - that's silly!
+            //We have the filepath, now compress the image - don't create a Base 64 data URI for a raw 4MB (or so) photograph
             MemoryStream compressedImageStream = new MemoryStream();
             Image compressedImage = compressImage(decodedImagePath, 40); //40% JPEG quality for compressed images
 
-            //Base 64 encode the byte array
+            //Base 64 encode the byte array of the compressed image
             compressedImage.Save(compressedImageStream, ImageFormat.Jpeg);
             byte[] compressedImageBytes = compressedImageStream.ToArray();
             return Convert.ToBase64String(compressedImageBytes);
         }
 
-        //https://stackoverflow.com/users/3152130/taw's lossy image compressor
-        public Image compressImage(string fileName, int newQuality) // set quality to 1-100, eg 50
+        #region https://stackoverflow.com/users/3152130/taw's lossy image compressor
+        /// <summary>
+        /// Compresses the specified image to a JPEG with the specified quality percent
+        /// </summary>
+        /// <param name="imageFilePath">The file to compress</param>
+        /// <param name="imageQualityPercent">The JPEG quality percentage of the returned image</param>
+        /// <returns>The compressed version of the specified image (always a JPG)</returns>
+        public Image compressImage(string imageFilePath, int imageQualityPercent)
         {
-            Image image = Image.FromFile(fileName);
+            Image image = Image.FromFile(imageFilePath);
             using (Image memImage = new Bitmap(image, image.Width, image.Height))
             {
-                ImageCodecInfo myImageCodecInfo;
-                System.Drawing.Imaging.Encoder myEncoder;
-                EncoderParameter myEncoderParameter;
-                EncoderParameters myEncoderParameters;
-                myImageCodecInfo = GetEncoderInfo("image/jpeg");
-                myEncoder = System.Drawing.Imaging.Encoder.Quality;
-                myEncoderParameters = new EncoderParameters(1);
-                myEncoderParameter = new EncoderParameter(myEncoder, newQuality);
-                myEncoderParameters.Param[0] = myEncoderParameter;
+                //Declarations
+                ImageCodecInfo imageCodecInfo;
+                System.Drawing.Imaging.Encoder imageEncoder;
+                EncoderParameter encoderParameter;
+                EncoderParameters encoderParameters;
 
+                //Set up the compression encoder
+                imageCodecInfo = GetEncoderInfo("image/jpeg");
+                imageEncoder = System.Drawing.Imaging.Encoder.Quality;
+                encoderParameters = new EncoderParameters(1);
+                encoderParameter = new EncoderParameter(imageEncoder, imageQualityPercent);
+                encoderParameters.Param[0] = encoderParameter;
+
+                //Save the compressed image using the encoder
                 MemoryStream memStream = new MemoryStream();
-                memImage.Save(memStream, myImageCodecInfo, myEncoderParameters);
+                memImage.Save(memStream, imageCodecInfo, encoderParameters);
                 Image newImage = Image.FromStream(memStream);
-                ImageAttributes imageAttributes = new ImageAttributes();
+
+                //Set the size of the image - currently keeps default size (can replace newImage.Width/Height with desired size)
                 using (Graphics g = Graphics.FromImage(newImage))
                 {
                     g.InterpolationMode =
-                      System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;  //**
+                      System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                     g.DrawImage(newImage, new Rectangle(System.Drawing.Point.Empty, newImage.Size), 0, 0,
-                      newImage.Width, newImage.Height, GraphicsUnit.Pixel, imageAttributes);
+                      newImage.Width, newImage.Height, GraphicsUnit.Pixel, new ImageAttributes());
                 }
-                Console.WriteLine("compressed " + fileName);
+                Console.WriteLine("compressed " + imageFilePath);
                 return newImage;
             }
         }
+
+        /// <summary>
+        /// Gets a valid specified image encoder
+        /// </summary>
+        /// <param name="mimeType">The mime type of the output image</param>
+        /// <returns>A valid image encoder</returns>
         private static ImageCodecInfo GetEncoderInfo(String mimeType)
         {
             ImageCodecInfo[] encoders;
@@ -198,6 +212,7 @@ namespace CATS
             }
             return null;
         }
+        #endregion
 
         /// <summary>
         /// Converts the filepath image sources within the provided HTML to base 64 data sources
@@ -405,8 +420,14 @@ namespace CATS
             }
         }
 
-        //https://www.c-sharpcorner.com/blogs/how-to-merge-multiple-pdf-files-with-page-number-using-pdfsharp-in-c-sharp
-        //could also use this method to add watermarks
+        #region based on https://www.c-sharpcorner.com/blogs/how-to-merge-multiple-pdf-files-with-page-number-using-pdfsharp-in-c-sharp
+        /// <summary>
+        /// Merges the specified PDF files to a document that is output to the specified file
+        /// And adds page numbers for the brief
+        /// And adds "DRAFT" watermark for the brief
+        /// </summary>
+        /// <param name="outputFilePath">The destination for the merged and finalised PDF file</param>
+        /// <param name="appendixFilePaths">The list of PDF files to stitch together - the first should be the brief</param>
         public void mergeMultiplePDFIntoSinglePDF(string outputFilePath, List<string> appendixFilePaths)
         {
             int pageCountOnlyForBrief = 0;
@@ -463,6 +484,7 @@ namespace CATS
             // In the final stage, all documents are merged and save in your output file path.  
             finalPdfDocument.Save(outputFilePath);
         }
+        #endregion
 
         //Metadata
         public DateTime createdDate { get; set; }

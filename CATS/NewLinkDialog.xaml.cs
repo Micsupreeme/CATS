@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace CATS
 {
     /// <summary>
-    /// Interaction logic for NewLinkDialog.xaml
+    /// Interaction logic for NewLinkDialog.xaml - THIS DIALOG IS NOT CURRENTLY BEING USED BECAUSE IT IS CALLED ONLY BY OBSOLETE HtmlPage
     /// </summary>
     public partial class NewLinkDialog : Window
     {
