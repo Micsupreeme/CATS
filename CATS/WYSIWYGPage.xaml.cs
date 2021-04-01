@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using HtmlAgilityPack;
 using Smith.WPF.HtmlEditor;
 
 namespace CATS
@@ -26,7 +27,8 @@ namespace CATS
     /// </summary>
     public partial class WYSIWYGPage : Page
     {
-        private const int AUTOSAVE_TIMER_INTERVAL_SECS = 22;
+        private const int MAXIMUM_IMAGE_WIDTH = 1000; //After 1000px, images start changing the proportions of the document
+
         private const string ASSESSMENT_TASK_PROMPT =
             "";
         private const string SUBMISSION_FORMAT_PROMPT =
@@ -97,13 +99,16 @@ namespace CATS
             switch (areaBeingEdited)
             {
                 case "Assessment Task":
-                    currentBua.assessmentTaskHtml = smithEditor.ContentHtml;
+                    currentBua.assessmentTaskHtml = limitOversizedImages(fixImageStyleSizes(smithEditor.ContentHtml));
+                    smithEditor.ContentHtml = currentBua.assessmentTaskHtml;
                     break;
                 case "Submission Format":
-                    currentBua.submissionFormatHtml = smithEditor.ContentHtml;
+                    currentBua.submissionFormatHtml = limitOversizedImages(fixImageStyleSizes(smithEditor.ContentHtml));
+                    smithEditor.ContentHtml = currentBua.submissionFormatHtml;
                     break;
                 case "Marking Criteria":
-                    currentBua.markingCriteriaHtml = smithEditor.ContentHtml;
+                    currentBua.markingCriteriaHtml = limitOversizedImages(fixImageStyleSizes(smithEditor.ContentHtml));
+                    smithEditor.ContentHtml = currentBua.markingCriteriaHtml;
                     break;
                 default:
                     Console.Error.WriteLine("ERROR: Invalid HTML editing area specified");
@@ -111,6 +116,98 @@ namespace CATS
             }
             currentBua.saveAsJson(callingWindow.currentFilePath);
             startSaveCooldown();
+        }
+
+        /// 1000 pixels is the maximum width an image can have before it starts changing the proportions of the rest of the document
+        private string limitOversizedImages(string html)
+        {
+            HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+            try {
+                htmlDoc.LoadHtml(html);
+            } catch (ArgumentNullException) {
+                Console.WriteLine("WARN: No HTML to process!");
+                return String.Empty;
+            }
+
+            try {
+                foreach (HtmlNode imageNode in htmlDoc.DocumentNode.SelectNodes("//img")) {
+                    string srcVal = imageNode.Attributes["width"].Value;
+
+                    try {
+                        int widthVal = Int32.Parse(imageNode.Attributes["width"].Value);
+                        if (widthVal > MAXIMUM_IMAGE_WIDTH) {
+                            imageNode.Attributes["width"].Value = MAXIMUM_IMAGE_WIDTH + "";
+                            imageNode.Attributes["height"].Value = "auto"; //Automatic height according to the image ratio
+                        }
+                    } catch (Exception) {
+                        Console.WriteLine("WARN: Attempted to convert alphabet to int!");
+                    }
+                }
+            } catch (NullReferenceException) {
+                Console.Error.WriteLine("ERROR: No image nodes returned during image encoding");
+            }
+            return htmlDoc.DocumentNode.OuterHtml;
+        }
+
+        /// When an image is resized in Smith.WPF.Htmleditor, the new size is stored as a width and height inside the style attribute.
+        /// This method moves these attributes out from the style attribute and back into the regular width and height attributes.
+        /// Keeping width and height in the same attributes makes it easier to enforce width and height regulations.
+        private string fixImageStyleSizes(string html)
+        {
+            HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+            try {
+                htmlDoc.LoadHtml(html);
+            } catch (ArgumentNullException) {
+                Console.WriteLine("WARN: No HTML to process!");
+                return String.Empty;
+            }
+
+            try {
+                foreach (HtmlNode imageNode in htmlDoc.DocumentNode.SelectNodes("//img")) {
+
+                    if (imageNode.Attributes["style"] != null) {
+                        //This image has a style attribute
+                        Console.WriteLine("processing an image style attribute");
+
+                        //Split the style attribute into seperate attributes and remove spaces
+                        string[] styleAttributes = imageNode.Attributes["style"].Value.Split(';');
+                        for(int style = 0; style < styleAttributes.Length; style++) {
+                            styleAttributes[style] = Regex.Replace(styleAttributes[style], " ", ""); //remove spaces
+                        }
+
+                        //Split the seperated style attributes into key-value pairs (stored in parallel lists)
+                        List<string> fullSplitNames = new List<string>();
+                        List<string> fullSplitValues = new List<string>();
+                        foreach(string styleAtt in styleAttributes)
+                        {
+                            string[] attValSplit = styleAtt.Split(':');
+                            fullSplitNames.Add(attValSplit[0]); //Key (e.g., height)
+                            fullSplitValues.Add(attValSplit[1]); //Value (e.g., 20px)
+                        }
+
+                        //If "width" and "height" style attributes are found, move those values to the regular "width" and "height" attributes
+                        string rebuiltStyleAttribute = String.Empty;
+                        for (int s = 0; s < fullSplitNames.Count; s++)
+                        {
+                            if(fullSplitNames[s].Equals("WIDTH")) {
+                                //Found style width attribute - make the regular width attribute this value
+                                imageNode.Attributes["width"].Value = fullSplitValues[s];
+                            } else if(fullSplitNames[s].Equals("HEIGHT")) {
+                                //Found style height attribute - make the regular height attribute this value
+                                imageNode.Attributes["height"].Value = fullSplitValues[s];
+                            } else {
+                                //This preserves any non-width and non-height style attributes - effectively moving them out of the style attributes
+                                rebuiltStyleAttribute += fullSplitNames[s] + ": " + fullSplitValues[s] + ";";
+                            }
+                        }
+                        //Update the style tag to the rebuilt version which omits width and height
+                        imageNode.Attributes["style"].Value = rebuiltStyleAttribute;
+                    }
+                }
+            } catch (NullReferenceException) {
+                Console.Error.WriteLine("ERROR: No image nodes returned during image encoding");
+            }
+            return htmlDoc.DocumentNode.OuterHtml;
         }
 
         /// <summary>

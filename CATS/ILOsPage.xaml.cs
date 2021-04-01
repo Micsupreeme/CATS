@@ -257,11 +257,5 @@ namespace CATS
                 numberTb.Text = (row + 1) + ".";
             }
         }
-
-        //TEMPORARY EXPORT TEST - REMOVE THIS
-        private void ilosTb_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            currentBua.convertHtmlToPdf(currentBua.getHtmlDocument());
-        }
     }
 }

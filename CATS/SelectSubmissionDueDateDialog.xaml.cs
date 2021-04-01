@@ -62,10 +62,8 @@ namespace CATS
         /// <returns></returns>
         List<string[]> getCsvDataArray(string csvPath, string searchTerm)
         {
-            try
-            {
-                using (csvReader = new CachedCsvReader(new StreamReader(csvPath), true))
-                {
+            try {
+                using (csvReader = new CachedCsvReader(new StreamReader(csvPath), true)) {
                     List<string[]> filteredRecords = new List<string[]>();
                     csvReader.ReadToEnd();
 
@@ -74,7 +72,6 @@ namespace CATS
 
                         //Only add the record if it matches the filters
                         if (submissionDateChe.IsChecked == true) {
-
                             //Search term + Has submission due date
                             if (filteredRecords.Count < IMP_RECORDS_LIMIT) {
                                 //Only add records if the record limit is not exceeded
@@ -83,18 +80,15 @@ namespace CATS
                                     filteredRecords.Add(trimmedRecord);
                                 }
                             }
-
                         } else {
-
                             //Search term only
                             if (filteredRecords.Count < IMP_RECORDS_LIMIT) {
                                 //Only add records if the record limit is not exceeded
                                 if (csvReader.Records[i][4].Contains(searchTerm)) {
-                                    string[] trimmedRecord = new string[4] { csvReader.Records[i][7], csvReader.Records[i][6], csvReader.Records[i][4], csvReader.Records[i][25] };
+                                    string[] trimmedRecord = new string[4] { csvReader.Records[i][IMP_SEMESTER_COL_INDEX], csvReader.Records[i][IMP_LEVEL_COL_INDEX], csvReader.Records[i][IMP_UNIT_TITLE_COL_INDEX], csvReader.Records[i][IMP_SUBMISSION_DATE_COL_INDEX] };
                                     filteredRecords.Add(trimmedRecord);
                                 }
                             }
-
                         }
                     }
                     return filteredRecords;

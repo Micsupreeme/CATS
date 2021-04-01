@@ -35,7 +35,7 @@
     <BootstrapperEnabled>false</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -133,6 +133,9 @@
     <Compile Include="ChangeDateDialog.xaml.cs">
       <DependentUpon>ChangeDateDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ExportPage.xaml.cs">
+      <DependentUpon>ExportPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="HtmlPage.xaml.cs">
       <DependentUpon>HtmlPage.xaml</DependentUpon>
     </Compile>
@@ -154,6 +157,9 @@
     <Compile Include="PagedWindow.xaml.cs">
       <DependentUpon>PagedWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="QuestionsSignaturePage.xaml.cs">
+      <DependentUpon>QuestionsSignaturePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SelectSubmissionDueDateDialog.xaml.cs">
       <DependentUpon>SelectSubmissionDueDateDialog.xaml</DependentUpon>
     </Compile>
@@ -174,6 +180,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ChangeDateDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExportPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -214,6 +224,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PagedWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="QuestionsSignaturePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

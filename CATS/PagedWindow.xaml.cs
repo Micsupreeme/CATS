@@ -96,12 +96,32 @@ namespace CATS
                 case 6:
                     mainFrame.Content = new ILOsPage(currentBua);
                     prevBtn.Visibility = Visibility.Visible;
-                    nextBtn.Visibility = Visibility.Hidden; //Cannot go forward from the last page
+                    nextBtn.Visibility = Visibility.Visible;
 
                     this.Width = 770;
                     this.Height = 550;
                     this.WindowState = WindowState.Normal;
                     currentPageNumber = 6;
+                    break;
+                case 7:
+                    mainFrame.Content = new QuestionsSignaturePage(currentBua);
+                    prevBtn.Visibility = Visibility.Visible;
+                    nextBtn.Visibility = Visibility.Visible;
+
+                    this.Width = 770;
+                    this.Height = 500;
+                    this.WindowState = WindowState.Normal;
+                    currentPageNumber = 7;
+                    break;
+                case 8:
+                    mainFrame.Content = new ExportPage(currentBua, currentFilePath);
+                    prevBtn.Visibility = Visibility.Visible;
+                    nextBtn.Visibility = Visibility.Hidden; //Cannot go forward from the last page
+
+                    this.Width = 770;
+                    this.Height = 500;
+                    this.WindowState = WindowState.Normal;
+                    currentPageNumber = 8;
                     break;
                 default:
                     Console.Error.WriteLine("ERROR: Invalid page specified");
