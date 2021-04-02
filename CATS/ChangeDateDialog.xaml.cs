@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace CATS
 {
@@ -21,12 +12,38 @@ namespace CATS
         WeightDatePage callingPage; //Storing this enables this window to call for the WeightDate page to update its sdd value according to the newly change bua object
         private BUAssessment currentBua;
 
-        public ChangeDateDialog(WeightDatePage caller, BUAssessment bua)
+        public ChangeDateDialog(WeightDatePage caller, BUAssessment bua, bool elevate)
         {
             InitializeComponent();
             callingPage = caller;
             currentBua = bua;
+            if(elevate) {
+                enableElevatedOptions();
+            }
             populateFields();
+        }
+
+        /// <summary>
+        /// Enables elevated user exclusive options
+        /// </summary>
+        private void enableElevatedOptions()
+        {
+            //Normally these controls have greyed-out colours to indicate restricted interaction
+            //Changing the colours adds a visual confirmation that they have been unlocked
+            SolidColorBrush buRed2Brush = new SolidColorBrush(Color.FromRgb(243, 58, 63)); //#C32129
+            SolidColorBrush whiteBrush = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+
+            changeTimehhTxt.IsReadOnly = false;
+            changeTimehhTxt.Foreground = buRed2Brush;
+            changeTimehhTxt.Background = whiteBrush;
+
+            changeTimemmTxt.IsReadOnly = false;
+            changeTimemmTxt.Foreground = buRed2Brush;
+            changeTimemmTxt.Background = whiteBrush;
+
+            changeTimeAMPMCmb.IsEnabled = true;
+            changeTimeAMPMCmb.Foreground = buRed2Brush;
+            changeTimeAMPMCmb.Background = whiteBrush;
         }
 
         /// <summary>

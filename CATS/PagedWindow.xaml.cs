@@ -8,19 +8,19 @@ namespace CATS
     /// </summary>
     public partial class PagedWindow : Window
     {
-        private bool isElevated;
+        private bool currentElevation;
         public string currentFilePath;
         BUAssessment currentBua;
         MainWindow callingWindow;
         int currentPageNumber = 0; //Page 0 is the first page
 
-        public PagedWindow(MainWindow caller, BUAssessment bua, string buaFilePath, bool elevated)
+        public PagedWindow(MainWindow caller, BUAssessment bua, string buaFilePath, bool elevate)
         {
             InitializeComponent();
             callingWindow = caller;
             currentBua = bua;
             currentFilePath = buaFilePath;
-            isElevated = elevated;
+            currentElevation = elevate;
             this.Title = currentFilePath + " - CATS";
             navigatePage(currentPageNumber); //Initialise the frame by setting it to show the first page
         }
@@ -44,7 +44,7 @@ namespace CATS
                     currentPageNumber = 0;
                     break;
                 case 1:
-                    mainFrame.Content = new WeightDatePage(currentBua);
+                    mainFrame.Content = new WeightDatePage(currentBua, currentElevation);
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Visible;
 
@@ -114,12 +114,12 @@ namespace CATS
                     currentPageNumber = 7;
                     break;
                 case 8:
-                    mainFrame.Content = new ExportPage(currentBua, currentFilePath);
+                    mainFrame.Content = new ExportPage(currentBua, currentFilePath, currentElevation);
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Hidden; //Cannot go forward from the last page
 
                     this.Width = 770;
-                    this.Height = 500;
+                    this.Height = 550;
                     this.WindowState = WindowState.Normal;
                     currentPageNumber = 8;
                     break;

@@ -5,14 +5,34 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CATS"
       mc:Ignorable="d" 
-            d:DesignHeight="450" d:DesignWidth="770"
+      d:DesignHeight="450" d:DesignWidth="770"
       Background="#252525"
       Foreground="#FFFFFF"
       Title="ExportPage">
     <StackPanel Margin="30">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="exportFolderTb" FontFamily="Arial" FontSize="14" Text="Export folder:" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,5"/>
+            <TextBox x:Name="exportFolderTxt" FontFamily="Arial" FontSize="14" Padding="5" IsReadOnly="True" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" BorderThickness="0" Background="#555555" Foreground="#FFFFFF"/>
+            <Button x:Name="exportFolderBtn" FontFamily="Arial" FontSize="14" Content="Browse..." Grid.Column="1" Grid.Row="1" Click="exportFolderBtn_Click"/>
+            <TextBlock x:Name="exportFileTb" FontFamily="Arial" FontSize="14" Text="Export File name:" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,5"/>
+            <TextBox x:Name="exportFileTxt" FontFamily="Arial" FontSize="14" Text="Assignment1" Padding="5" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"/>
+        </Grid>
         <Separator Margin="0,30,0,30"/>
-        <TextBlock x:Name="exportTb" FontFamily="Arial" FontSize="14" Text="Export Coursework Assignment Brief:"/>
-        <Button x:Name="exportPdfBtn" FontFamily="Arial" FontSize="14" Content="Export to PDF (with Appendicies)" Padding="27,3,27,3" Margin="20" Click="exportPdfBtn_Click"/>
-        <Button x:Name="exportPdfBtn1" FontFamily="Arial" FontSize="14" Content="test image compress" Padding="27,3,27,3" Margin="20" Click="exportPdfBtn1_Click"/>
+        <TextBlock x:Name="appendicesTb" FontFamily="Arial" FontSize="14" Text="Appendix controls here:"/>
+        <TextBlock x:Name="appendicesWarnTb" FontFamily="Arial" FontSize="14" Text="Please ensure the documents you have selected to append are not currently open in another application"/>
+        <Separator Margin="0,30,0,30"/>
+        <Button x:Name="exportPdfBtn" FontFamily="Arial" FontSize="14" Content="Export to PDF" Padding="27,3,27,3" Margin="20,0,20,0" Click="exportPdfBtn_Click"/>
+        <Button x:Name="exportFinalPdfBtn" FontFamily="Arial" FontSize="14" Content="Export to Final PDF" Padding="27,3,27,3" Margin="20,20,20,0" Background="#F48886" Click="exportFinalPdfBtn_Click" Visibility="Collapsed"/>
     </StackPanel>
 </Page>

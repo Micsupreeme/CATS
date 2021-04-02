@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Nancy.Helpers;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.ComponentModel;
 
 namespace CATS
 {
@@ -389,8 +390,10 @@ namespace CATS
         /// Converts the specified HTML document string to an assessment brief PDF
         /// </summary>
         /// <param name="htmlDocument">The HTML document string to convert to PDF</param>
-        public void convertHtmlToPdf(string htmlDocument)
+        /// <param name="backgroundThread">The thread to report progress percentage to</param>
+        public void convertHtmlToPdf(string htmlDocument, BackgroundWorker backgroundThread)
         {
+            backgroundThread.ReportProgress(0);
             SelectPdf.PdfHtmlSection headerHtml = new SelectPdf.PdfHtmlSection("<p style=\"font-family: Arial; font-size: 7pt; text-align: right;\">June 2019 v1</p>", "");
             headerHtml.AutoFitHeight = SelectPdf.HtmlToPdfPageFitMode.AutoFit;
             SelectPdf.HtmlToPdf converter = new SelectPdf.HtmlToPdf();
@@ -403,14 +406,16 @@ namespace CATS
             converter.Options.DisplayFooter = true;
             converter.Header.Height = 14;
             converter.Header.Add(headerHtml);
+            backgroundThread.ReportProgress(10);
 
             try {
                 SelectPdf.PdfDocument doc = converter.ConvertHtmlString(htmlDocument);
-
+                backgroundThread.ReportProgress(80);
                 Console.WriteLine("Resulting page count: " + converter.ConversionResult.PdfPageCount);
 
-                doc.Save("exported brief.pdf");
+                doc.Save("temp\\exported brief.pdf");
                 doc.Close();
+                backgroundThread.ReportProgress(90);
             } catch(OutOfMemoryException) {
                 Console.Error.WriteLine("Too much image data URI content - out of memory!");
                 //TODO: output to HTML only instead
@@ -428,7 +433,8 @@ namespace CATS
         /// </summary>
         /// <param name="outputFilePath">The destination for the merged and finalised PDF file</param>
         /// <param name="appendixFilePaths">The list of PDF files to stitch together - the first should be the brief</param>
-        public void mergeMultiplePDFIntoSinglePDF(string outputFilePath, List<string> appendixFilePaths)
+        /// <param name="includeWatermark">Whether or not to add a "DRAFT" watermark to this export document</param>
+        public void mergeMultiplePDFIntoSinglePDF(string outputFilePath, List<string> appendixFilePaths, bool includeWatermark)
         {
             int pageCountOnlyForBrief = 0;
 
@@ -444,15 +450,15 @@ namespace CATS
                     }
                     finalPdfDocument.AddPage(pdfPage);
                 }
-                // When document is add in pdf document remove file from folder  
-                //System.IO.File.Delete(pdfFile);
             }
+            //The PDF brief without appendices is only a temporary document, delete it once it's been appended to the final document
+            File.Delete(appendixFilePaths[0]);
 
             //Set font for paging  
             PdfSharp.Drawing.XFont footerFont = new PdfSharp.Drawing.XFont("Arial", 10);
             PdfSharp.Drawing.XBrush footerFontColour = PdfSharp.Drawing.XBrushes.Black;
 
-            //set font for watermark
+            //Set font for watermark
             PdfSharp.Drawing.XFont watermarkFont = new PdfSharp.Drawing.XFont("Arial", 120);
             PdfSharp.Drawing.XBrush watermarkFontColour = PdfSharp.Drawing.XBrushes.Red;
 
@@ -467,22 +473,30 @@ namespace CATS
                 gfx.DrawString("Page " + (pageCount + 1).ToString() + " of " + pageCountOnlyForBrief, footerFont, footerFontColour, footerArea, PdfSharp.Drawing.XStringFormats.Center); //XStringFormats.Center centers the string within the footerarea
                 gfx.Dispose();
 
-                //Draw watermark
-                PdfSharp.Drawing.XRect watermarkArea = new PdfSharp.Drawing.XRect(0 - (page.Width / 4) /*X*/, (page.Height / 2) - watermarkFont.Height /*Y*/, page.Width, (page.Height / 2));
-                PdfSharp.Drawing.XGraphics wfx = PdfSharp.Drawing.XGraphics.FromPdfPage(page);
-                
-                PdfSharp.Drawing.XGraphicsState state = wfx.Save();
-                wfx.RotateAtTransform(-20, new PdfSharp.Drawing.XPoint(0, 0)); //Rotate text by -20 degrees
-                wfx.DrawString("DRAFT", watermarkFont, watermarkFontColour, watermarkArea, PdfSharp.Drawing.XStringFormats.Center);
-                wfx.Restore(state);
-                wfx.Dispose();
+                if(includeWatermark) {
+                    //Draw watermark
+                    PdfSharp.Drawing.XRect watermarkArea = new PdfSharp.Drawing.XRect(0 - (page.Width / 4) /*X*/, (page.Height / 2) - watermarkFont.Height /*Y*/, page.Width, (page.Height / 2));
+                    PdfSharp.Drawing.XGraphics wfx = PdfSharp.Drawing.XGraphics.FromPdfPage(page);
+
+                    PdfSharp.Drawing.XGraphicsState state = wfx.Save();
+                    wfx.RotateAtTransform(-20, new PdfSharp.Drawing.XPoint(0, 0)); //Rotate text by -20 degrees
+                    wfx.DrawString("DRAFT", watermarkFont, watermarkFontColour, watermarkArea, PdfSharp.Drawing.XStringFormats.Center);
+                    wfx.Restore(state);
+                    wfx.Dispose();
+                }
             }
 
             finalPdfDocument.Options.CompressContentStreams = true;
             finalPdfDocument.Options.NoCompression = false;
 
-            // In the final stage, all documents are merged and save in your output file path.  
-            finalPdfDocument.Save(outputFilePath);
+            // In the final stage, all documents are merged and save in your output file path.
+            try {
+                finalPdfDocument.Save(outputFilePath);
+            } catch(IOException) {
+                //File cannot be accessed (e.g. used by another process)
+                Console.WriteLine("ERROR: Unable to write to " + outputFilePath + " - used by another process?");
+                MessageBox.Show("Unable to write to " + outputFilePath + ". It might be locked by another process.", "Export Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         #endregion
 

@@ -129,12 +129,18 @@
     <Compile Include="About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AuthenticateDialog.xaml.cs">
+      <DependentUpon>AuthenticateDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BUAssessment.cs" />
     <Compile Include="ChangeDateDialog.xaml.cs">
       <DependentUpon>ChangeDateDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExportPage.xaml.cs">
       <DependentUpon>ExportPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="exportProgressScreen.xaml.cs">
+      <DependentUpon>exportProgressScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="HtmlPage.xaml.cs">
       <DependentUpon>HtmlPage.xaml</DependentUpon>
@@ -179,11 +185,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="AuthenticateDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ChangeDateDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ExportPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="exportProgressScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

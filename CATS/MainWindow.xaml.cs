@@ -20,6 +20,8 @@ namespace CATS
         private const string MULTIPLE_DRAG_AND_DROP_STRING = "Cannot open multiple files at once!";
         private const string NONBUA_DRAG_AND_DROP_STRING = "Can only open \".bua\" files!";
 
+        private bool hasSuccessfullyAuthenticated = false;
+
         public MainWindow()
         {           
             InitializeComponent();
@@ -30,7 +32,7 @@ namespace CATS
         /// </summary>
         private void createNewBrief()
         {
-            NewBriefDialog newbriefdialog = new NewBriefDialog(this);
+            NewBriefDialog newbriefdialog = new NewBriefDialog(this, hasSuccessfullyAuthenticated);
             newbriefdialog.Visibility = Visibility.Visible;
         }
 
@@ -59,7 +61,7 @@ namespace CATS
             BUAssessment openedBua = new BUAssessment();
             openedBua.loadFromJson(buaFilePath);
 
-            PagedWindow pw = new PagedWindow(this, openedBua, buaFilePath, false);
+            PagedWindow pw = new PagedWindow(this, openedBua, buaFilePath, hasSuccessfullyAuthenticated);
             pw.Visibility = Visibility.Visible;
             this.Visibility = Visibility.Collapsed;
         }
@@ -90,6 +92,18 @@ namespace CATS
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + DEFAULT_SAVE_FOLDER);
             }
             return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + DEFAULT_SAVE_FOLDER;
+        }
+
+        /// <summary>
+        /// Activates elevated user mode if indicated by the boolean input
+        /// </summary>
+        /// <param name="doElevate">True to elevate the user, false otherwise</param>
+        public void toggleAuthenticated(bool doElevate)
+        {
+            if(doElevate) {
+                hasSuccessfullyAuthenticated = true;
+                Console.WriteLine("Elevated!");
+            }
         }
 
         #region Drag-and-Drop event handlers
@@ -184,8 +198,20 @@ namespace CATS
         private void FileExitMi_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
-        }
         
+        }
+
+        /// <summary>
+        /// When the Options > Authenticate button is clicked
+        /// </summary>
+        private void OptionsAuthMi_Click(object sender, RoutedEventArgs e)
+        {
+            if(!hasSuccessfullyAuthenticated) {
+                AuthenticateDialog authenticatedialog = new AuthenticateDialog(this);
+                authenticatedialog.Visibility = Visibility.Visible;
+            }
+        }
+
         /// <summary>
         /// When the Options > About button is clicked
         /// </summary>
@@ -193,6 +219,15 @@ namespace CATS
         {
             About about = new About();
             about.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// When the window is closed (e.g., "X" button)
+        /// Do a complete shutdown (prevents processes from remaining open when they should have stopped)
+        /// </summary>
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
         #endregion
     }

@@ -14,11 +14,13 @@ namespace CATS
 
         MainWindow callingWindow; //Storing this enables the closing of the initial Window when a new BUA is created
         string selectedSaveFolder, selectedSaveFile;
+        private bool hasSuccessfullyAuthenticated;
 
-        public NewBriefDialog(MainWindow caller)
+        public NewBriefDialog(MainWindow caller, bool auth)
         {
             InitializeComponent();
             callingWindow = caller;
+            hasSuccessfullyAuthenticated = auth;
             selectedSaveFolder = getDefaultDocsPath();
             saveFolderTxt.Text = selectedSaveFolder;
         }
@@ -68,7 +70,7 @@ namespace CATS
             BUAssessment newBua = new BUAssessment();
             newBua.saveAsJson(fullPath);
 
-            PagedWindow pw = new PagedWindow(callingWindow, newBua, fullPath, false);
+            PagedWindow pw = new PagedWindow(callingWindow, newBua, fullPath, hasSuccessfullyAuthenticated);
             pw.Visibility = Visibility.Visible;
             this.Visibility = Visibility.Collapsed;
             callingWindow.Visibility = Visibility.Collapsed;

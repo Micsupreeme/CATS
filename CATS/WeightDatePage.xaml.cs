@@ -14,11 +14,13 @@ namespace CATS
             "Comma Separated Values File (*.csv)|*.csv";
 
         private BUAssessment currentBua;
+        private bool currentElevation;
 
-        public WeightDatePage(BUAssessment bua)
+        public WeightDatePage(BUAssessment bua, bool elevate)
         {
             InitializeComponent();
             currentBua = bua;
+            currentElevation = elevate;
             populateFields();
         }
 
@@ -106,7 +108,7 @@ namespace CATS
         /// </summary>
         private void changeSdd()
         {
-            ChangeDateDialog changedatedialog = new ChangeDateDialog(this, currentBua);
+            ChangeDateDialog changedatedialog = new ChangeDateDialog(this, currentBua, currentElevation);
             changedatedialog.Visibility = Visibility.Visible;
         }
 
