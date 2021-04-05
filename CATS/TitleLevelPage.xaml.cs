@@ -165,6 +165,13 @@ namespace CATS
         private void asmtNoYCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try {
+                //Prevent users from being able to specify impossible assessment numbers like "Assessment 3 of 1"
+                if(asmtNoYCmb.SelectedIndex < asmtNoXCmb.SelectedIndex){
+                    while(asmtNoYCmb.SelectedIndex < asmtNoXCmb.SelectedIndex) {
+                        asmtNoYCmb.SelectedIndex++;
+                    }
+                }
+
                 currentBua.asmtNoY = int.Parse(asmtNoYCmb.SelectedValue.ToString());
             } catch (FormatException) {
                 Console.Error.WriteLine("ERROR: Attempted to convert alphabet to int");

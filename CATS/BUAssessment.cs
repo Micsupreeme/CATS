@@ -26,6 +26,7 @@ namespace CATS
         {
             this.createdDate = DateTime.Now;
             this.templateVer = 19.0f; //Hardcoded single template at the moment
+            this.revisionVer = 1;
 
             //TitleLevelPage
             this.unitTitle = String.Empty;
@@ -263,7 +264,7 @@ namespace CATS
         /// Stitches together a HTML document for this assessment brief instance by combining template HTML code with variables
         /// </summary>
         /// <returns>The HTML document string for this instance</returns>
-        public string getHtmlDocument()
+        public string getHtmlDocument(bool includeWatermark, bool forHtmlExport)
         {
             //Some fields need to be prepared before they can be injected into the HTML
 
@@ -299,6 +300,24 @@ namespace CATS
             }
             formattedILOsStr += "</ol>";
 
+            //SelectPDF margins affect the details box differently compared to the CSS print rule margins
+            float boxShadowL, boxShadowR;
+            if(forHtmlExport) {
+                boxShadowL = 22f;
+                boxShadowR = 22.5f;
+            } else {
+                boxShadowL = 25f;
+                boxShadowR = 26f;
+            }
+
+            //SelectPDF already adds this header to every page, but in HTML export mode it needs to be included
+            string headerStr;
+            if(forHtmlExport) {
+                headerStr = "<p style=\"font-family: Arial; font-size: 7pt; text-align: right;\">June 20" + this.templateVer + " (r" + this.revisionVer + ")</p>";
+            } else {
+                headerStr = String.Empty;
+            }
+
             //Stich together HTML sections:
 
             string EXPORT_HEAD_BLOCK =
@@ -310,14 +329,15 @@ namespace CATS
                 "ol, ul {margin-top: 3px; margin-bottom: 3px;}" +
                 "td, th {padding: 2px; border: 1px solid black;}" +
                 "img {page-break-inside: avoid;}" +
-                "table {width: 95%; border-collapse: collapse; page-break-inside: avoid; display: block; margin-left: auto; margin-right: auto;}" +
+                "table {width: 95%; border-collapse: collapse; page-break-inside: avoid; margin-left: auto; margin-right: auto;}" +
                 "@page {margin: 2.54cm;}" + //Only affects default Web Browser print methods - SelectPDF HTML-to-PDF has its own settings to specify margins
                 "* {font-family: Arial; font-size: 10pt;}" +
             "</style>";
             string EXPORT_DETAILS_BLOCK =
                 "</head><body><section id=\"content\">" +
+                headerStr +
                 "<h1 style=\"font-family: Arial; font-size: 12pt; font-weight:bold; background-color: #E5E5E5; text-align: center; padding-top: 5px; padding-bottom: 10px; margin: 0px; line-height: 1.5;\">Faculty of Science and Technology - Department of Computing and Informatics</h1>" +
-                "<table style=\"table-layout: fixed; width: 95%; border-collapse: collapse; margin-left: auto; margin-right: auto;  box-shadow: 25px 0px #E5E5E5, -26px 0px #E5E5E5; background-color: #E5E5E5;\">" +         
+                "<table style=\"table-layout: fixed; width: 95%; border-collapse: collapse; margin-left: auto; margin-right: auto;  box-shadow: " + boxShadowL + "px 0px #E5E5E5, -" + boxShadowR + "px 0px #E5E5E5; background-color: #E5E5E5;\">" +         
                 "<tbody>" +
                 "<tr style=\"padding:5px;\">" +
                 "<th colspan=\"5\" style=\"padding-left: 0px; border: 1px solid black; font-weight: bold; padding-right: 5px;\">Unit Title: " + this.unitTitle + "</th>" +
@@ -368,22 +388,93 @@ namespace CATS
                 "<h2 style=\"padding-top: 10px; font-family: Arial; font-weight: normal; margin-top: 10px; margin-bottom: 10px;\"><b>Signature Marker: </b>" + this.signatureMarker + "</h2>";
             string EXPORT_SUPPORT_BLOCK =
                 "<h2 style=\"padding-top: 10px; font-family: Arial; font-weight: bold; margin-bottom: 2px;\">HELP AND SUPPORT</h2>" +
-                "<p style=\"line-height: 1.1; margin-top: 0px;\">something here</p>";
+                "<ul style=\"line-height: 1.1; padding-top: 7px; font-family: Arial;\">" +
+                "<li>If a piece of coursework is not submitted by the required deadline, the following will apply:" +
+                "<ol style=\"padding-top: 3px; font-family: Arial;\">" +
+                "<li style=\"padding-bottom: 7px;\">If coursework is submitted within 72 hours after the deadline, the maximum mark that can be awarded is 40%. " +
+                "If the assessment achieves a pass mark and subject to the overall performance of the unit and the student's profile for the level, " +
+                "it will be accepted by the Assessment Board as the reassessment piece. The unit will count towards the reassessment allowance for the level; " +
+                "This ruling will apply to written coursework artefacts only; This ruling will apply to the first attempt only (including any subsequent attempt " +
+                "taken as a first attempt due to exceptional circumstances).</li>" +
+                "<li style=\"padding-bottom: 7px;\">If a first attempt coursework is submitted more than 72 hours after the deadline, a mark of zero (0%) will be awarded.</li>" +
+                "<li>Failure to submit/complete any other types of coursework (which includes resubmission coursework without exceptional circumstances) " +
+                "by the required deadline will result in a mark of zero (0%) being awarded.</li>" +
+                "</ol></li></ul>" +
+                "<p style=\"line-height: 1.1; margin-left: 40px; margin-top: 7px; margin-bottom: 7px;\">The Standard Assessment Regulations can be found on<b> Brightspace</b>.</p>" +
+                "<ul style=\"line-height: 1.1; padding-top: 0px; font-family: Arial;\">" +
+                "<li style=\"padding-bottom: 7px;\">If you have any valid <b>exceptional circumstances</b> which mean that you cannot meet an assignment submission deadline " +
+                "and you wish to request an extension, you will need to complete and submit the Exceptional Circumstances Form for consideration to your Programme Support Officer " +
+                "(based in C114) together with appropriate supporting evidence (e.g, GP note) normally <b>before the coursework deadline</b>. Further details on the procedure " +
+                "and the exceptional circumstances form can be found on <b>Brightspace</b>. Please make sure that you read these documents carefully " +
+                "before submitting anything for consideration. For further guidance on exceptional circumstances please see your Programme Leader.</li>" +
+                "<li style=\"padding-bottom: 7px;\">You must acknowledge your source every time you refer to others' work, using the <b>BU Harvard Referencing</b> system " +
+                "(Author Date Method). Failure to do so amounts to plagiarism which is against University regulations. " +
+                "Please refer to <a href=\"http://libguides.bournemouth.ac.uk/bu-referencing-harvard-style\">http://libguides.bournemouth.ac.uk/bu-referencing-harvard-style</a> " +
+                "for the University's guide to citation in the Harvard style. Also be aware of Self-plagiarism, this primarily occurs when a student submits a piece of work " +
+                "to fulfil the assessment requirement for a particular unit and all or part of the content has been previously submitted by that student for formal assessment " +
+                "on the same/a different unit. Further information on academic offences can be found on <b>Brightspace</b> and from " +
+                "<a href=\"https://www1.bournemouth.ac.uk/discover/library/using-library/how-guides/how-avoid-academic-offences\">https://www1.bournemouth.ac.uk/discover/library/using-library/how-guides/how-avoid-academic-offences</a></li>" +
+                "<li style=\"padding-bottom: 7px;\">Students with <b>Additional Learning Needs</b> may contact Learning Support on <a href=\"www.bournemouth.ac.uk/als\">www.bournemouth.ac.uk/als</a></li>" +
+                "<li>You should not be conducting any primary research (i.e. carrying out an investigation to acquire data first-hand, for example, where it involves approaching participants " +
+                "to ask questions or to participate in surveys, questionnaires, interviews, observations, focus groups, etc.) unless otherwise specified in the brief. " +
+                "However, if there is a genuine requirement to collect primary research data you will require ethical approval before doing so. " +
+                "In the first instance, please discuss with the Unit Leader. The collection of primary data without appropriate ethical approval " +
+                "is a serious breach of Bournemouth University's Research Ethics Code of Practice and will be treated as Research Misconduct.</li>" +
+                "</ul><p style=\"line-height: 1.1; margin-top: 14px;\"><b>Disclaimer: </b>The information provided in this assignment brief is correct at the time of publication. " +
+                "In the unlikely event that any changes are deemed necessary, they will be communicated clearly via e-mail and Brightspace " +
+                "and a new version of this assignment brief will be circulated.</p>";
+            string EXPORT_WATERMARK =
+                "<p style=\"font-size: 160pt; color: #FF0000; margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);\">DRAFT</p>";
             string EXPORT_END_BLOCK =
                 "</section>" +
                 "</body></html>";
-            return 
-                EXPORT_HEAD_BLOCK + 
-                EXPORT_STYLE_BLOCK + 
-                EXPORT_DETAILS_BLOCK + 
-                EXPORT_ASMT_TASK_BLOCK + 
-                EXPORT_SUBMISSION_FORMAT_BLOCK + 
-                EXPORT_MARKING_CRITERIA_BLOCK + 
-                EXPORT_ILOS_BLOCK + 
-                EXPORT_QUESTIONS_BLOCK + 
-                EXPORT_SIGNATURE_BLOCK +
-                EXPORT_SUPPORT_BLOCK + 
-                EXPORT_END_BLOCK;
+            if(includeWatermark) {
+                return
+                    EXPORT_HEAD_BLOCK +
+                    EXPORT_STYLE_BLOCK +
+                    EXPORT_DETAILS_BLOCK +
+                    EXPORT_ASMT_TASK_BLOCK +
+                    EXPORT_SUBMISSION_FORMAT_BLOCK +
+                    EXPORT_MARKING_CRITERIA_BLOCK +
+                    EXPORT_ILOS_BLOCK +
+                    EXPORT_QUESTIONS_BLOCK +
+                    EXPORT_SIGNATURE_BLOCK +
+                    EXPORT_SUPPORT_BLOCK +
+                    EXPORT_WATERMARK +
+                    EXPORT_END_BLOCK;
+            } else {
+                return 
+                    EXPORT_HEAD_BLOCK +
+                    EXPORT_STYLE_BLOCK +
+                    EXPORT_DETAILS_BLOCK +
+                    EXPORT_ASMT_TASK_BLOCK +
+                    EXPORT_SUBMISSION_FORMAT_BLOCK +
+                    EXPORT_MARKING_CRITERIA_BLOCK +
+                    EXPORT_ILOS_BLOCK +
+                    EXPORT_QUESTIONS_BLOCK +
+                    EXPORT_SIGNATURE_BLOCK +
+                    EXPORT_SUPPORT_BLOCK +
+                    EXPORT_END_BLOCK;
+            }
+        }
+
+        public void saveAsHtmlFile(string htmlDocument, string outputFilePath, BackgroundWorker backgroundThread)
+        {
+            backgroundThread.ReportProgress(0);
+            MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(htmlDocument));
+
+            try {
+                using (FileStream file = new FileStream(outputFilePath, FileMode.Create, System.IO.FileAccess.Write)) {
+                    byte[] bytes = new byte[ms.Length];
+                    ms.Read(bytes, 0, (int)ms.Length);
+                    file.Write(bytes, 0, bytes.Length);
+                    ms.Close();
+                }
+            } catch (IOException) {
+                //File cannot be accessed (e.g. used by another process)
+                Console.WriteLine("ERROR: Unable to write to " + outputFilePath + " - used by another process?");
+                MessageBox.Show("Unable to write to " + outputFilePath + ". It might be locked by another process.", "Export Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         /// <summary>
@@ -394,7 +485,7 @@ namespace CATS
         public void convertHtmlToPdf(string htmlDocument, BackgroundWorker backgroundThread)
         {
             backgroundThread.ReportProgress(0);
-            SelectPdf.PdfHtmlSection headerHtml = new SelectPdf.PdfHtmlSection("<p style=\"font-family: Arial; font-size: 7pt; text-align: right;\">June 2019 v1</p>", "");
+            SelectPdf.PdfHtmlSection headerHtml = new SelectPdf.PdfHtmlSection("<p style=\"font-family: Arial; font-size: 7pt; text-align: right;\">June 20" + this.templateVer + " (r" + this.revisionVer + ")</p>", "");
             headerHtml.AutoFitHeight = SelectPdf.HtmlToPdfPageFitMode.AutoFit;
             SelectPdf.HtmlToPdf converter = new SelectPdf.HtmlToPdf();
 
@@ -418,10 +509,10 @@ namespace CATS
                 backgroundThread.ReportProgress(90);
             } catch(OutOfMemoryException) {
                 Console.Error.WriteLine("Too much image data URI content - out of memory!");
-                //TODO: output to HTML only instead
+                MessageBox.Show("Unable to export to PDF. The application ran out of memory! It might be due to excessive image data. Try exporting to HTML instead.", "Memory Export Error", MessageBoxButton.OK, MessageBoxImage.Error);
             } catch(Exception e) {
                 Console.Error.WriteLine(e.ToString());
-                //TODO: output to HTML only instead
+                MessageBox.Show("Unable to export to PDF. An unknown error occured: " + e.ToString() + "\nTry exporting to HTML instead.", "Unknown Export Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -503,6 +594,7 @@ namespace CATS
         //Metadata
         public DateTime createdDate { get; set; }
         public float templateVer { get; set; }
+        public int revisionVer { get; set; }
 
         //TitleLevelPage
         public string unitTitle { get; set; }

@@ -23,7 +23,6 @@ namespace CATS
 
         public ILOsPage(BUAssessment bua)
         {
-            //TODO: don't allow more than 10 ILOs
             
             InitializeComponent();
             currentBua = bua;

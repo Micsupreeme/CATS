@@ -35,7 +35,7 @@ namespace CATS
                 asmtTypeCmb.SelectedIndex = 1;
             }
 
-            weightingTxt.Text = currentBua.weighting.ToString();
+            weightingSlide.Value = currentBua.weighting;
 
             switch(currentBua.creditValue)
             {
@@ -146,19 +146,17 @@ namespace CATS
         }
 
         /// <summary>
-        /// Update the bua object to match the weighting textbox content
-        /// When the contents of the weighting textbox changes
+        /// Update the bua object to match the weighting slider value
+        /// When the slider value changes
         /// </summary>
-        private void weightingTxt_TextChanged(object sender, TextChangedEventArgs e)
+        private void weightingSlide_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             try {
-                //Keep this code absolutely minimal, as this event fires every time a character changes in the textbox
-                currentBua.weighting = int.Parse(weightingTxt.Text);
-            } catch (FormatException) {
-                Console.Error.WriteLine("ERROR: Attempted to convert alphabet to int");
+                currentBua.weighting = (int)weightingSlide.Value;
             } catch (NullReferenceException) {
                 Console.Error.WriteLine("WARN: Event fired before object initialisation");
             }
+            weightingPercentTxt.Text = currentBua.weighting + "%";
         }
 
         /// <summary>
@@ -175,6 +173,6 @@ namespace CATS
                 Console.Error.WriteLine("WARN: Event fired before object initialisation");
             }
         }
-#endregion
+        #endregion
     }
 }

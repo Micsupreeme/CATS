@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,7 +14,8 @@ namespace CATS
     {
         private BUAssessment currentBua;
         private string currentFilePath;
-        BackgroundWorker exportWorker;
+        private List<string> currentAppendicesList;
+        BackgroundWorker exportWorker; //does export work in the background to prevent the UI from freezing
         exportProgressScreen exportProgressWindow; //where to report export progress to
 
         public ExportPage(BUAssessment bua, string path, bool elevate)
@@ -28,6 +27,21 @@ namespace CATS
                 enableElevatedOptions();
             }
             populateFields();
+        }
+
+        /// <summary>
+        /// Uses a messagebox to get confirmation before replace a file that already exists
+        /// </summary>
+        /// <param name="fileName">The file to ask to replace</param>
+        /// <returns>True if the user agrees to replace the file, false otherwise</returns>
+        private bool getOverwriteConfirmation(string fileName)
+        {
+            var result = MessageBox.Show(fileName + " already exists. Do you want to replace it?", "Confirm Export", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            if(result == MessageBoxResult.Yes) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         /// <summary>
@@ -59,6 +73,19 @@ namespace CATS
         private void enableElevatedOptions()
         {
             exportFinalPdfBtn.Visibility = Visibility.Visible;
+            exportFinalHtmlBtn.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// Sets the enabled state of the 4 export buttons to the specified state
+        /// </summary>
+        /// <param name="enabled">True to enable the buttons, or false to disable them</param>
+        private void toggleExportButtonsEnabled(bool enabled)
+        {
+            exportPdfBtn.IsEnabled = enabled;
+            exportFinalPdfBtn.IsEnabled = enabled;
+            exportHtmlBtn.IsEnabled = enabled;
+            exportFinalHtmlBtn.IsEnabled = enabled;
         }
 
         /// <summary>
@@ -66,8 +93,17 @@ namespace CATS
         /// </summary>
         private void doPdfExport(exportArgs exportArguments)
         {
-            currentBua.convertHtmlToPdf(exportArguments.currentBua.getHtmlDocument(), exportArguments.backgroundThread);
+            currentBua.convertHtmlToPdf(exportArguments.currentBua.getHtmlDocument(false, false), exportArguments.backgroundThread);
             currentBua.mergeMultiplePDFIntoSinglePDF(exportArguments.outputFilePath, exportArguments.appendixFilePaths, exportArguments.includeWatermark);
+            exportArguments.backgroundThread.ReportProgress(100);
+        }
+
+        /// <summary>
+        /// Performs an export to HTML operation with the specified watermark status
+        /// </summary>
+        private void doHtmlExport(exportArgs exportArguments)
+        {
+            currentBua.saveAsHtmlFile(currentBua.getHtmlDocument(exportArguments.includeWatermark, true), exportArguments.outputFilePath, exportArguments.backgroundThread);
             exportArguments.backgroundThread.ReportProgress(100);
         }
 
@@ -93,23 +129,34 @@ namespace CATS
             exportWorker.WorkerReportsProgress = true;
             exportWorker.WorkerSupportsCancellation = false;
 
-            List<string> appendices = new List<string>();
-            appendices.Add("temp\\exported brief.pdf");
-            appendices.Add("random.pdf");
-            appendices.Add("random.pdf");
+            currentAppendicesList = new List<string>();
+            currentAppendicesList.Add("temp\\exported brief.pdf");
+            currentAppendicesList.Add("random.pdf");
+            currentAppendicesList.Add("random.pdf");
+
             string selectedExportPath = exportFolderTxt.Text + "\\" + exportFileTxt.Text + ".pdf";
 
             exportArgs args = new exportArgs();
+            args.exportMode = 0;
             args.currentBua = currentBua;
             args.outputFilePath = selectedExportPath;
-            args.appendixFilePaths = appendices;
+            args.appendixFilePaths = currentAppendicesList;
             args.includeWatermark = true; //Not final, so include a draft watermark
 
-            exportPdfBtn.IsEnabled = false;
-            exportFinalPdfBtn.IsEnabled = false;
-            exportProgressWindow = new exportProgressScreen(0);
-            exportProgressWindow.Visibility = Visibility.Visible;
-            exportWorker.RunWorkerAsync(args);
+            //Proceed if the specified export file doesn't already exist, or if the user has confirmed permission to replace it
+            if (File.Exists(selectedExportPath)) {
+                if (getOverwriteConfirmation(selectedExportPath)) {
+                    toggleExportButtonsEnabled(false);
+                    exportProgressWindow = new exportProgressScreen(args.exportMode);
+                    exportProgressWindow.Visibility = Visibility.Visible;
+                    exportWorker.RunWorkerAsync(args);
+                }
+            } else {
+                toggleExportButtonsEnabled(false);
+                exportProgressWindow = new exportProgressScreen(args.exportMode);
+                exportProgressWindow.Visibility = Visibility.Visible;
+                exportWorker.RunWorkerAsync(args);
+            }
         }
 
         /// <summary>
@@ -125,23 +172,110 @@ namespace CATS
             exportWorker.WorkerReportsProgress = true;
             exportWorker.WorkerSupportsCancellation = false;
 
-            List<string> appendices = new List<string>();
-            appendices.Add("temp\\exported brief.pdf");
-            appendices.Add("random.pdf");
-            appendices.Add("random.pdf");
+            currentAppendicesList = new List<string>();
+            currentAppendicesList.Add("temp\\exported brief.pdf");
+            currentAppendicesList.Add("random.pdf");
+            currentAppendicesList.Add("random.pdf");
+
             string selectedExportPath = exportFolderTxt.Text + "\\" + exportFileTxt.Text + ".pdf";
 
             exportArgs args = new exportArgs();
+            args.exportMode = 1;
             args.currentBua = currentBua;
             args.outputFilePath = selectedExportPath;
-            args.appendixFilePaths = appendices;
+            args.appendixFilePaths = currentAppendicesList;
             args.includeWatermark = false; //Final, so don't include a draft watermark
 
-            exportPdfBtn.IsEnabled = false;
-            exportFinalPdfBtn.IsEnabled = false;
-            exportProgressWindow = new exportProgressScreen(1);
-            exportProgressWindow.Visibility = Visibility.Visible;
-            exportWorker.RunWorkerAsync(args);
+            //Proceed if the specified export file doesn't already exist, or if the user has confirmed permission to replace it
+            if (File.Exists(selectedExportPath)) {
+                if (getOverwriteConfirmation(selectedExportPath)) {
+                    toggleExportButtonsEnabled(false);
+                    exportProgressWindow = new exportProgressScreen(args.exportMode);
+                    exportProgressWindow.Visibility = Visibility.Visible;
+                    exportWorker.RunWorkerAsync(args);
+                }
+            } else {
+                toggleExportButtonsEnabled(false);
+                exportProgressWindow = new exportProgressScreen(args.exportMode);
+                exportProgressWindow.Visibility = Visibility.Visible;
+                exportWorker.RunWorkerAsync(args);
+            }
+        }
+
+        /// <summary>
+        /// When the export to HTML button is clicked
+        /// Do a DRAFT export
+        /// </summary>
+        private void exportHtmlBtn_Click(object sender, RoutedEventArgs e)
+        {
+            exportWorker = new BackgroundWorker();
+            exportWorker.DoWork += exportWorker_DoWork;
+            exportWorker.ProgressChanged += exportWorker_ProgressChanged;
+            exportWorker.RunWorkerCompleted += exportWorker_RunWorkerCompleted;
+            exportWorker.WorkerReportsProgress = true;
+            exportWorker.WorkerSupportsCancellation = false;
+
+            string selectedExportPath = exportFolderTxt.Text + "\\" + exportFileTxt.Text + ".html";
+
+            exportArgs args = new exportArgs();
+            args.exportMode = 2;
+            args.currentBua = currentBua;
+            args.outputFilePath = selectedExportPath;
+            args.appendixFilePaths = new List<string>(); //Does not support appendices
+            args.includeWatermark = true; //Not final, so include a draft watermark
+
+            //Proceed if the specified export file doesn't already exist, or if the user has confirmed permission to replace it
+            if (File.Exists(selectedExportPath)) {
+                if (getOverwriteConfirmation(selectedExportPath)) {
+                    toggleExportButtonsEnabled(false);
+                    exportProgressWindow = new exportProgressScreen(args.exportMode);
+                    exportProgressWindow.Visibility = Visibility.Visible;
+                    exportWorker.RunWorkerAsync(args);
+                }
+            } else {
+                toggleExportButtonsEnabled(false);
+                exportProgressWindow = new exportProgressScreen(args.exportMode);
+                exportProgressWindow.Visibility = Visibility.Visible;
+                exportWorker.RunWorkerAsync(args);
+            }
+        }
+
+        /// <summary>
+        /// When the elevated-only final HTML export button is clicked
+        /// Do a FINAL export
+        /// </summary>
+        private void exportFinalHtmlBtn_Click(object sender, RoutedEventArgs e)
+        {
+            exportWorker = new BackgroundWorker();
+            exportWorker.DoWork += exportWorker_DoWork;
+            exportWorker.ProgressChanged += exportWorker_ProgressChanged;
+            exportWorker.RunWorkerCompleted += exportWorker_RunWorkerCompleted;
+            exportWorker.WorkerReportsProgress = true;
+            exportWorker.WorkerSupportsCancellation = false;
+
+            string selectedExportPath = exportFolderTxt.Text + "\\" + exportFileTxt.Text + ".html";
+
+            exportArgs args = new exportArgs();
+            args.exportMode = 3;
+            args.currentBua = currentBua;
+            args.outputFilePath = selectedExportPath;
+            args.appendixFilePaths = new List<string>(); //Does not support appendices
+            args.includeWatermark = false; //Final, so don't include a draft watermark
+
+            //Proceed if the specified export file doesn't already exist, or if the user has confirmed permission to replace it
+            if (File.Exists(selectedExportPath)) {
+                if (getOverwriteConfirmation(selectedExportPath)) {
+                    toggleExportButtonsEnabled(false);
+                    exportProgressWindow = new exportProgressScreen(args.exportMode);
+                    exportProgressWindow.Visibility = Visibility.Visible;
+                    exportWorker.RunWorkerAsync(args);
+                }
+            } else {
+                toggleExportButtonsEnabled(false);
+                exportProgressWindow = new exportProgressScreen(args.exportMode);
+                exportProgressWindow.Visibility = Visibility.Visible;
+                exportWorker.RunWorkerAsync(args);
+            }
         }
 
         /// <summary>
@@ -152,7 +286,11 @@ namespace CATS
             BackgroundWorker bw = sender as BackgroundWorker;
             exportArgs args = e.Argument as exportArgs;
             args.backgroundThread = bw;
-            doPdfExport(args);
+            if(args.exportMode < 2) {
+                doPdfExport(args);
+            } else {
+                doHtmlExport(args);
+            }
         }
 
         /// <summary>
@@ -170,31 +308,20 @@ namespace CATS
         void exportWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             exportProgressWindow.Visibility = Visibility.Collapsed;
-            exportPdfBtn.IsEnabled = true;
-            exportFinalPdfBtn.IsEnabled = true;
+            toggleExportButtonsEnabled(true);
+
+            //Every export means a new revision
+            currentBua.revisionVer++;
+            currentBua.saveAsJson(currentFilePath);
         }
         #endregion
-
-        private void exportPdfBtn1_Click(object sender, RoutedEventArgs e)
-        {
-            FileStream fs;
-            fs = new FileStream("D:\\Home\\Pictures\\Camera Roll\\7.jpg", FileMode.Open);
-            Console.WriteLine("Raw size: " + fs.Length + "bytes");
-            fs.Close();
-
-            MemoryStream ms;
-            ms = new MemoryStream();
-            System.Drawing.Image imggg = currentBua.compressImage("D:\\Home\\Pictures\\Camera Roll\\7.jpg", 50);
-            imggg.Save(ms, ImageFormat.Jpeg);
-            Console.WriteLine("Compressed size: " + ms.Length + "bytes");
-            ms.Close();
-        }
 
         /// <summary>
         /// Inner class used to pass arguments to the async export worker
         /// </summary>
         public class exportArgs
         {
+            public int exportMode;
             public BUAssessment currentBua;
             public string outputFilePath;
             public List<string> appendixFilePaths;

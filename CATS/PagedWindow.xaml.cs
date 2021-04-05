@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 
 namespace CATS
@@ -21,7 +22,7 @@ namespace CATS
             currentBua = bua;
             currentFilePath = buaFilePath;
             currentElevation = elevate;
-            this.Title = currentFilePath + " - CATS";
+            this.Title = Path.GetFileName(currentFilePath) + " - CATS";
             navigatePage(currentPageNumber); //Initialise the frame by setting it to show the first page
         }
 
@@ -40,6 +41,8 @@ namespace CATS
 
                     this.Width = 770;
                     this.Height = 500;
+                    this.MinWidth = 770;
+                    this.MinHeight = 500;
                     this.WindowState = WindowState.Normal;
                     currentPageNumber = 0;
                     break;
@@ -50,6 +53,8 @@ namespace CATS
 
                     this.Width = 770;
                     this.Height = 500;
+                    this.MinWidth = 770;
+                    this.MinHeight = 500;
                     this.WindowState = WindowState.Normal;
                     currentPageNumber = 1;
                     break;
@@ -60,6 +65,8 @@ namespace CATS
 
                     this.Width = 770;
                     this.Height = 550;
+                    this.MinWidth = 770;
+                    this.MinHeight = 550;
                     this.WindowState = WindowState.Normal;
                     currentPageNumber = 2;
                     break;
@@ -70,6 +77,8 @@ namespace CATS
 
                     this.Width = 1250;
                     this.Height = 700;
+                    this.MinWidth = 1250;
+                    this.MinHeight = 700;
                     this.WindowState = WindowState.Maximized;
                     currentPageNumber = 3;
                     break;
@@ -80,6 +89,8 @@ namespace CATS
 
                     this.Width = 1250;
                     this.Height = 700;
+                    this.MinWidth = 1250;
+                    this.MinHeight = 700;
                     this.WindowState = WindowState.Maximized;
                     currentPageNumber = 4;
                     break;
@@ -90,6 +101,8 @@ namespace CATS
 
                     this.Width = 1250;
                     this.Height = 700;
+                    this.MinWidth = 1250;
+                    this.MinHeight = 700;
                     this.WindowState = WindowState.Maximized;
                     currentPageNumber = 5;
                     break;
@@ -100,6 +113,8 @@ namespace CATS
 
                     this.Width = 770;
                     this.Height = 550;
+                    this.MinWidth = 770;
+                    this.MinHeight = 550;
                     this.WindowState = WindowState.Normal;
                     currentPageNumber = 6;
                     break;
@@ -110,6 +125,8 @@ namespace CATS
 
                     this.Width = 770;
                     this.Height = 500;
+                    this.MinWidth = 770;
+                    this.MinHeight = 500;
                     this.WindowState = WindowState.Normal;
                     currentPageNumber = 7;
                     break;
@@ -119,7 +136,9 @@ namespace CATS
                     nextBtn.Visibility = Visibility.Hidden; //Cannot go forward from the last page
 
                     this.Width = 770;
-                    this.Height = 550;
+                    this.Height = 585;
+                    this.MinWidth = 770;
+                    this.MinHeight = 585;
                     this.WindowState = WindowState.Normal;
                     currentPageNumber = 8;
                     break;
