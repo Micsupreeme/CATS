@@ -9,6 +9,7 @@
         WindowStyle="ToolWindow"
         Background="#252525"
         Foreground="#FFFFFF"
+        Icon="pack://application:,,,/img/icons/cats_logo_208.ico"
         Title="Insert Link - CATS" Height="240" Width="480" MinHeight="240" MinWidth="480" MaxHeight="240" MaxWidth="1000">
     <StackPanel Margin="20">
         <Grid>

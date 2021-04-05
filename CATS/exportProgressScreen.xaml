@@ -9,6 +9,7 @@
         WindowStyle="None"
         Background="#252525"
         Foreground="#FFFFFF"
+        Icon="pack://application:,,,/img/icons/cats_logo_208.ico"
         Title="Export - CATS" Height="160" Width="450" MinHeight="160" MinWidth="450" MaxHeight="160" MaxWidth="450">
     <StackPanel Margin="20">
         <TextBlock x:Name="exportTb" FontFamily="Arial" FontSize="14"/>

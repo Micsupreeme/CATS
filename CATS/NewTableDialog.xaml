@@ -9,6 +9,7 @@
         WindowStyle="ToolWindow"
         Background="#252525"
         Foreground="#FFFFFF"
+        Icon="pack://application:,,,/img/icons/cats_logo_208.ico"
         Title="Insert Table - CATS" Height="360" Width="280" MinHeight="360" MinWidth="280" MaxHeight="360" MaxWidth="280">
     <DockPanel Margin="20" LastChildFill="True">
         <TextBlock x:Name="tableSizeTb" FontFamily="Arial" FontSize="14" VerticalAlignment="Center" Text="Insert Table:" Margin="0,0,0,20" DockPanel.Dock="Top"/>

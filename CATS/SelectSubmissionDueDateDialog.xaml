@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CATS"
         mc:Ignorable="d"
-                WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterScreen"
         WindowStyle="ToolWindow"
         Background="#252525"
         Foreground="#FFFFFF"
+        Icon="pack://application:,,,/img/icons/cats_logo_208.ico"
         Title="Select Submission Due Date - CATS" Height="400" Width="705" MinHeight="250" MinWidth="705" MaxWidth="705">
     <DockPanel LastChildFill="True">
         <Grid DockPanel.Dock="Top" Margin="20,20,20,0">

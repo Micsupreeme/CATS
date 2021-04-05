@@ -407,6 +407,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="img\icons\baseline_delete_black_18dp.png" />
+    <Resource Include="img\icons\cats_logo_208.ico" />
+    <Resource Include="img\icons\cats_logo_408.png" />
     <Content Include="smithhtmleditor.config.xml" />
     <Content Include="smithhtmleditor.stylesheet.css" />
   </ItemGroup>

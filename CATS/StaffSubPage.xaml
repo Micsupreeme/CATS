@@ -9,7 +9,6 @@
       Background="#252525"
       Foreground="#FFFFFF"
       Title="StaffSubPage">
-
     <StackPanel Margin="30">
         <Grid>
             <Grid.ColumnDefinitions>
