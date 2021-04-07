@@ -409,6 +409,10 @@
     <Resource Include="img\icons\baseline_delete_black_18dp.png" />
     <Resource Include="img\icons\cats_logo_208.ico" />
     <Resource Include="img\icons\cats_logo_408.png" />
+    <Resource Include="img\icons\outline_description_black_48dp.png" />
+    <Resource Include="img\icons\outline_description_white_48dp.png" />
+    <Resource Include="img\icons\outline_add_white_48dp.png" />
+    <Resource Include="img\icons\outline_description_red_48dp.png" />
     <Content Include="smithhtmleditor.config.xml" />
     <Content Include="smithhtmleditor.stylesheet.css" />
   </ItemGroup>

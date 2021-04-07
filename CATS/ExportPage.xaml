@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CATS"
       mc:Ignorable="d" 
-      d:DesignHeight="500" d:DesignWidth="770"
+      d:DesignHeight="700" d:DesignWidth="770"
       Background="#252525"
       Foreground="#FFFFFF"
       Title="ExportPage">
@@ -29,12 +29,28 @@
             <TextBox x:Name="exportFileTxt" FontFamily="Arial" FontSize="14" Text="Assignment1" Padding="5" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"/>
         </Grid>
         <Separator Margin="0,30,0,30"/>
-        <TextBlock x:Name="appendicesTb" FontFamily="Arial" FontSize="14" Text="Appendix controls here:"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2.5*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="appendicesTb" FontFamily="Arial" FontSize="14" Text="Appendix controls here:" Grid.Column="0" Grid.Row="0"/>
+            <Button x:Name="appendixAddBtn" FontFamily="Arial" FontSize="14" Content="Add Appendix File" Padding="27,3,27,3" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="0" Click="appendixAddBtn_Click"/>
+        </Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0,15,0,15">
+            <Canvas x:Name="appendicesCanvas" Height="0" Width="0">
+
+            </Canvas>
+        </ScrollViewer>
         <TextBlock x:Name="appendicesWarnTb" FontFamily="Arial" FontSize="14" Text="Please ensure the documents you have selected to append are not currently open in another application"/>
         <Separator Margin="0,30,0,30"/>
-        <Button x:Name="exportPdfBtn" FontFamily="Arial" FontSize="14" Content="Export to PDF (Recommended)" Padding="27,3,27,3" Margin="20,0,20,10" Click="exportPdfBtn_Click"/>
-        <Button x:Name="exportHtmlBtn" FontFamily="Arial" FontSize="14" Content="Export to HTML" Padding="27,3,27,3" Margin="20,0,20,10" Click="exportHtmlBtn_Click"/>
-        <Button x:Name="exportFinalPdfBtn" FontFamily="Arial" FontSize="14" Content="Export to Final PDF" Padding="27,3,27,3" Margin="20,0,20,10" Background="#F48886" Click="exportFinalPdfBtn_Click" Visibility="Collapsed"/>
-        <Button x:Name="exportFinalHtmlBtn" FontFamily="Arial" FontSize="14" Content="Export to Final HTML" Padding="27,3,27,3" Margin="20,0,20,0" Background="#F48886" Click="exportFinalHtmlBtn_Click" Visibility="Collapsed"/>
+        <Button x:Name="exportPdfBtn" FontFamily="Arial" FontSize="14" Content="Export to PDF" Padding="27,3,27,3" Margin="20,0,20,10" Click="exportPdfBtn_Click" FontWeight="SemiBold"/>
+        <Button x:Name="exportHtmlBtn" FontFamily="Arial" FontSize="14" Content="Export to HTML (No Appendices)" Padding="27,3,27,3" Margin="20,0,20,10" Click="exportHtmlBtn_Click"/>
+        <Button x:Name="exportFinalPdfBtn" FontFamily="Arial" FontSize="14" Content="Export to Final PDF" Padding="27,3,27,3" Margin="20,0,20,10" Background="#F48886" FontWeight="SemiBold" Click="exportFinalPdfBtn_Click" Visibility="Collapsed"/>
+        <Button x:Name="exportFinalHtmlBtn" FontFamily="Arial" FontSize="14" Content="Export to Final HTML (No Appendices)" Padding="27,3,27,3" Margin="20,0,20,0" Background="#F48886" Click="exportFinalHtmlBtn_Click" Visibility="Collapsed"/>
     </StackPanel>
 </Page>

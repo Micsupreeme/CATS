@@ -39,11 +39,12 @@ namespace CATS
                     prevBtn.Visibility = Visibility.Hidden; //Cannot go back from the first page
                     nextBtn.Visibility = Visibility.Visible;
 
-                    this.Width = 770;
-                    this.Height = 500;
                     this.MinWidth = 770;
                     this.MinHeight = 500;
+                    this.Width = 770;
+                    this.Height = 500;
                     this.WindowState = WindowState.Normal;
+                    recenterWindow();
                     currentPageNumber = 0;
                     break;
                 case 1:
@@ -51,11 +52,12 @@ namespace CATS
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Visible;
 
-                    this.Width = 770;
-                    this.Height = 500;
                     this.MinWidth = 770;
                     this.MinHeight = 500;
+                    this.Width = 770;
+                    this.Height = 500;
                     this.WindowState = WindowState.Normal;
+                    recenterWindow();
                     currentPageNumber = 1;
                     break;
                 case 2:
@@ -63,11 +65,12 @@ namespace CATS
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Visible;
 
-                    this.Width = 770;
-                    this.Height = 550;
                     this.MinWidth = 770;
                     this.MinHeight = 550;
+                    this.Width = 770;
+                    this.Height = 550;
                     this.WindowState = WindowState.Normal;
+                    recenterWindow();
                     currentPageNumber = 2;
                     break;
                 case 3:
@@ -75,10 +78,10 @@ namespace CATS
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Visible;
 
-                    this.Width = 1250;
-                    this.Height = 700;
                     this.MinWidth = 1250;
-                    this.MinHeight = 700;
+                    this.MinHeight = 750;
+                    this.Width = 1250;
+                    this.Height = 750;
                     this.WindowState = WindowState.Maximized;
                     currentPageNumber = 3;
                     break;
@@ -87,10 +90,10 @@ namespace CATS
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Visible;
 
-                    this.Width = 1250;
-                    this.Height = 700;
                     this.MinWidth = 1250;
-                    this.MinHeight = 700;
+                    this.MinHeight = 750;
+                    this.Width = 1250;
+                    this.Height = 750;
                     this.WindowState = WindowState.Maximized;
                     currentPageNumber = 4;
                     break;
@@ -99,10 +102,10 @@ namespace CATS
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Visible;
 
-                    this.Width = 1250;
-                    this.Height = 700;
                     this.MinWidth = 1250;
-                    this.MinHeight = 700;
+                    this.MinHeight = 750;
+                    this.Width = 1250;
+                    this.Height = 750;
                     this.WindowState = WindowState.Maximized;
                     currentPageNumber = 5;
                     break;
@@ -111,11 +114,12 @@ namespace CATS
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Visible;
 
-                    this.Width = 770;
-                    this.Height = 550;
                     this.MinWidth = 770;
                     this.MinHeight = 550;
+                    this.Width = 770;
+                    this.Height = 550;
                     this.WindowState = WindowState.Normal;
+                    recenterWindow();
                     currentPageNumber = 6;
                     break;
                 case 7:
@@ -123,11 +127,12 @@ namespace CATS
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Visible;
 
-                    this.Width = 770;
-                    this.Height = 500;
                     this.MinWidth = 770;
                     this.MinHeight = 500;
+                    this.Width = 770;
+                    this.Height = 500;
                     this.WindowState = WindowState.Normal;
+                    recenterWindow();
                     currentPageNumber = 7;
                     break;
                 case 8:
@@ -135,17 +140,35 @@ namespace CATS
                     prevBtn.Visibility = Visibility.Visible;
                     nextBtn.Visibility = Visibility.Hidden; //Cannot go forward from the last page
 
-                    this.Width = 770;
-                    this.Height = 585;
                     this.MinWidth = 770;
-                    this.MinHeight = 585;
+                    this.Width = 770;
+
+                    //Evelated-exclusive controls require more height
+                    if (currentElevation) {
+                        this.MinHeight = 755;
+                        this.Height = 755;
+                    } else {
+                        this.MinHeight = 690;
+                        this.Height = 690;
+                    }
                     this.WindowState = WindowState.Normal;
+                    recenterWindow();
                     currentPageNumber = 8;
                     break;
                 default:
                     Console.Error.WriteLine("ERROR: Invalid page specified");
                     break;
             }
+        }
+
+        /// <summary>
+        /// Re-center the window by determining the ideal position from the current width and height
+        /// NOTE: The window changes size a lot during the app, and when the height increases, the window is not recentered automatically
+        /// </summary>
+        private void recenterWindow()
+        {
+            this.Left = (SystemParameters.PrimaryScreenWidth / 2) - (this.Width / 2);
+            this.Top = (SystemParameters.PrimaryScreenHeight / 2) - (this.Height / 2);
         }
 
         #region Event handlers

@@ -43,7 +43,7 @@ namespace CATS
             //Ensure canvas is reset before drawing
             ilosCanvas.Children.Clear();
             ilosCanvas.Height = 0;
-            int canvastop = 0; //keeps track of where to draw the next row of csvData controls ()
+            int canvastop = 0; //keeps track of where to draw the next row of ILO controls ()
 
             iloRowStacks = new List<StackPanel>();
 

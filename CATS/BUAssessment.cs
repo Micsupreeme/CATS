@@ -61,6 +61,9 @@ namespace CATS
             //QuestionsSignaturePage
             this.questionsAboutBrief = String.Empty;
             this.signatureMarker = this.unitLeader;
+
+            //Appendices
+            this.appendicesList = new List<string>();
         }
 
         /// <summary>
@@ -530,10 +533,20 @@ namespace CATS
             int pageCountOnlyForBrief = 0;
 
             PdfSharp.Pdf.PdfDocument finalPdfDocument = new PdfSharp.Pdf.PdfDocument();
+            finalPdfDocument.Version = 14; //Initial version set to 14, which is the same version output by the SelectPDF HTML-PDF converter
+            Console.WriteLine("output PDF version set to " + finalPdfDocument.Version);
+
             for(int fileCount = 0; fileCount < appendixFilePaths.Count; fileCount++)
             {
                 PdfSharp.Pdf.PdfDocument pdfDocument = PdfSharp.Pdf.IO.PdfReader.Open(appendixFilePaths[fileCount], PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import);
-                finalPdfDocument.Version = pdfDocument.Version; //necessary?
+                
+                Console.WriteLine("apdx" + fileCount + " PDF version: " + pdfDocument.Version);
+                //If version for prospective appendix is higher than the current version for the document, upgrade the current version to match
+                if (pdfDocument.Version > finalPdfDocument.Version) {
+                    finalPdfDocument.Version = pdfDocument.Version;
+                    Console.WriteLine("output PDF version upgraded to " + finalPdfDocument.Version);
+                }
+
                 foreach (PdfSharp.Pdf.PdfPage pdfPage in pdfDocument.Pages)
                 {
                     if(fileCount == 0) {
@@ -587,6 +600,10 @@ namespace CATS
                 //File cannot be accessed (e.g. used by another process)
                 Console.WriteLine("ERROR: Unable to write to " + outputFilePath + " - used by another process?");
                 MessageBox.Show("Unable to write to " + outputFilePath + ". It might be locked by another process.", "Export Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            } catch(ArgumentException aex) {
+                //PDF file cannot be appended because it uses an outdated PDF version (minimum is 12)
+                Console.WriteLine("ERROR: " + aex.ToString());
+                MessageBox.Show("Unable to to merge PDF appendices. One or more appendices has an unsupported PDF version. The minimum supported version is 12.", "Export Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         #endregion
@@ -629,5 +646,8 @@ namespace CATS
         //QuestionsSignaturePage
         public string questionsAboutBrief { get; set; }
         public string signatureMarker { get; set; }
+
+        //Appendices
+        public List<string> appendicesList { get; set; }
     }
 }
