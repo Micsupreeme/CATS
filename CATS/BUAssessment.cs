@@ -60,7 +60,7 @@ namespace CATS
 
             //QuestionsSignaturePage
             this.questionsAboutBrief = String.Empty;
-            this.signatureMarker = this.unitLeader;
+            this.signatureMarker = String.Empty;
 
             //Appendices
             this.appendicesList = new List<string>();
@@ -273,18 +273,20 @@ namespace CATS
 
             //Markers
             string formattedMarkersStr = String.Empty;
-            if(this.markersList.Count > 1) {
-                //multiple markers, make a grammar-seperated list (e.g., "comma, comma, and ")
-                for (int m = 0; m < this.markersList.Count; m++) {
-                    if (m == (markersList.Count - 1)) {
-                        formattedMarkersStr += "and " + this.markersList[m];
-                    } else {
-                        formattedMarkersStr += this.markersList[m] + ", ";
+            if(this.markersList.Count > 0) {
+                if (this.markersList.Count > 1) {
+                    //multiple markers, make a grammar-seperated list (e.g., "comma, comma, and ")
+                    for (int m = 0; m < this.markersList.Count; m++) {
+                        if (m == (markersList.Count - 1)) {
+                            formattedMarkersStr += "and " + this.markersList[m];
+                        } else {
+                            formattedMarkersStr += this.markersList[m] + ", ";
+                        }
                     }
+                } else {
+                    //1 marker, just output it
+                    formattedMarkersStr += this.markersList[0];
                 }
-            } else {
-                //1 marker, just output it
-                formattedMarkersStr += this.markersList[0];
             }
 
             //Group/Individual Weighting sentence

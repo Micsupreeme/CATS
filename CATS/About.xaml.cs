@@ -22,7 +22,12 @@ namespace CATS
             appVersionTb.Text = "Version 1.0.0";
             appCopyrightTb.Text = "Copyright \u00A9 Michael Whatley 2021";
             appPublisherTb.Text = "Micsupreeme";
-            appDescriptionTxt.Text = "Pending\nDescription\nNot\nImplemented\nAt\nPresent";
+            appDescriptionTxt.Text = 
+                "This is a bespoke application for the Computing and Informatics department at Bournemouth University. " +
+                "It is designed to dynamically generate PDF coursework assignment briefs and minimise the room for formatting errors " +
+                "by utilising a diverse set of intuitive form-based controls.\n\nSimply complete the fields like an online survey, " +
+                "navigating with the \"Next\" and \"Previous\" buttons. Finally, click the \"Export to PDF\" button to generate " +
+                "a format-compliant coursework assignment brief for review with a single click.";
             appIconsTb.Text = "Generic icons by ";
             appIconsLinkTb.Text = "Material Design";
         }

@@ -11,8 +11,6 @@ using Microsoft.WindowsAPICodePack.Dialogs; //enables open-folder dialogs
 
 namespace CATS
 {
-    //TODO: when a PDF export button is clicked, check the appendix image tags, if any are 0 (i.e., file not found), don't continue with export
-
     /// <summary>
     /// Interaction logic for ExportPage.xaml
     /// </summary>
@@ -172,7 +170,6 @@ namespace CATS
 
             for (int apdx = 0; apdx < appendicesFullStack.Children.Count; apdx++) {
                 StackPanel itemStack = (StackPanel)appendicesFullStack.Children[apdx];
-                //StackPanel singleStack = (StackPanel)itemStack.Children[0];
                 TextBox fileNameTxt = (TextBox)itemStack.Children[1]; //the second ("1") child of a single stack is always the file name textbox
 
                 string fileNameTxtTag = (string)fileNameTxt.Tag; //the full file path is not stored in the text due to space limitations, it's in the tag
@@ -196,6 +193,43 @@ namespace CATS
             } else {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Gets the number of appendices stored against this BUA that don't exist on the system
+        /// If missing appendices are found, displays a messagebox to inform the user
+        /// </summary>
+        /// <returns>The number of appendices stored against this BUA that don't exist on the system</returns>
+        private int getMissingAppendicesCount()
+        {
+            int missingAppendices = 0;
+            List<string> missingAppendicesFiles = new List<string>();
+
+            //Find missing appendices - when found, increment the count and add the problem file path to a list
+            for (int apdx = 0; apdx < appendicesFullStack.Children.Count; apdx++) {
+                StackPanel itemStack = (StackPanel)appendicesFullStack.Children[apdx];
+                TextBox fileNameTxt = (TextBox)itemStack.Children[1]; //the second ("1") child of a single stack is always the file name textbox
+
+                string fileNameTxtTag = (string)fileNameTxt.Tag; //the full file path is not stored in the text due to space limitations, it's in the tag
+                if (fileNameTxtTag.Length > 0) {
+                    if(!File.Exists(fileNameTxtTag)) {
+                        missingAppendices++;
+                        missingAppendicesFiles.Add(fileNameTxtTag);
+                    }
+                }
+            }
+
+            if(missingAppendices > 0) { //If problem appendices are found, inform the user of them
+                //Create string list of the missing appendices
+                string stringifiedAppendicesFiles = String.Empty;
+                foreach (string missingApdx in missingAppendicesFiles) {
+                    stringifiedAppendicesFiles += "- " + missingApdx + "\n";
+                }
+
+                MessageBox.Show("The export was cancelled because " + missingAppendices + " of the " + appendicesFullStack.Children.Count + " added appendices could not be found on the system. The following files need to be changed or removed:\n\n" + stringifiedAppendicesFiles, "Export Cancelled - Missing Appendices", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            return missingAppendices;
         }
 
         /// <summary>
@@ -276,41 +310,49 @@ namespace CATS
         /// </summary>
         private void exportPdfBtn_Click(object sender, RoutedEventArgs e)
         {
-            exportWorker = new BackgroundWorker();
-            exportWorker.DoWork += exportWorker_DoWork;
-            exportWorker.ProgressChanged += exportWorker_ProgressChanged;
-            exportWorker.RunWorkerCompleted += exportWorker_RunWorkerCompleted;
-            exportWorker.WorkerReportsProgress = true;
-            exportWorker.WorkerSupportsCancellation = false;
+            if(getMissingAppendicesCount() == 0) //Only do PDF export if all added appendices are present
+            {
+                exportWorker = new BackgroundWorker();
+                exportWorker.DoWork += exportWorker_DoWork;
+                exportWorker.ProgressChanged += exportWorker_ProgressChanged;
+                exportWorker.RunWorkerCompleted += exportWorker_RunWorkerCompleted;
+                exportWorker.WorkerReportsProgress = true;
+                exportWorker.WorkerSupportsCancellation = false;
 
-            currentAppendicesList = new List<string>();
-            currentAppendicesList.Add("temp\\exported brief.pdf");
-            foreach(string appendix in currentBua.appendicesList) {
-                currentAppendicesList.Add(appendix);
-            }
+                currentAppendicesList = new List<string>();
+                currentAppendicesList.Add("temp\\exported brief.pdf");
+                foreach (string appendix in currentBua.appendicesList)
+                {
+                    currentAppendicesList.Add(appendix);
+                }
 
-            string selectedExportPath = exportFolderTxt.Text + "\\" + exportFileTxt.Text + ".pdf";
+                string selectedExportPath = exportFolderTxt.Text + "\\" + exportFileTxt.Text + ".pdf";
 
-            exportArgs args = new exportArgs();
-            args.exportMode = 0;
-            args.currentBua = currentBua;
-            args.outputFilePath = selectedExportPath;
-            args.appendixFilePaths = currentAppendicesList;
-            args.includeWatermark = true; //Not final, so include a draft watermark
+                exportArgs args = new exportArgs();
+                args.exportMode = 0;
+                args.currentBua = currentBua;
+                args.outputFilePath = selectedExportPath;
+                args.appendixFilePaths = currentAppendicesList;
+                args.includeWatermark = true; //Not final, so include a draft watermark
 
-            //Proceed if the specified export file doesn't already exist, or if the user has confirmed permission to replace it
-            if (File.Exists(selectedExportPath)) {
-                if (getOverwriteConfirmation(selectedExportPath)) {
+                //Proceed if the specified export file doesn't already exist, or if the user has confirmed permission to replace it
+                if (File.Exists(selectedExportPath))
+                {
+                    if (getOverwriteConfirmation(selectedExportPath))
+                    {
+                        toggleExportButtonsEnabled(false);
+                        exportProgressWindow = new exportProgressScreen(args.exportMode);
+                        exportProgressWindow.Visibility = Visibility.Visible;
+                        exportWorker.RunWorkerAsync(args);
+                    }
+                }
+                else
+                {
                     toggleExportButtonsEnabled(false);
                     exportProgressWindow = new exportProgressScreen(args.exportMode);
                     exportProgressWindow.Visibility = Visibility.Visible;
                     exportWorker.RunWorkerAsync(args);
                 }
-            } else {
-                toggleExportButtonsEnabled(false);
-                exportProgressWindow = new exportProgressScreen(args.exportMode);
-                exportProgressWindow.Visibility = Visibility.Visible;
-                exportWorker.RunWorkerAsync(args);
             }
         }
 
@@ -320,41 +362,49 @@ namespace CATS
         /// </summary>
         private void exportFinalPdfBtn_Click(object sender, RoutedEventArgs e)
         {
-            exportWorker = new BackgroundWorker();
-            exportWorker.DoWork += exportWorker_DoWork;
-            exportWorker.ProgressChanged += exportWorker_ProgressChanged;
-            exportWorker.RunWorkerCompleted += exportWorker_RunWorkerCompleted;
-            exportWorker.WorkerReportsProgress = true;
-            exportWorker.WorkerSupportsCancellation = false;
+            if (getMissingAppendicesCount() == 0) //Only do PDF export if all added appendices are present
+            {
+                exportWorker = new BackgroundWorker();
+                exportWorker.DoWork += exportWorker_DoWork;
+                exportWorker.ProgressChanged += exportWorker_ProgressChanged;
+                exportWorker.RunWorkerCompleted += exportWorker_RunWorkerCompleted;
+                exportWorker.WorkerReportsProgress = true;
+                exportWorker.WorkerSupportsCancellation = false;
 
-            currentAppendicesList = new List<string>();
-            currentAppendicesList.Add("temp\\exported brief.pdf");
-            foreach (string appendix in currentBua.appendicesList) {
-                currentAppendicesList.Add(appendix);
-            }
+                currentAppendicesList = new List<string>();
+                currentAppendicesList.Add("temp\\exported brief.pdf");
+                foreach (string appendix in currentBua.appendicesList)
+                {
+                    currentAppendicesList.Add(appendix);
+                }
 
-            string selectedExportPath = exportFolderTxt.Text + "\\" + exportFileTxt.Text + ".pdf";
+                string selectedExportPath = exportFolderTxt.Text + "\\" + exportFileTxt.Text + ".pdf";
 
-            exportArgs args = new exportArgs();
-            args.exportMode = 1;
-            args.currentBua = currentBua;
-            args.outputFilePath = selectedExportPath;
-            args.appendixFilePaths = currentAppendicesList;
-            args.includeWatermark = false; //Final, so don't include a draft watermark
+                exportArgs args = new exportArgs();
+                args.exportMode = 1;
+                args.currentBua = currentBua;
+                args.outputFilePath = selectedExportPath;
+                args.appendixFilePaths = currentAppendicesList;
+                args.includeWatermark = false; //Final, so don't include a draft watermark
 
-            //Proceed if the specified export file doesn't already exist, or if the user has confirmed permission to replace it
-            if (File.Exists(selectedExportPath)) {
-                if (getOverwriteConfirmation(selectedExportPath)) {
+                //Proceed if the specified export file doesn't already exist, or if the user has confirmed permission to replace it
+                if (File.Exists(selectedExportPath))
+                {
+                    if (getOverwriteConfirmation(selectedExportPath))
+                    {
+                        toggleExportButtonsEnabled(false);
+                        exportProgressWindow = new exportProgressScreen(args.exportMode);
+                        exportProgressWindow.Visibility = Visibility.Visible;
+                        exportWorker.RunWorkerAsync(args);
+                    }
+                }
+                else
+                {
                     toggleExportButtonsEnabled(false);
                     exportProgressWindow = new exportProgressScreen(args.exportMode);
                     exportProgressWindow.Visibility = Visibility.Visible;
                     exportWorker.RunWorkerAsync(args);
                 }
-            } else {
-                toggleExportButtonsEnabled(false);
-                exportProgressWindow = new exportProgressScreen(args.exportMode);
-                exportProgressWindow.Visibility = Visibility.Visible;
-                exportWorker.RunWorkerAsync(args);
             }
         }
 
@@ -497,7 +547,7 @@ namespace CATS
                 } else {
                     //Red icon to indicate an error - pointed-to appendix file does not exist on the system (might have sent this BUA to someone else)
                     newAppendixImg.Source = new BitmapImage(new Uri("pack://application:,,,/img/icons/outline_description_red_48dp.png"));
-                    newAppendixImg.ToolTip = ofd.FileName + "\nThis file does not exist. It must be changed or removed.";
+                    newAppendixImg.ToolTip = ofd.FileName + "\n\nThis file does not exist. It must be changed or removed.";
                     newAppendixImg.Tag = 0; //A tag of 0 indicates this file doesn't exist
                 }
 
