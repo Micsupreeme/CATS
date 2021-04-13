@@ -47,7 +47,7 @@
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
-                <Slider x:Name="weightingSlide" FontFamily="Arial" FontSize="14" Minimum="0" Maximum="100" TickFrequency="10" TickPlacement="BottomRight" VerticalAlignment="Center" HorizontalContentAlignment="Right" Padding="3" Grid.Column="0" Grid.Row="0" ValueChanged="weightingSlide_ValueChanged"/>
+                <Slider x:Name="weightingSlide" FontFamily="Arial" FontSize="14" Minimum="0" Maximum="100" IsSnapToTickEnabled="True" TickFrequency="5" TickPlacement="BottomRight" VerticalAlignment="Center" HorizontalContentAlignment="Right" Padding="3" Grid.Column="0" Grid.Row="0" ValueChanged="weightingSlide_ValueChanged"/>
                 <TextBox x:Name="weightingPercentTxt" FontFamily="Arial" FontSize="14" Text="0%" BorderThickness="0" Background="#252525" Foreground="#FFFFFF" VerticalAlignment="Center" HorizontalContentAlignment="Center" IsReadOnly="True" Grid.Column="1" Grid.Row="0"/>
             </Grid>
         </Grid>

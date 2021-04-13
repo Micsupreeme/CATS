@@ -36,7 +36,7 @@ namespace CATS
         /// <summary>
         /// When the application publisher is clicked (which appears like a hyperlink)
         /// </summary>
-        private void appPublisherTxt_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void appPublisherTb_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Process.Start("https://github.com/Micsupreeme");
         }
@@ -54,7 +54,8 @@ namespace CATS
         /// </summary>
         private void dependenciesBtn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Dependencies and licences pending", "NotImplemented");
+            Dependencies dependencies = new Dependencies();
+            dependencies.Visibility = Visibility.Visible;
         }
 
         /// <summary>
