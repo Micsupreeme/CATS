@@ -420,7 +420,7 @@ namespace CATS
                     EXPORT_ILOS_BLOCK +
                     EXPORT_QUESTIONS_BLOCK +
                     EXPORT_SIGNATURE_BLOCK +
-                    getExportSupportBlock(this.isResub) +
+                    getExportSupportBlock(this.isResub, this.level) +
                     EXPORT_WATERMARK +
                     EXPORT_END_BLOCK;
             } else {
@@ -434,7 +434,7 @@ namespace CATS
                     EXPORT_ILOS_BLOCK +
                     EXPORT_QUESTIONS_BLOCK +
                     EXPORT_SIGNATURE_BLOCK +
-                    getExportSupportBlock(this.isResub) +
+                    getExportSupportBlock(this.isResub, this.level) +
                     EXPORT_END_BLOCK;
             }
         }
@@ -444,8 +444,14 @@ namespace CATS
         /// </summary>
         /// <param name="isResub">Whether or not this is a resubmission brief</param>
         /// <returns>The appropriate "Help & Support" section string block of HTML</returns>
-        private string getExportSupportBlock(bool isResub)
+        private string getExportSupportBlock(bool isResub, int level)
         {
+            //Pass mark differs between undergrad and postgrad
+            int passMark = 50;
+            if(level < 7) {
+                passMark = 40;
+            }
+
             string supportBlock1; //This is the block that changes significantly when comparing the submission template to the resubmission template
             if(isResub) {
                 //Resub
@@ -466,7 +472,7 @@ namespace CATS
                 "<ul style=\"line-height: 1.1; padding-top: 7px; font-family: Arial;\">" +
                 "<li>If a piece of coursework is not submitted by the required deadline, the following will apply:" +
                 "<ol style=\"padding-top: 3px; font-family: Arial;\">" +
-                "<li style=\"padding-bottom: 7px;\">If coursework is submitted within 72 hours after the deadline, the maximum mark that can be awarded is 40%. " +
+                "<li style=\"padding-bottom: 7px;\">If coursework is submitted within 72 hours after the deadline, the maximum mark that can be awarded is " + passMark + "%. " +
                 "If the assessment achieves a pass mark and subject to the overall performance of the unit and the student's profile for the level, " +
                 "it will be accepted by the Assessment Board as the reassessment piece. The unit will count towards the reassessment allowance for the level; " +
                 "This ruling will apply to written coursework artefacts only; This ruling will apply to the first attempt only (including any subsequent attempt " +
@@ -478,7 +484,6 @@ namespace CATS
                 "<p style=\"line-height: 1.1; margin-left: 40px; margin-top: 7px; margin-bottom: 7px;\">The Standard Assessment Regulations can be found on<b> Brightspace</b>.</p>";
             }
 
-            //Same for both Sub and Resub
             string supportBlock2 =
             "<ul style=\"line-height: 1.1; padding-top: 0px; font-family: Arial;\">" +
             "<li style=\"padding-bottom: 7px;\">If you have any valid <b>exceptional circumstances</b> which mean that you cannot meet an assignment submission deadline " +
@@ -493,12 +498,19 @@ namespace CATS
             "to fulfil the assessment requirement for a particular unit and all or part of the content has been previously submitted by that student for formal assessment " +
             "on the same/a different unit. Further information on academic offences can be found on <b>Brightspace</b> and from " +
             "<a href=\"https://www1.bournemouth.ac.uk/discover/library/using-library/how-guides/how-avoid-academic-offences\">https://www1.bournemouth.ac.uk/discover/library/using-library/how-guides/how-avoid-academic-offences</a></li>" +
-            "<li style=\"padding-bottom: 7px;\">Students with <b>Additional Learning Needs</b> may contact Learning Support on <a href=\"www.bournemouth.ac.uk/als\">www.bournemouth.ac.uk/als</a></li>" +
-            "<li>You should not be conducting any primary research (i.e. carrying out an investigation to acquire data first-hand, for example, where it involves approaching participants " +
-            "to ask questions or to participate in surveys, questionnaires, interviews, observations, focus groups, etc.) unless otherwise specified in the brief. " +
-            "However, if there is a genuine requirement to collect primary research data you will require ethical approval before doing so. " +
-            "In the first instance, please discuss with the Unit Leader. The collection of primary data without appropriate ethical approval " +
-            "is a serious breach of Bournemouth University's Research Ethics Code of Practice and will be treated as Research Misconduct.</li>" +
+            "<li style=\"padding-bottom: 7px;\">Students with <b>Additional Learning Needs</b> may contact Learning Support on <a href=\"www.bournemouth.ac.uk/als\">www.bournemouth.ac.uk/als</a></li>";
+
+            //Only include "no primary research" if it's undergrad
+            if(level < 7) {
+                supportBlock2 +=
+                "<li>You should not be conducting any primary research (i.e. carrying out an investigation to acquire data first-hand, for example, where it involves approaching participants " +
+                "to ask questions or to participate in surveys, questionnaires, interviews, observations, focus groups, etc.) unless otherwise specified in the brief. " +
+                "However, if there is a genuine requirement to collect primary research data you will require ethical approval before doing so. " +
+                "In the first instance, please discuss with the Unit Leader. The collection of primary data without appropriate ethical approval " +
+                "is a serious breach of Bournemouth University's Research Ethics Code of Practice and will be treated as Research Misconduct.</li>";
+            }
+
+            supportBlock2 +=
             "</ul><p style=\"line-height: 1.1; margin-top: 14px;\"><b>Disclaimer: </b>The information provided in this assignment brief is correct at the time of publication. " +
             "In the unlikely event that any changes are deemed necessary, they will be communicated clearly via e-mail and Brightspace " +
             "and a new version of this assignment brief will be circulated.</p>";

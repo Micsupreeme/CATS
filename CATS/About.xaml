@@ -10,7 +10,7 @@
         Background="#252525"
         Foreground="#FFFFFF"
         Icon="pack://application:,,,/img/icons/cats_logo_208.ico"
-        Title="About - CATS" Height="370" Width="475" MinHeight="370" MinWidth="475">
+        Title="About - CATS" Height="420" Width="505" MinHeight="420" MinWidth="505">
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>

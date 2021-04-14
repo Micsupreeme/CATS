@@ -10,7 +10,7 @@
         Background="#252525"
         Foreground="#FFFFFF"
         Icon="pack://application:,,,/img/icons/cats_logo_208.ico"
-        Title="NuGet Dependencies - CATS" Height="500" Width="700">
+        Title="NuGet Dependencies - CATS" Height="420" Width="505" MinHeight="420" MinWidth="505">
     <DockPanel Margin="20" LastChildFill="True">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom">
             <Button x:Name="okBtn" FontFamily="Arial" FontSize="14" Content="OK" Padding="27,3,27,3" IsDefault="True" Click="okBtn_Click"/>
@@ -20,90 +20,99 @@
                 <Expander x:Name="htmlAgilityExp" Header="HtmlAgilityPack 1.11.32" FontFamily="Arial" FontSize="14" Background="#252525" Foreground="#FFFFFF" Margin="0,0,0,10">
                     <Expander.Content>
                         <StackPanel Margin="25,8,25,8">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,8">
                                 <TextBlock Text="Project URL: " FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#FFFFFF"/>
-                                <TextBlock x:Name="htmlAgilityUrlTb" Text="https://html-agility-pack.net/" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand"/>
+                                <TextBlock x:Name="htmlAgilityUrlTb" Text="https://html-agility-pack.net/" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="htmlAgilityUrlTb_MouseUp"/>
                             </StackPanel>
+                            <TextBlock x:Name="htmlAgilityLicenceTb" Text="View Licence" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="htmlAgilityLicenceTb_MouseUp"/>
                         </StackPanel>
                     </Expander.Content>
                 </Expander>
                 <Expander x:Name="lumenExp" Header="LumenWorksCsvReader 4.0.0" FontFamily="Arial" FontSize="14" Background="#252525" Foreground="#FFFFFF" Margin="0,0,0,10">
                     <Expander.Content>
                         <StackPanel Margin="25,8,25,8">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,8">
                                 <TextBlock Text="Project URL: " FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#FFFFFF"/>
-                                <TextBlock x:Name="lumenUrlTb" Text="https://github.com/phatcher/CsvReader" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand"/>
+                                <TextBlock x:Name="lumenUrlTb" Text="https://github.com/phatcher/CsvReader" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="lumenUrlTb_MouseUp"/>
                             </StackPanel>
+                            <TextBlock x:Name="lumenLicenceTb" Text="View Licence" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="lumenLicenceTb_MouseUp"/>
                         </StackPanel>
                     </Expander.Content>
                 </Expander>
                 <Expander x:Name="nancyExp" Header="Nancy 2.0.0" FontFamily="Arial" FontSize="14" Background="#252525" Foreground="#FFFFFF" Margin="0,0,0,10">
                     <Expander.Content>
                         <StackPanel Margin="25,8,25,8">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,8">
                                 <TextBlock Text="Project URL: " FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#FFFFFF"/>
-                                <TextBlock x:Name="nancyUrlTb" Text="http://nancyfx.org/" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand"/>
+                                <TextBlock x:Name="nancyUrlTb" Text="http://nancyfx.org/" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="nancyUrlTb_MouseUp"/>
                             </StackPanel>
+                            <TextBlock x:Name="nancyLicenceTb" Text="View Licence" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="nancyLicenceTb_MouseUp"/>
                         </StackPanel>
                     </Expander.Content>
                 </Expander>
                 <Expander x:Name="newtonsoftExp" Header="Newtonsoft.Json 13.0.1" FontFamily="Arial" FontSize="14" Background="#252525" Foreground="#FFFFFF" Margin="0,0,0,10">
                     <Expander.Content>
                         <StackPanel Margin="25,8,25,8">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,8">
                                 <TextBlock Text="Project URL: " FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#FFFFFF"/>
-                                <TextBlock x:Name="newtonsoftUrlTb" Text="https://www.newtonsoft.com/json" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand"/>
+                                <TextBlock x:Name="newtonsoftUrlTb" Text="https://www.newtonsoft.com/json" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="newtonsoftUrlTb_MouseUp"/>
                             </StackPanel>
+                            <TextBlock x:Name="newtonsoftLicenceTb" Text="View Licence" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="newtonsoftLicenceTb_MouseUp"/>
                         </StackPanel>
                     </Expander.Content>
                 </Expander>
                 <Expander x:Name="migraDocExp" Header="PDFsharp-MigraDoc 1.50.5147" FontFamily="Arial" FontSize="14" Background="#252525" Foreground="#FFFFFF" Margin="0,0,0,10">
                     <Expander.Content>
                         <StackPanel Margin="25,8,25,8">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,8">
                                 <TextBlock Text="Project URL: " FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#FFFFFF"/>
-                                <TextBlock x:Name="migraDocUrlTb" Text="http://www.pdfsharp.net/" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand"/>
+                                <TextBlock x:Name="migraDocUrlTb" Text="http://www.pdfsharp.net/" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="migraDocUrlTb_MouseUp"/>
                             </StackPanel>
+                            <TextBlock x:Name="migraDocLicenceTb" Text="View Licence" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="migraDocLicenceTb_MouseUp"/>
                         </StackPanel>
                     </Expander.Content>
                 </Expander>
                 <Expander x:Name="selectHtmlPdfExp" Header="Select.HtmlToPdf 20.2.0" FontFamily="Arial" FontSize="14" Background="#252525" Foreground="#FFFFFF" Margin="0,0,0,10">
                     <Expander.Content>
                         <StackPanel Margin="25,8,25,8">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,8">
                                 <TextBlock Text="Project URL: " FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#FFFFFF"/>
-                                <TextBlock x:Name="selectHtmlPdfUrlTb" Text="https://selectpdf.com/community-edition/" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand"/>
+                                <TextBlock x:Name="selectHtmlPdfUrlTb" Text="https://selectpdf.com/community-edition/" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="selectHtmlPdfUrlTb_MouseUp"/>
                             </StackPanel>
+                            <TextBlock x:Name="selectHtmlPdfLicenceTb" Text="View Licence" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="selectHtmlPdfLicenceTb_MouseUp"/>
                         </StackPanel>
                     </Expander.Content>
                 </Expander>
                 <Expander x:Name="smithEditorExp" Header="Smith.WPF.HtmlEditor 1.0.0" FontFamily="Arial" FontSize="14" Background="#252525" Foreground="#FFFFFF" Margin="0,0,0,10">
                     <Expander.Content>
                         <StackPanel Margin="25,8,25,8">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,8">
                                 <TextBlock Text="Project URL: " FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#FFFFFF"/>
-                                <TextBlock x:Name="smithEditorUrlTb" Text="https://github.com/adambarath/SmithHtmlEditor" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand"/>
+                                <TextBlock x:Name="smithEditorUrlTb" Text="https://github.com/adambarath/SmithHtmlEditor" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="smithEditorUrlTb_MouseUp"/>
                             </StackPanel>
+                            <TextBlock x:Name="smithEditorLicenceTb" Text="View Licence" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="smithEditorLicenceTb_MouseUp"/>
                         </StackPanel>
                     </Expander.Content>
                 </Expander>
                 <Expander x:Name="windowsApiCoreExp" Header="WindowsAPICodePack-Core 1.1.2" FontFamily="Arial" FontSize="14" Background="#252525" Foreground="#FFFFFF" Margin="0,0,0,10">
                     <Expander.Content>
                         <StackPanel Margin="25,8,25,8">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,8">
                                 <TextBlock Text="Project URL: " FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#FFFFFF"/>
-                                <TextBlock x:Name="windowsApiCoreUrlTb" Text="https://github.com/aybe/Windows-API-Code-Pack-1.1" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand"/>
+                                <TextBlock x:Name="windowsApiCoreUrlTb" Text="https://github.com/aybe/Windows-API-Code-Pack-1.1" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="windowsApiCoreUrlTb_MouseUp"/>
                             </StackPanel>
+                            <TextBlock x:Name="windowsApiCoreLicenceTb" Text="View Licence" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="windowsApiCoreLicenceTb_MouseUp"/>
                         </StackPanel>
                     </Expander.Content>
                 </Expander>
                 <Expander x:Name="windowsApiShellExp" Header="WindowsAPICodePack-Shell 1.1.1" FontFamily="Arial" FontSize="14" Background="#252525" Foreground="#FFFFFF" Margin="0,0,0,10">
                     <Expander.Content>
                         <StackPanel Margin="25,8,25,8">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,8">
                                 <TextBlock Text="Project URL: " FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#FFFFFF"/>
-                                <TextBlock x:Name="windowsApiShellUrlTb" Text="https://github.com/aybe/Windows-API-Code-Pack-1.1" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand"/>
+                                <TextBlock x:Name="windowsApiShellUrlTb" Text="https://github.com/aybe/Windows-API-Code-Pack-1.1" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="windowsApiShellUrlTb_MouseUp"/>
                             </StackPanel>
+                            <TextBlock x:Name="windowsApiShellLicenceTb" Text="View Licence" FontFamily="Arial" FontSize="14" TextWrapping="Wrap" Background="#252525" Foreground="#00FFFF" TextDecorations="Underline" Cursor="Hand" MouseUp="windowsApiShellLicenceTb_MouseUp"/>
                         </StackPanel>
                     </Expander.Content>
                 </Expander>
