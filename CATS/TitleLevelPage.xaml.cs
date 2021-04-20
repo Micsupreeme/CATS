@@ -150,6 +150,13 @@ namespace CATS
         private void asmtNoXCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {           
             try {
+                //Prevent users from being able to specify impossible assessment numbers like "Assessment 3 of 1"
+                if (asmtNoXCmb.SelectedIndex > asmtNoYCmb.SelectedIndex) {
+                    while (asmtNoXCmb.SelectedIndex > asmtNoYCmb.SelectedIndex) {
+                        asmtNoYCmb.SelectedIndex++;
+                    }
+                }
+
                 currentBua.asmtNoX = int.Parse(asmtNoXCmb.SelectedValue.ToString());
             } catch (FormatException) {
                 Console.Error.WriteLine("ERROR: Attempted to convert alphabet to int");
@@ -166,8 +173,8 @@ namespace CATS
         {
             try {
                 //Prevent users from being able to specify impossible assessment numbers like "Assessment 3 of 1"
-                if(asmtNoYCmb.SelectedIndex < asmtNoXCmb.SelectedIndex){
-                    while(asmtNoYCmb.SelectedIndex < asmtNoXCmb.SelectedIndex) {
+                if(asmtNoXCmb.SelectedIndex > asmtNoYCmb.SelectedIndex){
+                    while(asmtNoXCmb.SelectedIndex > asmtNoYCmb.SelectedIndex) {
                         asmtNoYCmb.SelectedIndex++;
                     }
                 }

@@ -58,7 +58,7 @@ namespace CATS
             //Draw records
             for (int apdx = 0; apdx < currentBua.appendicesList.Count; apdx++)
             {
-                appendicesCanvas.Width += APPENDIX_ITEM_WIDTH;
+                appendicesCanvas.Width += (APPENDIX_ITEM_WIDTH + 5);
 
                 var appendixImg = new Image();
                 appendixImg.Height = 60;
@@ -178,6 +178,7 @@ namespace CATS
                 }
             }
             currentBua.appendicesList = tempAppendicesList;
+            currentBua.saveAsJson(currentFilePath);
         }
 
         /// <summary>
@@ -533,7 +534,7 @@ namespace CATS
             };
             if (ofd.ShowDialog() == true)
             {
-                appendicesCanvas.Width += APPENDIX_ITEM_WIDTH;
+                appendicesCanvas.Width += (APPENDIX_ITEM_WIDTH + 5);
 
                 var newAppendixImg = new Image();
                 newAppendixImg.Height = 60;
@@ -654,7 +655,7 @@ namespace CATS
         /// </summary>
         private void appendixDeleteBtn_Click(object sender, RoutedEventArgs e)
         {
-            appendicesCanvas.Width -= APPENDIX_ITEM_WIDTH;
+            appendicesCanvas.Width -= (APPENDIX_ITEM_WIDTH + 5);
 
             Button eventBtn = (Button)e.Source;
             int eventTag = (int)eventBtn.Tag; //the tag that indicates the appendix item (containing all the controls to be deleted)

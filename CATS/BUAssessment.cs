@@ -349,7 +349,7 @@ namespace CATS
                 "img {page-break-inside: avoid;}" +
                 "table {width: 95%; border-collapse: collapse; page-break-inside: avoid; margin-left: auto; margin-right: auto;}" +
                 "@page {margin: 2.54cm;}" + //Only affects default Web Browser print methods - SelectPDF HTML-to-PDF has its own settings to specify margins
-                "* {font-family: Arial; font-size: 10pt;}" +
+                "* {font-family: Arial; font-size: 10pt; line-height: 1.25;}" +
             "</style>";
             string EXPORT_DETAILS_BLOCK =
                 "</head><body><section id=\"content\">" +
@@ -389,19 +389,19 @@ namespace CATS
                 "<h1 style=\"font-family: Arial; font-size: 10pt; font-weight:bold; background-color: #E5E5E5; text-align: center; padding-top: 5px; padding-bottom: 10px; margin: 0px; line-height: 1.5;\">" + formattedWeightingStr + "</h1>";
             string EXPORT_ASMT_TASK_BLOCK =
                 "<h2 style=\"padding-top: 10px; font-family: Arial; font-weight: bold; margin-bottom: 2px;\">ASSESSMENT TASK 1</h2>" +
-                "<p style=\"line-height: 1.1; margin-top: 0px;\">" + encodeImageSources(this.assessmentTaskHtml) + "</p>";
+                "<p style=\"line-height: 1.25; margin-top: 0px;\">" + encodeImageSources(this.assessmentTaskHtml) + "</p>";
             string EXPORT_SUBMISSION_FORMAT_BLOCK =
                 "<h2 style=\"padding-top: 10px; font-family: Arial; font-weight: bold; margin-bottom: 2px;\">" + subFormatHeader + "</h2>" +
-                "<p style=\"line-height: 1.1; margin-top: 0px;\">" + encodeImageSources(this.submissionFormatHtml) + "</p>";
+                "<p style=\"line-height: 1.25; margin-top: 0px;\">" + encodeImageSources(this.submissionFormatHtml) + "</p>";
             string EXPORT_MARKING_CRITERIA_BLOCK =
                 "<h2 style=\"padding-top: 10px; font-family: Arial; font-weight: bold; margin-bottom: 2px;\">MARKING CRITERIA</h2>" +
-                "<p style=\"line-height: 1.1; margin-top: 0px;\">" + encodeImageSources(this.markingCriteriaHtml) + "</p>";
+                "<p style=\"line-height: 1.25; margin-top: 0px;\">" + encodeImageSources(this.markingCriteriaHtml) + "</p>";
             string EXPORT_ILOS_BLOCK =
                 "<h2 style=\"padding-top: 10px; font-family: Arial; font-weight: bold; margin-bottom: 2px;\">INTENDED LEARNING OUTCOMES</h2>" +
-                "<p style=\"line-height: 1.1; margin-top: 0px;\">" + formattedILOsStr + "</p>";
+                "<p style=\"line-height: 1.25; margin-top: 0px;\">" + formattedILOsStr + "</p>";
             string EXPORT_QUESTIONS_BLOCK =
                 "<h2 style=\"padding-top: 10px; font-family: Arial; font-weight: bold; margin-bottom: 2px;\">QUESTIONS ABOUT THE BRIEF</h2>" +
-                "<p style=\"line-height: 1.1; margin-top: 0px;\">" + this.questionsAboutBrief + "</p>";
+                "<p style=\"line-height: 1.25; margin-top: 0px;\">" + this.questionsAboutBrief + "</p>";
             string EXPORT_SIGNATURE_BLOCK =
                 "<h2 style=\"padding-top: 10px; font-family: Arial; font-weight: normal; margin-top: 10px; margin-bottom: 10px;\"><b>Signature Marker: </b>" + this.signatureMarker + "</h2>";
             string EXPORT_WATERMARK =
@@ -457,19 +457,19 @@ namespace CATS
                 //Resub
                 supportBlock1 =
                 "<h2 style=\"padding-top: 10px; font-family: Arial; font-weight: bold; margin-bottom: 2px;\">HELP AND SUPPORT</h2>" +
-                "<ul style=\"line-height: 1.1; padding-top: 7px; font-family: Arial;\">" +
+                "<ul style=\"line-height: 1.25; padding-top: 7px; font-family: Arial;\">" +
                 "<li>If a piece of resubmission coursework is not submitted by the required deadline, the following regulation will apply:" +
                 "</li></ul>" +
-                "<p style=\"line-height: 1.1; margin-left: 40px; margin-top: 7px; margin-bottom: 7px;\">" +
+                "<p style=\"line-height: 1.25; margin-left: 40px; margin-top: 7px; margin-bottom: 7px;\">" +
                 "‘Failure to submit/complete any other types of coursework (which includes resubmission coursework without exceptional circumstances) by the " +
                 "required deadline will result in a mark of zero (0%) being awarded.’</p>" +
-                "<p style=\"line-height: 1.1; margin-left: 40px; margin-top: 7px; margin-bottom: 7px;\">" +
+                "<p style=\"line-height: 1.25; margin-left: 40px; margin-top: 7px; margin-bottom: 7px;\">" +
                 "The Standard Assessment Regulations can be found on<b> Brightspace</b>.</p>";
             } else {
                 //Sub
                 supportBlock1 =
                 "<h2 style=\"padding-top: 10px; font-family: Arial; font-weight: bold; margin-bottom: 2px;\">HELP AND SUPPORT</h2>" +
-                "<ul style=\"line-height: 1.1; padding-top: 7px; font-family: Arial;\">" +
+                "<ul style=\"line-height: 1.25; padding-top: 7px; font-family: Arial;\">" +
                 "<li>If a piece of coursework is not submitted by the required deadline, the following will apply:" +
                 "<ol style=\"padding-top: 3px; font-family: Arial;\">" +
                 "<li style=\"padding-bottom: 7px;\">If coursework is submitted within 72 hours after the deadline, the maximum mark that can be awarded is " + passMark + "%. " +
@@ -481,11 +481,11 @@ namespace CATS
                 "<li>Failure to submit/complete any other types of coursework (which includes resubmission coursework without exceptional circumstances) " +
                 "by the required deadline will result in a mark of zero (0%) being awarded.</li>" +
                 "</ol></li></ul>" +
-                "<p style=\"line-height: 1.1; margin-left: 40px; margin-top: 7px; margin-bottom: 7px;\">The Standard Assessment Regulations can be found on<b> Brightspace</b>.</p>";
+                "<p style=\"line-height: 1.25; margin-left: 40px; margin-top: 7px; margin-bottom: 7px;\">The Standard Assessment Regulations can be found on<b> Brightspace</b>.</p>";
             }
 
             string supportBlock2 =
-            "<ul style=\"line-height: 1.1; padding-top: 0px; font-family: Arial;\">" +
+            "<ul style=\"line-height: 1.25; padding-top: 0px; font-family: Arial;\">" +
             "<li style=\"padding-bottom: 7px;\">If you have any valid <b>exceptional circumstances</b> which mean that you cannot meet an assignment submission deadline " +
             "and you wish to request an extension, you will need to complete and submit the Exceptional Circumstances Form for consideration to your Programme Support Officer " +
             "(based in C114) together with appropriate supporting evidence (e.g, GP note) normally <b>before the coursework deadline</b>. Further details on the procedure " +
@@ -511,7 +511,7 @@ namespace CATS
             }
 
             supportBlock2 +=
-            "</ul><p style=\"line-height: 1.1; margin-top: 14px;\"><b>Disclaimer: </b>The information provided in this assignment brief is correct at the time of publication. " +
+            "</ul><p style=\"line-height: 1.25; margin-top: 14px;\"><b>Disclaimer: </b>The information provided in this assignment brief is correct at the time of publication. " +
             "In the unlikely event that any changes are deemed necessary, they will be communicated clearly via e-mail and Brightspace " +
             "and a new version of this assignment brief will be circulated.</p>";
 

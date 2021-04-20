@@ -76,6 +76,7 @@ namespace CATS
                 iloContentTxt.Width = 540;
                 iloContentTxt.Padding = new Thickness(5, 5, 5, 5);
                 iloContentTxt.AcceptsReturn = true; //multiline textbox
+                iloContentTxt.SpellCheck.IsEnabled = true;
                 iloContentTxt.TextWrapping = TextWrapping.Wrap;
                 iloContentTxt.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
                 iloContentTxt.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
@@ -241,6 +242,7 @@ namespace CATS
             iloNewContentTxt.Width = 540;
             iloNewContentTxt.Padding = new Thickness(5, 5, 5, 5);
             iloNewContentTxt.AcceptsReturn = true; //multiline textbox
+            iloNewContentTxt.SpellCheck.IsEnabled = true;
             iloNewContentTxt.TextWrapping = TextWrapping.Wrap;
             iloNewContentTxt.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             iloNewContentTxt.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;

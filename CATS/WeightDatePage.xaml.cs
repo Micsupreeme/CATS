@@ -99,7 +99,6 @@ namespace CATS
                 impTxt.Text = currentBua.impPath;
 
                 SelectSubmissionDueDateDialog selectsubmissionduedatedialog = new SelectSubmissionDueDateDialog(this, currentBua);
-                selectsubmissionduedatedialog.Visibility = Visibility.Visible;
             }
         }
 

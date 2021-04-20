@@ -16,7 +16,7 @@
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>D:\Development\Visual Studio 2019\pub3\</PublishUrl>
+    <PublishUrl>D:\University\Documents\CATS 1.0\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -26,10 +26,14 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>false</MapFileExtensions>
+    <SupportUrl>https://github.com/Micsupreeme</SupportUrl>
+    <ErrorReportUrl>https://github.com/Micsupreeme</ErrorReportUrl>
+    <TargetCulture>en-GB</TargetCulture>
     <ProductName>Coursework Assessment Transmogrification System</ProductName>
     <PublisherName>Michael Whatley</PublisherName>
+    <SuiteName>CATS</SuiteName>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>0.8.2.0</ApplicationVersion>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
@@ -66,6 +70,15 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>cats_logo_208.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack, Version=1.11.32.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
@@ -294,6 +307,7 @@
     <None Include="app.config" />
     <None Include="CATS_TemporaryKey.pfx" />
     <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -420,6 +434,7 @@
     <Resource Include="img\icons\outline_description_white_48dp.png" />
     <Resource Include="img\icons\outline_add_white_48dp.png" />
     <Resource Include="img\icons\outline_description_red_48dp.png" />
+    <Resource Include="cats_logo_208.ico" />
     <Content Include="smithhtmleditor.config.xml" />
     <Content Include="smithhtmleditor.stylesheet.css" />
   </ItemGroup>

@@ -27,7 +27,7 @@
             </StackPanel>
             <StackPanel Grid.Column="1" Grid.Row="0">
                 <TextBlock x:Name="markersTb" FontFamily="Arial" FontSize="14" Text="Marker(s):" Margin="15,0,0,15"/>
-                <TextBox x:Name="markersTxt" FontFamily="Arial" FontSize="14" Padding="3" Height="140" SpellCheck.IsEnabled="True" VerticalAlignment="Center" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" AcceptsTab="True" Margin="15,0,0,0" TextChanged="markersTxt_TextChanged" MaxLines="10"/>
+                <TextBox x:Name="markersTxt" FontFamily="Arial" FontSize="14" Padding="3" Height="140" VerticalAlignment="Center" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" AcceptsTab="True" Margin="15,0,0,0" TextChanged="markersTxt_TextChanged" MaxLines="10"/>
                 <TextBlock x:Name="namesSeparationTb" FontFamily="Arial" FontSize="14" Text="One Marker per Line"  Margin="15,15,0,0" TextAlignment="Center"/>
             </StackPanel>
         </Grid>
