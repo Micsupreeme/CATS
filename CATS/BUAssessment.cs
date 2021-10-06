@@ -388,7 +388,7 @@ namespace CATS
                 "</tbody></table>" +
                 "<h1 style=\"font-family: Arial; font-size: 10pt; font-weight:bold; background-color: #E5E5E5; text-align: center; padding-top: 5px; padding-bottom: 10px; margin: 0px; line-height: 1.5;\">" + formattedWeightingStr + "</h1>";
             string EXPORT_ASMT_TASK_BLOCK =
-                "<h2 style=\"padding-top: 10px; font-family: Arial; font-weight: bold; margin-bottom: 2px;\">ASSESSMENT TASK 1</h2>" +
+                "<h2 style=\"padding-top: 10px; font-family: Arial; font-weight: bold; margin-bottom: 2px;\">ASSESSMENT TASK</h2>" +
                 "<p style=\"line-height: 1.25; margin-top: 0px;\">" + encodeImageSources(this.assessmentTaskHtml) + "</p>";
             string EXPORT_SUBMISSION_FORMAT_BLOCK =
                 "<h2 style=\"padding-top: 10px; font-family: Arial; font-weight: bold; margin-bottom: 2px;\">" + subFormatHeader + "</h2>" +
